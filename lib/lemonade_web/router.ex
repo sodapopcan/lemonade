@@ -13,10 +13,6 @@ defmodule LemonadeWeb.Router do
     plug :fetch_current_user
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
   scope "/", LemonadeWeb do
     pipe_through :browser
 
