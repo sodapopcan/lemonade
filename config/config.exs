@@ -8,7 +8,8 @@
 use Mix.Config
 
 config :lemonade,
-  ecto_repos: [Lemonade.Repo]
+  ecto_repos: [Lemonade.Repo],
+  generators: [binary_id: true]
 
 # Configures the endpoint
 config :lemonade, LemonadeWeb.Endpoint,
