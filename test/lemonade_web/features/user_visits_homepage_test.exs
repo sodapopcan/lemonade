@@ -4,6 +4,6 @@ defmodule LemonadeWeb.UserVisitsHomepageTest do
   test "user can visit homepage", %{session: session} do
     session
     |> visit("/")
-    |> assert_has(Query.css(".title", text: "Welcome to Lemonade!"))
+    |> assert_has(Query.css(".title", text: "Lemonade"))
   end
 end
