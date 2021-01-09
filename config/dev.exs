@@ -2,8 +2,9 @@ use Mix.Config
 
 # Configure your database
 config :lemonade, Lemonade.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: System.get_env("LEMONADE_DB_USER"),
+  password: System.get_env("LEMONADE_DB_PASS"),
+  port: System.get_env("LEMONADE_DB_PORT"),
   database: "lemonade_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
