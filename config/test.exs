@@ -17,7 +17,12 @@ config :lemonade, Lemonade.Repo,
 # you can enable the server option below.
 config :lemonade, LemonadeWeb.Endpoint,
   http: [port: 4002],
-  server: false
+  server: true
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+# Wallaby
+config :wallaby, driver: Wallaby.Chrome
+config :lemonade, :sql_sandbox, true
+
