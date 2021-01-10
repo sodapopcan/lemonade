@@ -1,4 +1,4 @@
-defmodule LemonadeWeb.DashboardLive do
+defmodule LemonadeWeb.SetupLive do
   use LemonadeWeb, :live_view
 
   def render(assigns) do

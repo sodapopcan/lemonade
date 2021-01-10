@@ -4,7 +4,7 @@ defmodule LemonadeWeb.HomeLive do
 
   def mount(_, %{"user_token" => user_token}, socket) do
     if Accounts.get_user_by_session_token(user_token) do
-      {:ok, redirect(socket, to: Routes.dashboard_path(socket, :index))}
+      {:ok, redirect(socket, to: Routes.setup_path(socket, :index))}
     else
       {:ok, socket}
     end
