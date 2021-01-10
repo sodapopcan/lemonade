@@ -1,5 +1,18 @@
 defmodule LemonadeWeb.HomeLive do
   use LemonadeWeb, :live_view
+  alias Lemonade.Accounts 
+
+  def mount(_, %{"user_token" => user_token}, socket) do
+    if Accounts.get_user_by_session_token(user_token) do
+      {:ok, redirect(socket, to: Routes.dashboard_path(socket, :index))}
+    else
+      {:ok, socket}
+    end
+  end
+
+  def mount(_, _, socket) do
+    {:ok, assign(socket, current_user: nil)}
+  end
 
   def render(assigns) do
     ~L"""

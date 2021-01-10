@@ -20,6 +20,12 @@ defmodule LemonadeWeb.Router do
     live "/boards", PageLive, :index
   end
 
+  scope "/", LemonadeWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live "/dashboard", DashboardLive, :index
+  end
+
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put
@@ -32,7 +38,7 @@ defmodule LemonadeWeb.Router do
 
     scope "/" do
       pipe_through :browser
-      live_dashboard "/dashboard", metrics: LemonadeWeb.Telemetry
+      live_dashboard "/telemetry", metrics: LemonadeWeb.Telemetry
     end
   end
 
