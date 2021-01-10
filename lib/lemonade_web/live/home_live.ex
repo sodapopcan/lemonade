@@ -1,12 +1,6 @@
 defmodule LemonadeWeb.HomeLive do
   use LemonadeWeb, :live_view
 
-  @valid_paths ~w(login register)
-
-  @default_assigns [
-    path: "/"
-  ]
-
   def render(assigns) do
     ~L"""
     <div class="home-live">
