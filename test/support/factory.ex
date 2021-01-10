@@ -1,11 +1,18 @@
 defmodule Lemonade.Factory do
   alias Lemonade.Repo
   alias Lemonade.Accounts.User
+  alias Lemonade.Organizations.Organization
 
   def build(:user) do
     %User{
       email: "user#{System.unique_integer()}@example.com",
       hashed_password: Bcrypt.hash_pwd_salt("valid password")
+    }
+  end
+
+  def build(:organization) do
+    %Organization{
+      name: "Team #{System.unique_integer()}"
     }
   end
 
