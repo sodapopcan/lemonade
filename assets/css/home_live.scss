@@ -1,4 +1,9 @@
 .home-live {
+  .title {
+    &::before {
+      content: "🍋 ";
+    }
+  }
   nav {
     ul {
       list-style: none;

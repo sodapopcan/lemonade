@@ -10,7 +10,7 @@ defmodule LemonadeWeb.HomeLive do
   def render(assigns) do
     ~L"""
     <div class="home-live">
-      <h1 class="title">🍋 Lemonade</h2>
+      <h1 class="title">Lemonade</h2>
       <nav>
         <ul>
           <li><%= link "Login", to: Routes.user_session_path(@socket, :new) %> or</li>
