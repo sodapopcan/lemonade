@@ -24,6 +24,7 @@ defmodule Lemonade.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Lemonade.DataCase
+      import Lemonade.Factory
     end
   end
 

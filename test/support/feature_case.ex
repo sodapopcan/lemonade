@@ -6,6 +6,8 @@ defmodule LemonadeWeb.FeatureCase do
       use Wallaby.DSL
       alias LemonadeWeb.Router.Helpers, as: Routes
 
+      import Lemonade.Factory
+
       @endpoint LemonadeWeb.Endpoint
     end
   end
