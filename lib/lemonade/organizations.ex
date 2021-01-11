@@ -8,9 +8,7 @@ defmodule Lemonade.Organizations do
 
   alias Lemonade.Organizations.Organization
 
-  def create_organization(user, attrs) do
-    attrs = %{attrs | created_by: user, owned_by: user}
-
+  def create_organization(attrs) do
     %Organization{}
     |> Organization.create_changeset(attrs)
     |> Repo.insert()
