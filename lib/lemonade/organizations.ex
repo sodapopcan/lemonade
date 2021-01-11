@@ -9,9 +9,9 @@ defmodule Lemonade.Organizations do
   alias Lemonade.Organizations.Organization
 
   def create_organization(user, attrs) do
+    attrs = %{attrs | created_by: user, owned_by: user}
+
     %Organization{}
-    |> Map.put(:created_by_id, user.id)
-    |> Map.put(:owned_by_id, user.id)
     |> Organization.create_changeset(attrs)
     |> Repo.insert()
   end

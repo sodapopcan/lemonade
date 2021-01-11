@@ -13,7 +13,7 @@ defmodule Lemonade.Organizations.Organization do
   @doc false
   def create_changeset(organization, attrs) do
     organization
-    |> cast(attrs, [:name, :created_by_id, :owned_by_id])
-    |> validate_required([:name, :created_by_id, :owned_by_id])
+    |> cast(attrs, [:name, :created_by, :owned_by])
+    |> validate_required([:name, :created_by, :owned_by])
   end
 end
