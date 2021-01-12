@@ -13,5 +13,4 @@ defmodule Lemonade.Organizations do
     |> Organization.create_changeset(attrs)
     |> Repo.insert()
   end
-
 end
