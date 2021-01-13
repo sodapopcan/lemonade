@@ -13,8 +13,4 @@ defmodule Lemonade.Organizations do
     |> Organization.changeset(attrs)
     |> Repo.insert()
   end
-
-#   def change_organization(%Organization{} = organization, attrs \\ %{}) do
-#     Organization.changeset(organization, attrs)
-#   end
 end
