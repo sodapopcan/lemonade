@@ -11,9 +11,10 @@ defmodule Lemonade.Organizations.Organization do
   end
 
   @doc false
-  def create_changeset(organization, attrs) do
+  def changeset(organization, attrs) do
     organization
     |> cast(attrs, [:name])
-    |> validate_required([:name, :created_by, :owned_by])
+    |> validate_required([:name])
+    |> validate_length(:name, min: 2, max: 36)
   end
 end
