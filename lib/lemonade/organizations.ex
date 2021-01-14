@@ -1,8 +1,4 @@
 defmodule Lemonade.Organizations do
-  @moduledoc """
-  The Organizations context.
-  """
-
   import Ecto.Query, warn: false
   alias Lemonade.Repo
 
