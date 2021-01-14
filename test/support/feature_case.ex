@@ -4,6 +4,7 @@ defmodule LemonadeWeb.FeatureCase do
   using do
     quote do
       use Wallaby.DSL
+      import Wallaby.{Browser, Query}
       alias LemonadeWeb.Router.Helpers, as: Routes
 
       import Lemonade.Factory
