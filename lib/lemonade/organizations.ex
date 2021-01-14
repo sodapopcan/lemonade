@@ -13,4 +13,8 @@ defmodule Lemonade.Organizations do
     |> Organization.changeset(attrs)
     |> Repo.insert()
   end
+
+  def get_organization_by_owner(user) do
+    Repo.one(from Organization, where: [owned_by_id: ^user.id])
+  end
 end
