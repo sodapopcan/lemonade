@@ -13,6 +13,9 @@ defmodule LemonadeWeb.SetupLive do
   def render(assigns) do
     ~L"""
     <%= if !@organization, do: live_component @socket, LemonadeWeb.OrganizationSetupComponent, errors: @errors %>
+    <%= if @organization do %>
+      <h1><%= @organization.name %></h1>
+    <% end %>
     <div><%= link "logout", to: Routes.user_session_path(@socket, :delete), method: :delete %></div>
     """
   end
