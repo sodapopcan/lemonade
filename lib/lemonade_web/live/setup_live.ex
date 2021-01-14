@@ -4,12 +4,6 @@ defmodule LemonadeWeb.SetupLive do
 
   alias Lemonade.{Accounts, Organizations}
 
-  @default_assigns [
-    current_user: nil,
-    organization: nil,
-    errors: []
-  ]
-
   def mount(_, %{"user_token" => user_token}, socket) do
     current_user = Accounts.get_user_by_session_token(user_token)
     organization = Organizations.get_organization_by_owner(current_user)
