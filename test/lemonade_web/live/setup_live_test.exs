@@ -15,15 +15,20 @@ defmodule LemonadeWeb.PageLiveTest do
     test "setup", %{conn: conn} do
       {:ok, view, _html} = live(conn, "/setup")
 
-      view
-      |> form("form", %{organization: %{name: "Planet Express"}})
-      |> render_submit()
-      |> assert =~ "<h1>Planet Express</h1>"
+      html =
+        view
+        |> form("form", %{organization: %{name: "Planet Express"}})
+        |> render_submit()
 
-      view
-      |> form("form", %{team: %{name: "Devlivery Team"}})
-      |> render_submit()
-      |> assert =~ "<h1>Delivery Team</h1>"
+      assert html =~ "<h1>Planet Express</h1>"
+      assert html =~ "create a team"
+
+      html =
+        view
+        |> form("form", %{team: %{name: "Delivery Team"}})
+        |> render_submit()
+
+      assert html =~ "<h1>Delivery Team</h1>"
     end
   end
 end
