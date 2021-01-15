@@ -2,6 +2,7 @@ defmodule Lemonade.Factory do
   alias Lemonade.Repo
   alias Lemonade.Accounts.User
   alias Lemonade.Organizations.Organization
+  alias Lemonade.Teams.Team
 
   def build(:user) do
     %User{
@@ -12,6 +13,12 @@ defmodule Lemonade.Factory do
 
   def build(:organization) do
     %Organization{
+      name: "Team #{System.unique_integer()}"
+    }
+  end
+
+  def build(:team) do
+    %Team{
       name: "Team #{System.unique_integer()}"
     }
   end
