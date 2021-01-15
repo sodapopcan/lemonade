@@ -2,20 +2,27 @@ defmodule LemonadeWeb.SetupLive do
   use LemonadeWeb, :live_view
   use Phoenix.HTML
 
-  alias Lemonade.{Accounts, Organizations}
+  alias Lemonade.{Accounts, Organizations, Teams}
 
   def mount(_, %{"user_token" => user_token}, socket) do
     current_user = Accounts.get_user_by_session_token(user_token)
     organization = Organizations.get_organization_by_owner(current_user)
-    {:ok, assign(socket, current_user: current_user, organization: organization, errors: [])}
+    team = load_team(organization)
+    {:ok, assign(socket, current_user: current_user, organization: organization, team: team, errors: [])}
   end
 
   def render(assigns) do
     ~L"""
     <%= if !@organization, do: live_component @socket, LemonadeWeb.OrganizationSetupComponent, errors: @errors %>
-    <%= if @organization do %>
+    <%= if @organization && !@team do %>
       <h1><%= @organization.name %></h1>
+      <%= live_component @socket, LemonadeWeb.TeamSetupComponent, errors: @errors %>
     <% end %>
+
+    <%= if @team do %>
+      <h1><%= @team.name %></h1>
+    <% end %>
+
     <div><%= link "logout", to: Routes.user_session_path(@socket, :delete), method: :delete %></div>
     """
   end
@@ -30,4 +37,18 @@ defmodule LemonadeWeb.SetupLive do
       {:error, %{errors: errors}} -> {:noreply, assign(socket, errors: errors)}
     end
   end
+
+  def handle_event(
+        "create-team",
+        %{"team" => team_params},
+        %{assigns: %{current_user: current_user, organization: organization}} = socket
+      ) do
+    case Teams.create_team(current_user, organization, team_params) do
+      {:ok, team} -> {:noreply, assign(socket, team: team)}
+      {:error, %{errors: errors}} -> {:noreply, assign(socket, errors: errors)}
+    end
+  end
+
+  defp load_team(%{id: _id} = organization), do: Teams.get_team_by_organization(organization)
+  defp load_team(_), do: nil
 end

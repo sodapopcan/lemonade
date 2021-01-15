@@ -11,12 +11,19 @@ defmodule LemonadeWeb.PageLiveTest do
     assert render(page_live) =~ "<h1>Welcome</h1>"
   end
 
-  test "it does stuff", %{conn: conn, user: _user} do
-    {:ok, view, _html} = live(conn, "/setup")
+  describe "organization setup" do
+    test "setup", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/setup")
 
-    view
-    |> form("form", %{organization: %{name: "Planet Express"}})
-    |> render_submit()
-    |> assert =~ "<h1>Planet Express</h1>"
+      view
+      |> form("form", %{organization: %{name: "Planet Express"}})
+      |> render_submit()
+      |> assert =~ "<h1>Planet Express</h1>"
+
+      view
+      |> form("form", %{team: %{name: "Devlivery Team"}})
+      |> render_submit()
+      |> assert =~ "<h1>Delivery Team</h1>"
+    end
   end
 end

@@ -9,4 +9,8 @@ defmodule Lemonade.Teams do
     |> Team.changeset(attrs)
     |> Repo.insert()
   end
+
+  def get_team_by_organization(%{id: id}) do
+    Repo.one(from Team, where: [organization_id: ^id])
+  end
 end
