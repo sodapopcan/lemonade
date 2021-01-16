@@ -23,12 +23,18 @@ defmodule LemonadeWeb.PageLiveTest do
       assert html =~ "<h1>Planet Express</h1>"
       assert html =~ "create a team"
 
-      html =
-        view
-        |> form("form", %{team: %{name: "Delivery Team"}})
-        |> render_submit()
+      view
+      |> form("form", %{team: %{name: "Delivery Team"}})
+      |> render_submit()
 
-      assert html =~ "<h1>Delivery Team</h1>"
+      assert_redirected(view, "/standup")
+    end
+
+    test "rediects to standup if setup is complete", %{conn: conn, user: user} do
+      organization = create(:organization, with_users: user)
+      create(:team, %{organization: organization, created_by: user})
+
+      assert {:error, {:redirect, %{to: "/standup"}}} = live(conn, "/setup")
     end
   end
 end

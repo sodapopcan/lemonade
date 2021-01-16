@@ -8,7 +8,11 @@ defmodule LemonadeWeb.SetupLive do
     current_user = Accounts.get_user_by_session_token(user_token)
     organization = Organizations.get_organization_by_owner(current_user)
     team = load_team(organization)
-    {:ok, assign(socket, current_user: current_user, organization: organization, team: team, errors: [])}
+    if team do
+      {:ok, redirect(socket, to: "/standup")}
+    else
+      {:ok, assign(socket, current_user: current_user, organization: organization, team: team, errors: [])}
+    end
   end
 
   def render(assigns) do
@@ -17,10 +21,6 @@ defmodule LemonadeWeb.SetupLive do
     <%= if @organization && !@team do %>
       <h1><%= @organization.name %></h1>
       <%= live_component @socket, LemonadeWeb.TeamSetupComponent, errors: @errors %>
-    <% end %>
-
-    <%= if @team do %>
-      <h1><%= @team.name %></h1>
     <% end %>
 
     <div><%= link "logout", to: Routes.user_session_path(@socket, :delete), method: :delete %></div>
@@ -44,7 +44,7 @@ defmodule LemonadeWeb.SetupLive do
         %{assigns: %{current_user: current_user, organization: organization}} = socket
       ) do
     case Teams.create_team(current_user, organization, team_params) do
-      {:ok, team} -> {:noreply, assign(socket, team: team)}
+      {:ok, _} -> {:noreply, redirect(socket, to: "/standup")}
       {:error, %{errors: errors}} -> {:noreply, assign(socket, errors: errors)}
     end
   end

@@ -23,6 +23,7 @@ defmodule LemonadeWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import LemonadeWeb.ConnCase
+      import Lemonade.Factory
 
       alias LemonadeWeb.Router.Helpers, as: Routes
 
