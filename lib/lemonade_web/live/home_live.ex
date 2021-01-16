@@ -16,7 +16,7 @@ defmodule LemonadeWeb.HomeLive do
 
   def render(assigns) do
     ~L"""
-    <div class="home-live">
+    <div class="w-screen h-screen bg-yellow-400">
       <h1 class="title">Lemonade</h2>
       <nav>
         <ul>
