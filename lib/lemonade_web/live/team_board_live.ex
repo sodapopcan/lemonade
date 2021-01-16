@@ -1,4 +1,4 @@
-defmodule LemonadeWeb.StandupLive do
+defmodule LemonadeWeb.TeamBoardLive do
   use LemonadeWeb, :live_view
 
   alias Lemonade.Accounts

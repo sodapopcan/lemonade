@@ -9,7 +9,7 @@ defmodule LemonadeWeb.SetupLive do
     organization = Organizations.get_organization_by_owner(current_user)
     team = load_team(organization)
     if team do
-      {:ok, redirect(socket, to: "/standup")}
+      {:ok, redirect(socket, to: "/team-board")}
     else
       {:ok, assign(socket, current_user: current_user, organization: organization, team: team, errors: [])}
     end
@@ -47,7 +47,7 @@ defmodule LemonadeWeb.SetupLive do
         %{assigns: %{current_user: current_user, organization: organization}} = socket
       ) do
     case Organizations.create_team(current_user, organization, team_params) do
-      {:ok, _} -> {:noreply, redirect(socket, to: "/standup")}
+      {:ok, _} -> {:noreply, redirect(socket, to: "/team-board")}
       {:error, %{errors: errors}} -> {:noreply, assign(socket, errors: errors)}
     end
   end
