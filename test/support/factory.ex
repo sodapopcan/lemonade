@@ -1,8 +1,7 @@
 defmodule Lemonade.Factory do
   alias Lemonade.Repo
   alias Lemonade.Accounts.User
-  alias Lemonade.Organizations.Organization
-  alias Lemonade.Teams.Team
+  alias Lemonade.Organizations.{Organization, Team}
 
   def build(:user) do
     %User{

@@ -1,4 +1,4 @@
-defmodule Lemonade.Teams.Team do
+defmodule Lemonade.Organizations.Team do
   use Lemonade.Schema
   import Ecto.Changeset
 

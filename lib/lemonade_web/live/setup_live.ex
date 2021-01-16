@@ -2,7 +2,7 @@ defmodule LemonadeWeb.SetupLive do
   use LemonadeWeb, :live_view
   use Phoenix.HTML
 
-  alias Lemonade.{Accounts, Organizations, Teams}
+  alias Lemonade.{Accounts, Organizations}
 
   def mount(_, %{"user_token" => user_token}, socket) do
     current_user = Accounts.get_user_by_session_token(user_token)
@@ -46,12 +46,12 @@ defmodule LemonadeWeb.SetupLive do
         %{"team" => team_params},
         %{assigns: %{current_user: current_user, organization: organization}} = socket
       ) do
-    case Teams.create_team(current_user, organization, team_params) do
+    case Organizations.create_team(current_user, organization, team_params) do
       {:ok, _} -> {:noreply, redirect(socket, to: "/standup")}
       {:error, %{errors: errors}} -> {:noreply, assign(socket, errors: errors)}
     end
   end
 
-  defp load_team(%{id: _id} = organization), do: Teams.get_team_by_organization(organization)
+  defp load_team(%{id: _id} = organization), do: Organizations.get_team_by_organization(organization)
   defp load_team(_), do: nil
 end
