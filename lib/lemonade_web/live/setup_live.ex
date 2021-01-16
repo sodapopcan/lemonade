@@ -17,7 +17,10 @@ defmodule LemonadeWeb.SetupLive do
 
   def render(assigns) do
     ~L"""
-    <%= if !@organization, do: live_component @socket, LemonadeWeb.OrganizationSetupComponent, errors: @errors %>
+    <%= if !@organization do %>
+      <%= live_component @socket, LemonadeWeb.OrganizationSetupComponent, errors: @errors %>
+    <% end %>
+
     <%= if @organization && !@team do %>
       <h1><%= @organization.name %></h1>
       <%= live_component @socket, LemonadeWeb.TeamSetupComponent, errors: @errors %>
