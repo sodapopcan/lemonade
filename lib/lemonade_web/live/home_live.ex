@@ -1,6 +1,6 @@
 defmodule LemonadeWeb.HomeLive do
   use LemonadeWeb, :live_view
-  alias Lemonade.Accounts 
+  alias Lemonade.Accounts
 
   def mount(_, %{"user_token" => user_token}, socket) do
     if Accounts.get_user_by_session_token(user_token) do
@@ -16,14 +16,14 @@ defmodule LemonadeWeb.HomeLive do
 
   def render(assigns) do
     ~L"""
-    <div class="w-screen h-screen bg-yellow-400">
-      <h1 class="title">Lemonade</h2>
-      <nav>
-        <ul>
-          <li><%= link "Login", to: Routes.user_session_path(@socket, :new) %> or</li>
-          <li><%= link "Register", to: Routes.user_registration_path(@socket, :new) %></li>
-        </ul>
-      </nav>
+    <div class="w-screen h-screen bg-yellow-400 flex justify-center items-center">
+      <div>
+        <h1 class="title text-5xl">Lemonade</h2>
+        <nav>
+          <%= link "Login", to: Routes.user_session_path(@socket, :new) %> or
+          <%= link "Register", to: Routes.user_registration_path(@socket, :new) %>
+        </nav>
+      </div>
     </div>
     """
   end
