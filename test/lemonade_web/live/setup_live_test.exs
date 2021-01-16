@@ -7,6 +7,7 @@ defmodule LemonadeWeb.PageLiveTest do
 
   test "disconnected and connected render", %{conn: conn} do
     {:ok, page_live, disconnected_html} = live(conn, "/setup")
+
     assert disconnected_html =~ "<h1>Welcome</h1>"
     assert render(page_live) =~ "<h1>Welcome</h1>"
   end
