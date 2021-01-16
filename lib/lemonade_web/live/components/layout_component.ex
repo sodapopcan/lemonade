@@ -6,7 +6,7 @@ defmodule LemonadeWeb.LayoutComponent do
     <div class="w-screen bg-yellow-50">
       <div class="flex items-center bg-yellow-500 py-2 px-3 text-sm">
         <div class="flex-1">
-          <h1 class="text-base font-semibold">Lemonade</h1>
+          <h1 class="text-base">Lemonade</h1>
         </div>
         <p><%= @current_user.email %></p>
 
