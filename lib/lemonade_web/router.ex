@@ -17,6 +17,8 @@ defmodule LemonadeWeb.Router do
     pipe_through :browser
 
     live "/", HomeLive, :index
+    live "/login", HomeLive, :index
+    live "/login", HomeLive, :login
   end
 
   scope "/", LemonadeWeb do

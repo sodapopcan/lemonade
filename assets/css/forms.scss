@@ -7,13 +7,14 @@ input[type="url"],
 input[type="password"],
 textarea,
 select {
-  height: 38px;
-  padding: 6px 10px; /* The 6px vertically centers text on FF, ignored by Webkit */
   background-color: #fff;
-  border: 1px solid #d1d1d1;
+  border-right: 1px solid #888;
+  border-bottom: 1px solid #888;
   border-radius: 4px;
-  box-shadow: none;
-  box-sizing: border-box;
+  font-family: Roboto;
+  display: block;
+  width: 100%;
+  @apply text-sm py-1 px-2 mb-4;
 }
 /* Removes awkward default styles on some inputs for iOS */
 input[type="email"],
@@ -42,14 +43,12 @@ input[type="url"]:focus,
 input[type="password"]:focus,
 textarea:focus,
 select:focus {
-  @apply border border-yellow-400;
-  outline: 0;
+  outline: none;
 }
 label,
 legend {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: 600;
 }
 fieldset {
   padding: 0;
@@ -58,9 +57,4 @@ fieldset {
 input[type="checkbox"],
 input[type="radio"] {
   display: inline;
-}
-label > .label-body {
-  display: inline-block;
-  margin-left: 0.5rem;
-  font-weight: normal;
 }

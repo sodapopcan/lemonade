@@ -12,7 +12,7 @@ defmodule LemonadeWeb.LayoutComponent do
 
         <div class="group relative">
           <a href="<%= Routes.user_settings_path(@socket, :edit) %>" class="bg-yellow-400 w-6 h-6 rounded-full p-0 ml-2 text-xs flex justify-center items-center">AH</a>
-          <ul class="group-hover:visible hidden absolute right-0 rounded border border-black bg-yellow-400 p-2">
+          <ul class="group-hover:visible absolute right-0 rounded border border-black bg-yellow-400 p-2">
             <li class="text-right"><%= link "settings", to: "" %></li>
             <li class="text-right"><%= link "logout", to: Routes.user_session_path(@socket, :delete), method: :delete %></li>
           </ul>
