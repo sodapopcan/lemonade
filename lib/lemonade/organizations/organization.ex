@@ -6,6 +6,7 @@ defmodule Lemonade.Organizations.Organization do
     field :name, :string
     belongs_to :created_by, Lemonade.Accounts.User
     belongs_to :owned_by, Lemonade.Accounts.User
+    has_many :teams, Lemonade.Organizations.Team
 
     timestamps()
   end

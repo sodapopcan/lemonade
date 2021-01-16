@@ -5,6 +5,7 @@ defmodule Lemonade.Organizations.Team do
   schema "teams" do
     field :name, :string
     belongs_to :organization, Lemonade.Organizations.Organization
+    has_many :team_members, Lemonade.Organizations.TeamMember
     belongs_to :created_by, Lemonade.Accounts.User
 
     timestamps()
