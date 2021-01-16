@@ -17,9 +17,10 @@ defmodule LemonadeWeb.HomeLive do
   def render(assigns) do
     ~L"""
     <div class="w-screen h-screen bg-yellow-400 flex justify-center items-center">
-      <div>
-        <h1 class="title text-5xl font-thin">Lemonade</h2>
-        <nav>
+      <div class="relative">
+        <div class="absolute w-12 h-12 top-1 -left-14 z-0 text-5xl">🍋</div>
+        <h1 class="title text-5xl font-thin relative z-10">Lemonade</h2>
+        <nav class="relative left-1">
           <%= link "Login", to: Routes.user_session_path(@socket, :new) %> or
           <%= link "Register", to: Routes.user_registration_path(@socket, :new) %>
         </nav>
