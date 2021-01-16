@@ -11,7 +11,7 @@ defmodule LemonadeWeb.StandupLive do
 
   def render(assigns) do
     ~L"""
-    <div>Hi, <%= @current_user.email %>
+    <div>Hi, <%= @current_user.email %></div>
     """
   end
 end
