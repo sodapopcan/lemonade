@@ -37,7 +37,7 @@ defmodule LemonadeWeb.HomeLive do
 
         <div class="login mt-4 <%= if @show == "login", do: "", else: "hidden" %>">
           <%= f = form_for :user, Routes.user_session_path(@socket, :create), [as: :user] %>
-            <%= email_input f, :email, placeholder: "email", required: true %>
+            <%= email_input f, :email, placeholder: "email", required: true, phx_hook: "Focus" %>
 
             <%= password_input f, :password, placeholder: "password", required: true %>
 
