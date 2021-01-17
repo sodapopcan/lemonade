@@ -1,5 +1,4 @@
-<div class="login mt-4">
-  <%= f = form_for @conn, Routes.user_session_path(@conn, :create), [as: :user] %>
+<%= f = form_for @conn, Routes.user_session_path(@conn, :create), [as: :user] %>
   <%= email_input f, :email, placeholder: "email", required: true, autofocus: true %>
 
   <%= password_input f, :password, placeholder: "password", required: true %>
@@ -15,5 +14,4 @@
     <%= link "Forgot password", to: Routes.user_reset_password_path(@conn, :new), class: "text-xs text-center" %>
     <%= submit "Log in", class: "bg-yellow-300 hover:bg-yellow-500 px-4 py-2 rounded-lg" %>
   </div>
-  </form>
-</div>
+</form>
