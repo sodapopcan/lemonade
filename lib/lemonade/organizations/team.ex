@@ -20,7 +20,7 @@ defmodule Lemonade.Organizations.Team do
     |> validate_required([:name])
   end
 
-  def bootstrap_changeset(%{created_by: _created_by} = team, attrs) do
+  def bootstrap_changeset(team, attrs) do
     team
     |> cast(attrs, [:name])
     |> validate_required([:name])

@@ -2,7 +2,7 @@ defmodule Lemonade.Organizations.Organization do
   use Lemonade.Schema
   import Ecto.Changeset
 
-  alias Lemonade.Organizations.{Team, TeamMember}
+  alias Lemonade.Organizations.Team
 
   schema "organizations" do
     field :name, :string
@@ -29,7 +29,7 @@ defmodule Lemonade.Organizations.Organization do
       required: true,
       with: fn _team, attrs ->
         Team.bootstrap_changeset(%Team{created_by: created_by}, 
-          Map.put(attrs, :team_members, [%{user_id: created_by.id}])
+          Map.put(attrs, :team_members, [%{:user_id => created_by.id}])
         )
       end
     )
