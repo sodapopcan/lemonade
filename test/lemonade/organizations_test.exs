@@ -21,7 +21,6 @@ defmodule Lemonade.OrganizationsTest do
         teams: [
           %{
             name: "Delivery Team",
-            team_members: [%{user_id: user.id}]
           }
         ]
       }
@@ -32,11 +31,12 @@ defmodule Lemonade.OrganizationsTest do
 
       assert %Lemonade.Organizations.Organization{
                name: "Planet Express",
-               created_by_id: ^user_id,
-               owned_by_id: ^user_id,
+               created_by: ^user,
+               owned_by: ^user,
                teams: [
                  %Lemonade.Organizations.Team{
                    name: "Delivery Team",
+                   created_by: ^user,
                    team_members: [%Lemonade.Organizations.TeamMember{user_id: ^user_id}]
                  }
                ]
