@@ -16,7 +16,7 @@ defmodule LemonadeWeb.TeamBoardLive do
   def render(assigns) do
     ~L"""
     <%= live_component @socket, LemonadeWeb.LayoutComponent, id: "logged-in-layout", current_user: @current_user do %>
-      <div>I'm the main content</div>
+        <h1><%= @organization.name %></h1>
     <% end %>
     """
   end

@@ -6,12 +6,18 @@ defmodule LemonadeWeb.SetupLive do
 
   def mount(_, %{"user_token" => user_token}, socket) do
     current_user = Accounts.get_user_by_session_token(user_token)
-    organization = Organizations.get_organization_by_owner(current_user)
-    team = load_team(organization)
-    if team do
+
+    if current_user.organization_id do
       {:ok, redirect(socket, to: "/team-board")}
     else
-      {:ok, assign(socket, current_user: current_user, organization: organization, team: team, errors: [])}
+      changeset = Organizations.bootstrap_organization_changeset(current_user, %{teams: [%{}]})
+
+      {:ok,
+       assign(socket,
+         current_user: current_user,
+         changeset: changeset,
+         errors: []
+       )}
     end
   end
 
@@ -23,16 +29,35 @@ defmodule LemonadeWeb.SetupLive do
           <div class="mb-4">
             <div class="absolute w-12 h-12 top-1 -left-14 z-0 text-5xl"><%= live_patch "🍋", to: "/" %></div>
               <h1 class="title text-5xl font-thin relative z-10 mb-4">Welcome</h1>
-              <%= f = form_for :team, "#", phx_submit: "create-team", errors: @errors %>
-                <%= label f, "Organization Name" %>
-                <%= text_input f, :name, phx_hook: "Focus" %>
-                <%= error_tag f, :name %>
+              <%= f = form_for @changeset, "#", phx_submit: "bootstrap-organization" %>
+                <section>
+                  <p class="mb-4">It looks like you don't belong to an organization in the system, so there is a bit of setup to do.</p>
+                </section>
 
-                <%= label f, "Team Name" %>
-                <%= text_input f, :name, phx_hook: "Focus" %>
-                <%= error_tag f, :name %>
+                <section>
+                  <h2 class="font-semibold">Organization</h2>
+                  <p class="p-2 text-sm">
+                    Name your organization anything you like.
+                  </p>
+                  <%= text_input f, :name, required: true, autofocus: true, placeholder: "organization name" %>
+                  <%= error_tag f, :name %>
+                </section>
 
-                <div><%= link "logout", to: Routes.user_session_path(@socket, :delete), method: :delete %></div>
+                <section>
+                  <%= for ff <- inputs_for f, :teams do %>
+                    <h2 class="font-semibold">Team</h2>
+                    <p class="p-2 text-sm">
+                      Being a collaborative tool, you need to create at least one team.  It can be anything you like!
+                      You will be automatically added to this team (you can always leave it later).
+                    </p>
+                    <%= text_input ff, :name, required: true, placeholder: "team name"%>
+                    <%= error_tag ff, :name %>
+                  <% end %>
+                </section>
+
+                <div>
+                  <%= submit "Go!" %>
+                </div>
               </form>
             </div>
           </div>
@@ -42,28 +67,10 @@ defmodule LemonadeWeb.SetupLive do
     """
   end
 
-  def handle_event(
-        "create-organization",
-        %{"organization" => organization_params},
-        %{assigns: %{current_user: current_user}} = socket
-      ) do
-    case Organizations.create_organization(current_user, organization_params) do
-      {:ok, organization} -> {:noreply, assign(socket, organization: organization)}
-      {:error, %{errors: errors}} -> {:noreply, assign(socket, errors: errors)}
+  def handle_event("bootstrap-organization", %{"organization" => organization_params}, socket) do
+    case Organizations.bootstrap_organization(socket.assigns.current_user, organization_params) do
+      {:ok, _organization} -> {:noreply, redirect(socket, to: Routes.team_board_path(socket, :index))}
+      {:error, changeset} -> {:noreply, assign(socket, changeset: changeset)}
     end
   end
-
-  def handle_event(
-        "create-team",
-        %{"team" => team_params},
-        %{assigns: %{current_user: current_user, organization: organization}} = socket
-      ) do
-    case Organizations.create_team(current_user, organization, team_params) do
-      {:ok, _} -> {:noreply, redirect(socket, to: "/team-board")}
-      {:error, %{errors: errors}} -> {:noreply, assign(socket, errors: errors)}
-    end
-  end
-
-  defp load_team(%{id: _id} = organization), do: Organizations.get_team_by_organization(organization)
-  defp load_team(_), do: nil
 end

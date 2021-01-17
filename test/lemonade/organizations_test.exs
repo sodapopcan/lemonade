@@ -17,10 +17,10 @@ defmodule Lemonade.OrganizationsTest do
       user = create(:user)
 
       attrs = %{
-        name: "Planet Express",
-        teams: [
+        "name" => "Planet Express",
+        "teams" => [
           %{
-            name: "Delivery Team",
+            "name" => "Delivery Team",
           }
         ]
       }

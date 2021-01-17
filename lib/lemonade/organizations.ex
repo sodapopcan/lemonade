@@ -12,21 +12,24 @@ defmodule Lemonade.Organizations do
   end
 
   def bootstrap_organization(user, attrs) do
-    organization_changeset = 
-      %Organization{created_by: user, owned_by: user}
-      |> Organization.bootstrap_changeset(attrs)
-
-    {:ok, %{organization: organization}} =
+    multi =
       Ecto.Multi.new()
-        |> Ecto.Multi.insert(:organization, organization_changeset)
+        |> Ecto.Multi.insert(:organization, bootstrap_organization_changeset(user, attrs))
         |> Ecto.Multi.run(:user, fn repo, %{organization: organization} ->
           user
           |> Accounts.User.join_organization_changeset(organization)
           |> repo.update()
         end)
-        |> Repo.transaction()
 
-    {:ok, organization}
+    case Repo.transaction(multi) do
+      {:ok, %{organization: organization}} -> {:ok, organization}
+      {:error, _, changeset, _} -> {:error, changeset}
+    end
+  end
+
+  def bootstrap_organization_changeset(user, attrs \\ %{}) do
+    %Organization{created_by: user, owned_by: user}
+    |> Organization.bootstrap_changeset(attrs)
   end
 
   def get_organization_by_owner(user) do

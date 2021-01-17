@@ -18,12 +18,12 @@ defmodule Lemonade.Organizations.Team do
     team
     |> cast(attrs, [:name])
     |> validate_required([:name])
+    |> validate_length(:name, min: 2, max: 36)
   end
 
   def bootstrap_changeset(team, attrs) do
     team
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> changeset(attrs)
     |> cast_assoc(:team_members, required: true, with: &TeamMember.bootstrap_changeset/2)
   end
 end
