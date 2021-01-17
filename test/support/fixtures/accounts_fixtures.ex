@@ -4,7 +4,7 @@ defmodule Lemonade.AccountsFixtures do
   entities via the `Lemonade.Accounts` context.
   """
 
-  def unique_user_name, do: "Hubert#{System.unique_integer()}"
+  def valid_user_name, do: "Hubert Farnsworth"
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "hello world!"
 
@@ -12,7 +12,7 @@ defmodule Lemonade.AccountsFixtures do
     {:ok, user} =
       attrs
       |> Enum.into(%{
-        name: unique_user_name(),
+        name: valid_user_name(),
         email: unique_user_email(),
         password: valid_user_password()
       })

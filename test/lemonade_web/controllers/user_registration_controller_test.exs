@@ -19,7 +19,7 @@ defmodule LemonadeWeb.UserRegistrationControllerTest do
   describe "POST /users/register" do
     @tag :capture_log
     test "creates account and logs the user in", %{conn: conn} do
-      name = unique_user_name()
+      name = valid_user_name()
       email = unique_user_email()
 
       conn =
