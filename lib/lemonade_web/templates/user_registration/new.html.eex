@@ -5,6 +5,9 @@
     </div>
   <% end %>
 
+  <%= text_input f, :name, required: true, placeholder: "Your Name", autofocus: true %>
+  <%= error_tag f, :name %>
+
   <%= email_input f, :email, required: true, placeholder: "email" %>
   <%= error_tag f, :email %>
 
