@@ -1,5 +1,15 @@
-<main role="main" class="container">
-  <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-  <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-  <%= @inner_content %>
-</main>
+<body class="bg-yellow-400">
+  <div class="w-screen h-screen flex justify-center items-center">
+    <div class="relative">
+      <div class="absolute w-12 h-12 top-1 -left-14 z-0 text-5xl"><%= live_patch "🍋", to: "/" %></div>
+      <h1 class="title text-5xl font-thin relative z-10">Lemonade</h2>
+      <nav class="relative left-1">
+        <%= link "Login", to: Routes.user_session_path(@conn, :new) %> or
+        <%= link "Register", to: Routes.user_registration_path(@conn, :new) %>
+      </nav>
+      <%# <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %1></p> %>
+      <%# <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %1></p> %>
+      <%= @inner_content %>
+    </div>
+  </div>
+</body>

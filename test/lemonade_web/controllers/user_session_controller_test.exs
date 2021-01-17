@@ -7,11 +7,11 @@ defmodule LemonadeWeb.UserSessionControllerTest do
     %{user: user_fixture()}
   end
 
-  describe "GET /log_in" do
-    test "renders log in page", %{conn: conn} do
+  describe "GET /login" do
+    test "renders login page", %{conn: conn} do
       conn = get(conn, Routes.user_session_path(conn, :new))
       response = html_response(conn, 200)
-      assert response =~ "<h1>Log in</h1>"
+      assert response =~ "<form action=\"/login\""
     end
 
     test "redirects if already logged in", %{conn: conn, user: user} do
@@ -71,7 +71,6 @@ defmodule LemonadeWeb.UserSessionControllerTest do
         })
 
       response = html_response(conn, 200)
-      assert response =~ "<h1>Log in</h1>"
       assert response =~ "Invalid email or password"
     end
   end
