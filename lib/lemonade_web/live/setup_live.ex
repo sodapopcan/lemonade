@@ -21,7 +21,7 @@ defmodule LemonadeWeb.SetupLive do
       <div class="relative w-1/4">
         <div class="mb-4">
           <div class="absolute w-12 h-12 top-1 -left-14 z-0 text-5xl"><%= live_patch "🍋", to: "/" %></div>
-            <h1 class="title text-5xl font-thin relative z-10">Welcome</h2>
+            <h1 class="title text-5xl font-thin relative z-10">Welcome</h1>
             <%= f = form_for :team, "#", phx_submit: "create-team", errors: @errors %>
               <%= label f, "Organization Name" %>
               <%= text_input f, :name, phx_hook: "Focus" %>
