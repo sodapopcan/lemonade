@@ -1,8 +1,6 @@
 defmodule LemonadeWeb.HomeControllerTest do
   use LemonadeWeb.ConnCase, async: true
 
-  import Lemonade.AccountsFixtures
-
   describe "GET /" do
     test "renders the homepage", %{conn: conn} do
       conn = get(conn, Routes.home_path(conn, :index))
