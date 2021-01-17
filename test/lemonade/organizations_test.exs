@@ -2,9 +2,10 @@ defmodule Lemonade.OrganizationsTest do
   use Lemonade.DataCase
 
   alias Lemonade.{Accounts, Organizations}
+  alias Organizations.{Organization, Team, TeamMember}
 
   describe "organizations" do
-    test "bootstrap organization" do
+    setup do
       user = create(:user)
 
       attrs = %{
@@ -16,19 +17,23 @@ defmodule Lemonade.OrganizationsTest do
         ]
       }
 
+      %{user: user, attrs: attrs}
+    end
+
+    test "bootstrap organization", %{user: user, attrs: attrs} do
       {:ok, organization} = Organizations.bootstrap_organization(user, attrs)
 
       user_id = user.id
 
-      assert %Lemonade.Organizations.Organization{
+      assert %Organization{
                name: "Planet Express",
                created_by: ^user,
                owned_by: ^user,
                teams: [
-                 %Lemonade.Organizations.Team{
+                 %Team{
                    name: "Delivery Team",
                    created_by: ^user,
-                   team_members: [%Lemonade.Organizations.TeamMember{user_id: ^user_id}]
+                   team_members: [%TeamMember{user_id: ^user_id}]
                  }
                ]
              } = organization
