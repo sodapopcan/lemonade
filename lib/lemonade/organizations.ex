@@ -10,6 +10,12 @@ defmodule Lemonade.Organizations do
     |> Repo.insert()
   end
 
+  def bootstrap_organization(user, attrs) do
+    %Organization{created_by: user, owned_by: user}
+    |> Organization.bootstrap_changeset(attrs)
+    |> Repo.insert()
+  end
+
   def get_organization_by_owner(user) do
     Repo.one(from Organization, where: [owned_by_id: ^user.id])
   end

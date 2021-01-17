@@ -16,4 +16,9 @@ defmodule Lemonade.Organizations.TeamMember do
     |> cast(attrs, [:name])
     |> validate_required([:name])
   end
+
+  def bootstrap_changeset(team_members, attrs) do
+    team_members
+    |> cast(attrs, [:user_id])
+  end
 end

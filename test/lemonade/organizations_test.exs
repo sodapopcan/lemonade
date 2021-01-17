@@ -12,6 +12,36 @@ defmodule Lemonade.OrganizationsTest do
       assert %{created_by_id: user_id, owned_by_id: user_id} = organization
       assert user_id == user.id
     end
+
+    test "bootstrap organization" do
+      user = create(:user)
+
+      attrs = %{
+        name: "Planet Express",
+        teams: [
+          %{
+            name: "Delivery Team",
+            team_members: [%{user_id: user.id}]
+          }
+        ]
+      }
+
+      {:ok, organization} = Organizations.bootstrap_organization(user, attrs)
+
+      user_id = user.id
+
+      assert %Lemonade.Organizations.Organization{
+               name: "Planet Express",
+               created_by_id: ^user_id,
+               owned_by_id: ^user_id,
+               teams: [
+                 %Lemonade.Organizations.Team{
+                   name: "Delivery Team",
+                   team_members: [%Lemonade.Organizations.TeamMember{user_id: ^user_id}]
+                 }
+               ]
+             } = organization
+    end
   end
 
   describe "teams" do
