@@ -3,12 +3,14 @@ defmodule Lemonade.Organizations.Organization do
   import Ecto.Changeset
 
   alias Lemonade.Organizations.Team
+  alias Lemonade.Accounts.User
 
   schema "organizations" do
     field :name, :string
-    belongs_to :created_by, Lemonade.Accounts.User
-    belongs_to :owned_by, Lemonade.Accounts.User
+    belongs_to :created_by, User
+    belongs_to :owned_by, User
     has_many :teams, Team
+    has_many :users, User
 
     timestamps()
   end

@@ -1,7 +1,7 @@
 defmodule Lemonade.OrganizationsTest do
   use Lemonade.DataCase
 
-  alias Lemonade.Organizations
+  alias Lemonade.{Accounts, Organizations}
 
   describe "organizations" do
     test "creates and organization with a name, created_by, and owned_by set" do
@@ -41,6 +41,10 @@ defmodule Lemonade.OrganizationsTest do
                  }
                ]
              } = organization
+
+      user = Accounts.get_user!(user.id)
+
+      assert user.organization_id == organization.id
     end
   end
 

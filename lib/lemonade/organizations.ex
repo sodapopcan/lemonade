@@ -3,6 +3,7 @@ defmodule Lemonade.Organizations do
   alias Lemonade.Repo
 
   alias Lemonade.Organizations.{Organization, Team}
+  alias Lemonade.Accounts
 
   def create_organization(user, attrs) do
     %Organization{created_by: user, owned_by: user}
@@ -11,9 +12,16 @@ defmodule Lemonade.Organizations do
   end
 
   def bootstrap_organization(user, attrs) do
-    %Organization{created_by: user, owned_by: user}
-    |> Organization.bootstrap_changeset(attrs)
-    |> Repo.insert()
+    {:ok, organization} =
+      %Organization{created_by: user, owned_by: user}
+      |> Organization.bootstrap_changeset(attrs)
+      |> Repo.insert()
+
+    user
+    |> Accounts.User.join_organization_changeset(organization)
+    |> Repo.update()
+
+    {:ok, organization}
   end
 
   def get_organization_by_owner(user) do

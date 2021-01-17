@@ -9,6 +9,7 @@ defmodule Lemonade.Accounts.User do
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
+    belongs_to :organization, Lemonade.Organizations.Organization
 
     timestamps()
   end
@@ -110,6 +111,14 @@ defmodule Lemonade.Accounts.User do
   def confirm_changeset(user) do
     now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
     change(user, confirmed_at: now)
+  end
+
+  @doc """
+  Sets the user's affiliated organization.
+  """
+  def join_organization_changeset(user, organization) do
+    user
+    |> cast(%{organization_id: organization.id}, [:organization_id])
   end
 
   @doc """
