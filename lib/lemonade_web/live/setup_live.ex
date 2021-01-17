@@ -17,16 +17,26 @@ defmodule LemonadeWeb.SetupLive do
 
   def render(assigns) do
     ~L"""
-    <%= if !@organization do %>
-      <%= live_component @socket, LemonadeWeb.OrganizationSetupComponent, errors: @errors %>
-    <% end %>
+    <div class="w-screen h-screen flex justify-center items-center">
+      <div class="relative w-1/4">
+        <div class="mb-4">
+          <div class="absolute w-12 h-12 top-1 -left-14 z-0 text-5xl"><%= live_patch "🍋", to: "/" %></div>
+            <h1 class="title text-5xl font-thin relative z-10">Welcome</h2>
+            <%= f = form_for :team, "#", phx_submit: "create-team", errors: @errors %>
+              <%= label f, "Organization Name" %>
+              <%= text_input f, :name, phx_hook: "Focus" %>
+              <%= error_tag f, :name %>
 
-    <%= if @organization && !@team do %>
-      <h1><%= @organization.name %></h1>
-      <%= live_component @socket, LemonadeWeb.TeamSetupComponent, errors: @errors %>
-    <% end %>
+              <%= label f, "Team Name" %>
+              <%= text_input f, :name, phx_hook: "Focus" %>
+              <%= error_tag f, :name %>
 
-    <div><%= link "logout", to: Routes.user_session_path(@socket, :delete), method: :delete %></div>
+              <div><%= link "logout", to: Routes.user_session_path(@socket, :delete), method: :delete %></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
     """
   end
 

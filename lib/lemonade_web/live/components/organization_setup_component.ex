@@ -3,8 +3,6 @@ defmodule LemonadeWeb.OrganizationSetupComponent do
 
   def render(assigns) do
     ~L"""
-    <h1>Welcome</h1>
-
     <p>To get started, enter the name of your organization.  If this is for personal use, just use your name.</p>
 
     <%= f = form_for :organization, "#", phx_submit: "create-organization", errors: @errors %>
