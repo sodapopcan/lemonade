@@ -5,12 +5,6 @@ defmodule Lemonade.Organizations do
   alias Lemonade.Organizations.{Organization, Team}
   alias Lemonade.Accounts
 
-  def create_organization(user, attrs) do
-    %Organization{created_by: user, owned_by: user}
-    |> Organization.changeset(attrs)
-    |> Repo.insert()
-  end
-
   def bootstrap_organization(user, attrs) do
     multi =
       Ecto.Multi.new()
