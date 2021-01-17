@@ -17,26 +17,28 @@ defmodule LemonadeWeb.SetupLive do
 
   def render(assigns) do
     ~L"""
-    <div class="w-screen h-screen flex justify-center items-center">
-      <div class="relative w-1/4">
-        <div class="mb-4">
-          <div class="absolute w-12 h-12 top-1 -left-14 z-0 text-5xl"><%= live_patch "🍋", to: "/" %></div>
-            <h1 class="title text-5xl font-thin relative z-10">Welcome</h1>
-            <%= f = form_for :team, "#", phx_submit: "create-team", errors: @errors %>
-              <%= label f, "Organization Name" %>
-              <%= text_input f, :name, phx_hook: "Focus" %>
-              <%= error_tag f, :name %>
+    <%= live_component @socket, LemonadeWeb.LayoutComponent, id: "logged-in-layout", current_user: @current_user do %>
+      <div class="w-screen h-screen flex justify-center items-center">
+        <div class="relative w-1/4">
+          <div class="mb-4">
+            <div class="absolute w-12 h-12 top-1 -left-14 z-0 text-5xl"><%= live_patch "🍋", to: "/" %></div>
+              <h1 class="title text-5xl font-thin relative z-10 mb-4">Welcome</h1>
+              <%= f = form_for :team, "#", phx_submit: "create-team", errors: @errors %>
+                <%= label f, "Organization Name" %>
+                <%= text_input f, :name, phx_hook: "Focus" %>
+                <%= error_tag f, :name %>
 
-              <%= label f, "Team Name" %>
-              <%= text_input f, :name, phx_hook: "Focus" %>
-              <%= error_tag f, :name %>
+                <%= label f, "Team Name" %>
+                <%= text_input f, :name, phx_hook: "Focus" %>
+                <%= error_tag f, :name %>
 
-              <div><%= link "logout", to: Routes.user_session_path(@socket, :delete), method: :delete %></div>
-            </form>
+                <div><%= link "logout", to: Routes.user_session_path(@socket, :delete), method: :delete %></div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    <% end %>
     """
   end
 

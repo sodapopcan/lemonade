@@ -8,7 +8,7 @@ defmodule LemonadeWeb.LayoutComponent do
         <div class="flex-1">
           <h1 class="text-base">Lemonade</h1>
         </div>
-        <p><%= @current_user.email %></p>
+        <p><%= @current_user.name %></p>
 
         <div class="group relative">
           <a href="<%= Routes.user_settings_path(@socket, :edit) %>" class="bg-yellow-400 w-6 h-6 rounded-full p-0 ml-2 text-xs flex justify-center items-center">AH</a>
