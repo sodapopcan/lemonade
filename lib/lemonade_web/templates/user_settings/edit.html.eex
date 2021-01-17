@@ -1,5 +1,3 @@
-<h1>Settings</h1>
-
 <h3>Change email</h3>
 
 <%= form_for @email_changeset, Routes.user_settings_path(@conn, :update), fn f -> %>
@@ -19,9 +17,9 @@
   <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_email" %>
   <%= error_tag f, :current_password %>
 
-  <div>
+  <h2>
     <%= submit "Change email" %>
-  </div>
+  </h2>
 <% end %>
 
 <h3>Change password</h3>
