@@ -4,6 +4,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer components {
+  .centered {
+    @apply flex justify-center items-center;
+  }
+}
 
 @import "./forms.scss";
 

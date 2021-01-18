@@ -90,6 +90,8 @@ defmodule LemonadeWeb do
       import LemonadeWeb.ErrorHelpers
       import LemonadeWeb.Gettext
       alias LemonadeWeb.Router.Helpers, as: Routes
+
+      import LemonadeWeb.ViewHelpers
     end
   end
 
