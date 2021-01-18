@@ -39,7 +39,7 @@ defmodule LemonadeWeb.SetupLive do
                   <p class="p-2 text-sm">
                     Name your organization anything you like.
                   </p>
-                  <%= text_input f, :name, required: true, autofocus: true, placeholder: "organization name" %>
+                    <%= text_input f, :name, [{:"x-on:keyup", "const {target:{value}} = $event; (value!=='') ? mainTitle = value : mainTitle = 'Lemonade'"}, required: true, autofocus: true, placeholder: "organization name"] %>
                   <%= error_tag f, :name %>
                 </section>
 
