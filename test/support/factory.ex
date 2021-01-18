@@ -5,6 +5,7 @@ defmodule Lemonade.Factory do
 
   def build(:user) do
     %User{
+      name: "Hubert Farnsworth",
       email: "user#{System.unique_integer()}@example.com",
       hashed_password: Bcrypt.hash_pwd_salt("valid password")
     }
