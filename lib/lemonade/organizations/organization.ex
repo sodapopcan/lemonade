@@ -20,6 +20,7 @@ defmodule Lemonade.Organizations.Organization do
     organization
     |> cast(attrs, [:name])
     |> validate_required([:name])
+    |> unique_constraint(:name)
     |> validate_length(:name, min: 2, max: 36)
   end
 

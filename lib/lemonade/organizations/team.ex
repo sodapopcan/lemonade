@@ -19,6 +19,7 @@ defmodule Lemonade.Organizations.Team do
     |> cast(attrs, [:name])
     |> validate_required([:name])
     |> validate_length(:name, min: 2, max: 36)
+    |> unique_constraint([:name, :organization_id])
   end
 
   def bootstrap_changeset(team, attrs) do
