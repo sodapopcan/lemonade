@@ -24,14 +24,14 @@ defmodule Lemonade.Organizations.Organization do
     |> validate_length(:name, min: 2, max: 36)
   end
 
-  def bootstrap_changeset(%{created_by: created_by} = organization, attrs) do
-    organization
+  def bootstrap_changeset(user, attrs) do
+    %__MODULE__{created_by: user, owned_by: user}
     |> changeset(attrs)
     |> cast_assoc(:teams,
       required: true,
       with: fn _team, attrs ->
-        Team.bootstrap_changeset(%Team{created_by: created_by}, 
-          Map.put(attrs, "team_members", [%{"user_id" => created_by.id}])
+        Team.bootstrap_changeset(%Team{created_by: user}, 
+          Map.put(attrs, "team_members", [%{"user_id" => user.id}])
         )
       end
     )

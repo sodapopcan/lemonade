@@ -22,8 +22,7 @@ defmodule Lemonade.Organizations do
   end
 
   def bootstrap_organization_changeset(user, attrs \\ %{}) do
-    %Organization{created_by: user, owned_by: user}
-    |> Organization.bootstrap_changeset(attrs)
+    Organization.bootstrap_changeset(user, attrs)
   end
 
   def get_organization_by_owner(user) do
