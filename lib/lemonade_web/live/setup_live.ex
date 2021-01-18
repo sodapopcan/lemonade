@@ -69,8 +69,11 @@ defmodule LemonadeWeb.SetupLive do
 
   def handle_event("bootstrap-organization", %{"organization" => organization_params}, socket) do
     case Organizations.bootstrap_organization(socket.assigns.current_user, organization_params) do
-      {:ok, _organization} -> {:noreply, redirect(socket, to: Routes.team_board_path(socket, :index))}
-      {:error, changeset} -> {:noreply, assign(socket, changeset: changeset)}
+      {:ok, _organization} ->
+        {:noreply, redirect(socket, to: Routes.team_board_path(socket, :index))}
+
+      {:error, changeset} ->
+        {:noreply, assign(socket, changeset: changeset)}
     end
   end
 end
