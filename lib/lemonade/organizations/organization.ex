@@ -31,7 +31,7 @@ defmodule Lemonade.Organizations.Organization do
       required: true,
       with: fn _team, attrs ->
         Team.bootstrap_changeset(%Team{created_by: user}, 
-          Map.put(attrs, "team_members", [%{"user_id" => user.id}])
+          Map.put(attrs, "team_members", [%{"name" => user.name, "user_id" => user.id}])
         )
       end
     )

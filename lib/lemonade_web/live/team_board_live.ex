@@ -4,13 +4,11 @@ defmodule LemonadeWeb.TeamBoardLive do
   alias Lemonade.{Accounts, TeamBoard}
 
   def mount(_, %{"user_token" => user_token}, socket) do
-    current_user = Accounts.get_user_by_session_token(user_token)
-    team = TeamBoard.load_board(current_user)
-
-    if team do
+    with current_user <- Accounts.get_user_by_session_token(user_token),
+         {:ok, team} <- TeamBoard.load_board(current_user) do
       {:ok, assign(socket, current_user: current_user, team: team)}
     else
-      {:ok, redirect(socket, to: "/setup")}
+      {:error, _} -> {:ok, redirect(socket, to: "/setup")}
     end
   end
 

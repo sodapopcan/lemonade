@@ -23,7 +23,7 @@ defmodule Lemonade.OrganizationsTest do
     test "bootstrap organization", %{user: user, attrs: attrs} do
       {:ok, organization} = Organizations.bootstrap_organization(user, attrs)
 
-      user_id = user.id
+      %{id: user_id, name: user_name} = user
 
       assert %Organization{
                name: "Planet Express",
@@ -33,7 +33,7 @@ defmodule Lemonade.OrganizationsTest do
                  %Team{
                    name: "Delivery Team",
                    created_by: ^user,
-                   team_members: [%TeamMember{user_id: ^user_id}]
+                   team_members: [%TeamMember{user_id: ^user_id, name: ^user_name}]
                  }
                ]
              } = organization
