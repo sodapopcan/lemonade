@@ -2,9 +2,11 @@ defmodule Lemonade.TeamBoard.Standups.StandupMember do
   use Lemonade.Schema
   import Ecto.Changeset
 
+  alias Lemonade.Organizations.TeamMember
+
   schema "standup_members" do
     belongs_to :standup, Lemonade.TeamBoard.Standups.Standup
-    belongs_to :team_member, Lemonade.Organizations.TeamMember
+    belongs_to :team_member, TeamMember
 
     timestamps()
   end
@@ -12,7 +14,7 @@ defmodule Lemonade.TeamBoard.Standups.StandupMember do
   @doc false
   def changeset(standup_member, attrs) do
     standup_member
-    |> cast(attrs, [])
+    |> cast(attrs, [:team_member_id])
     |> validate_required([])
   end
 end
