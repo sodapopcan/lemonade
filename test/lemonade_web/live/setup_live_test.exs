@@ -1,4 +1,4 @@
-defmodule LemonadeWeb.PageLiveTest do
+defmodule LemonadeWeb.SetupLiveTest do
   use LemonadeWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
