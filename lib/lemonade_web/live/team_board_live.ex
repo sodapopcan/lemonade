@@ -18,10 +18,8 @@ defmodule LemonadeWeb.TeamBoardLive do
       <div class="px-4 pt-2">
         <section>
           <h1 class="pb-2">Standup</h1>
-          <div>
-            <div class="bg-yellow-400 w-16 h-16 text-2xl rounded-full centered">
-              <%= initials(@current_user.name) %>
-            </div>
+          <div class="flex items-center h-20">
+            <%= link "+ join standup", to: "#" %>
           </div>
         </section>
       </div>
