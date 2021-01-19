@@ -3,6 +3,7 @@ defmodule Lemonade.OrganizationsTest do
 
   alias Lemonade.{Accounts, Organizations}
   alias Organizations.{Organization, Team, TeamMember}
+  alias Lemonade.TeamBoard.Standups.{Standup, StandupMember}
 
   describe "organizations" do
     setup do
@@ -12,7 +13,7 @@ defmodule Lemonade.OrganizationsTest do
         "name" => "Planet Express",
         "teams" => [
           %{
-            "name" => "Delivery Team"
+            "name" => "Delivery Team",
           }
         ]
       }
@@ -33,7 +34,8 @@ defmodule Lemonade.OrganizationsTest do
                  %Team{
                    name: "Delivery Team",
                    created_by: ^user,
-                   team_members: [%TeamMember{user_id: ^user_id, name: ^user_name}]
+                   team_members: [%TeamMember{user_id: ^user_id, name: ^user_name}],
+                   standup: %Standup{}
                  }
                ]
              } = organization

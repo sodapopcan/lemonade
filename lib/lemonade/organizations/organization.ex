@@ -30,9 +30,12 @@ defmodule Lemonade.Organizations.Organization do
     |> cast_assoc(:teams,
       required: true,
       with: fn _team, attrs ->
-        Team.bootstrap_changeset(%Team{created_by: user}, 
-          Map.put(attrs, "team_members", [%{"name" => user.name, "user_id" => user.id}])
-        )
+        attrs =
+          attrs
+         |> Map.put("team_members", [%{"name" => user.name, "user_id" => user.id}])
+         |> Map.put("standup", %{})
+
+        Team.bootstrap_changeset(%Team{created_by: user}, attrs)
       end
     )
   end

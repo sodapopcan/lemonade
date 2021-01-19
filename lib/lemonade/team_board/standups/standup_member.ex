@@ -3,8 +3,8 @@ defmodule Lemonade.TeamBoard.Standups.StandupMember do
   import Ecto.Changeset
 
   schema "standup_members" do
-    field :standup_id, :binary_id
-    field :team_member_id, :binary_id
+    belongs_to :standup, Lemonade.TeamBoard.Standups.Standup
+    belongs_to :team_member, Lemonade.Organizations.TeamMember
 
     timestamps()
   end

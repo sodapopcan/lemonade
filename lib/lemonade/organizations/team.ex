@@ -2,12 +2,14 @@ defmodule Lemonade.Organizations.Team do
   use Lemonade.Schema
   import Ecto.Changeset
 
-  alias Lemonade.Organizations.TeamMember
+  alias Lemonade.Organizations.{Organization, TeamMember}
+  alias Lemonade.TeamBoard.Standups.Standup
 
   schema "teams" do
     field :name, :string
-    belongs_to :organization, Lemonade.Organizations.Organization
+    belongs_to :organization, Organization
     has_many :team_members, TeamMember
+    has_one :standup, Standup
     belongs_to :created_by, Lemonade.Accounts.User
 
     timestamps()
@@ -26,5 +28,6 @@ defmodule Lemonade.Organizations.Team do
     team
     |> changeset(attrs)
     |> cast_assoc(:team_members, required: true, with: &TeamMember.bootstrap_changeset/2)
+    |> cast_assoc(:standup, required: true, with: &Standup.bootstrap_changeset/2)
   end
 end
