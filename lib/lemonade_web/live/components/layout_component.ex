@@ -22,7 +22,7 @@ defmodule LemonadeWeb.LayoutComponent do
           </ul>
         </div>
       </div>
-      <div class="p-2">
+      <div class="main-content p-2">
         <%= render_block(@inner_block) %>
       </div>
     </div>

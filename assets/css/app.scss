@@ -5,6 +5,9 @@
 @tailwind components;
 @tailwind utilities;
 @layer components {
+  .main-content a {
+    @apply text-blue-700 cursor-pointer;
+  }
   .centered {
     @apply flex justify-center items-center;
   }
