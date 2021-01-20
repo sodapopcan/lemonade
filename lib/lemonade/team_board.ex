@@ -11,7 +11,11 @@ defmodule Lemonade.TeamBoard do
         Repo.one(
           from t in Team,
             where: t.organization_id == ^user.organization_id,
-            preload: [:organization, {:standup, :standup_members}, {:team_members, :user}]
+            preload: [
+              :organization,
+              [standup: [standup_members: :team_member]],
+              [team_members: :user]
+            ]
         )
 
       {:ok, team}
@@ -31,6 +35,7 @@ defmodule Lemonade.TeamBoard do
   def join_standup(standup, team_member) do
     standup
     |> Standup.add_member_changeset(team_member)
-    |> Repo.update()
+    |> Repo.update!()
+    |> Repo.preload([standup_members: :team_member])
   end
 end

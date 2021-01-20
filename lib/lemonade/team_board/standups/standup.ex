@@ -21,10 +21,7 @@ defmodule Lemonade.TeamBoard.Standups.Standup do
   def add_member_changeset(standup, team_member) do
     standup
     |> changeset(%{standup_members: [%{team_member_id: team_member.id}]})
-    |> cast_assoc(:standup_members,
-      required: true,
-      with: &StandupMember.changeset/2
-    )
+    |> cast_assoc(:standup_members)
   end
 
   def bootstrap_changeset(standup, attrs) do

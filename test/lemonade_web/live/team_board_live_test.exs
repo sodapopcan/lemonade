@@ -27,4 +27,13 @@ defmodule Lemonade.TeamBoardLiveTest do
 
     assert render(view) =~ "join standup"
   end
+
+  test "joining standup", %{conn: conn} do
+    {:ok, view, _html} = live(conn, @path)
+
+    view
+    |> render_click("join-standup")
+
+    refute render(view) =~ "join standup"
+  end
 end
