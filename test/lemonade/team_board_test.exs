@@ -1,5 +1,5 @@
 defmodule Lemonade.TeamBoardTest do
-  use Lemonade.DataCase
+  use Lemonade.DataCase, async: true
 
   alias Lemonade.TeamBoard
   alias Lemonade.Organizations

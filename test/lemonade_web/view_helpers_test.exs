@@ -1,5 +1,5 @@
 defmodule LemonadeWeb.ViewHelpersTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   import LemonadeWeb.ViewHelpers
 
