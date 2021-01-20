@@ -16,10 +16,13 @@ defmodule LemonadeWeb.TeamBoardLive do
   def render(assigns) do
     ~L"""
     <%= live_component @socket, LemonadeWeb.LayoutComponent, id: "logged-in-layout", current_user: @current_team_member.user, team: @team do %>
-      <div class="px-4 pt-2">
+      <div class="px-4 pt-2 group">
         <section>
         <header class="flex flex-start items-center">
           <h1 class="pb-2 text-xl">Standup</h1>
+          <div class="px-4 pb-2 opacity-0 group-hover:opacity-100">
+            <a href="#" phx-click="leave-standup" title="leave standup"><%= icon("log-out") %></a>
+          </div>
         </header>
           <div class="flex items-center h-20">
             <%= for standup_member <- @team.standup.standup_members do %>
