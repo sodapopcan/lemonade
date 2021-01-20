@@ -1,4 +1,12 @@
 defmodule LemonadeWeb.ViewHelpers do
+  def icon(name, attrs \\ []) do
+    Phoenix.HTML.raw """
+      <svg class="feather-icon" class="#{attrs[:class]}" title="#{attrs[:title]}">
+        <use xlink:href="/icons/feather-sprite.svg##{name}" />
+      </svg>
+    """
+  end
+
   def initials(string) do
     initials = 
       string
