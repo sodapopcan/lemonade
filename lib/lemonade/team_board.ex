@@ -3,7 +3,7 @@ defmodule Lemonade.TeamBoard do
   alias Lemonade.Repo
 
   alias Lemonade.Organizations.{Team, TeamMember}
-  alias Lemonade.TeamBoard.Standups.Standup
+  alias Lemonade.TeamBoard.Standups
 
   def load_board(user) do
     if user.organization_id do
@@ -32,10 +32,10 @@ defmodule Lemonade.TeamBoard do
     )
   end
 
-  def join_standup(standup, team_member) do
-    standup
-    |> Standup.add_member_changeset(team_member)
-    |> Repo.update!()
-    |> Repo.preload([standup_members: :team_member])
+  defdelegate join_standup(standup, team_member), to: Standups
+
+  def leave_standup(standup_member) do
+    standup_member
+    |> Repo.delete!()
   end
 end

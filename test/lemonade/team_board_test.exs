@@ -16,22 +16,12 @@ defmodule Lemonade.TeamBoardTest do
       ]
     }
 
-    %{user: user, attrs: attrs}
-  end
-
-  test "it loads the team board" do
-  end
-
-  test "joining standup", %{user: user, attrs: attrs} do
-    Organizations.bootstrap_organization(user, attrs)
-
     user = Lemonade.Accounts.get_user_by_email(user.email)
 
+    Organizations.bootstrap_organization(user, attrs)
+
     {:ok, team} = TeamBoard.load_board(user)
-    %{standup: standup, team_members: [team_member | _]} = team
 
-    standup = TeamBoard.join_standup(standup, team_member)
-
-    assert Enum.any?(standup.standup_members, &(&1.team_member_id == team_member.id))
+    %{user: user, team: team}
   end
 end
