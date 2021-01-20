@@ -30,7 +30,7 @@ defmodule Lemonade.TeamBoardTest do
     {:ok, team} = TeamBoard.load_board(user)
     %{standup: standup, team_members: [team_member | _]} = team
 
-    {:ok, standup} = TeamBoard.join_standup(standup, team_member)
+    standup = TeamBoard.join_standup(standup, team_member)
 
     assert Enum.any?(standup.standup_members, &(&1.team_member_id == team_member.id))
   end
