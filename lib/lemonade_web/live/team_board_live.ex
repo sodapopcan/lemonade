@@ -21,7 +21,7 @@ defmodule LemonadeWeb.TeamBoardLive do
           <h1 class="pb-2">Standup</h1>
           <div class="flex items-center h-20">
             <%= for standup_member <- @team.standup.standup_members do %>
-              <div><%= initials(standup_member.team_member.name) %></div>
+              <div class="h-20 w-20 bg-yellow-300 rounded-full centered text-2xl"><%= initials(standup_member.team_member.name) %></div>
             <% end %>
             <%= if !attending_standup?(@current_team_member, @team.standup) do %>
               <%= link "+ join standup", to: "#", phx_click: "join-standup" %>
