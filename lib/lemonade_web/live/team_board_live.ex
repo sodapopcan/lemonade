@@ -21,7 +21,9 @@ defmodule LemonadeWeb.TeamBoardLive do
         <header class="flex flex-start items-center">
           <h1 class="pb-2 text-xl">Standup</h1>
           <div class="px-4 pb-2 opacity-0 group-hover:opacity-100">
-            <a href="#" phx-click="leave-standup" title="leave standup"><%= icon("log-out") %></a>
+            <%= if attending_standup?(@current_team_member, @team.standup) do %>
+              <a href="#" phx-click="leave-standup" title="leave standup" class="leave-standup-link"><%= icon("log-out") %></a>
+            <% end %>
           </div>
         </header>
           <div class="flex items-center h-20">
@@ -29,7 +31,9 @@ defmodule LemonadeWeb.TeamBoardLive do
               <div class="h-20 w-20 bg-yellow-300 rounded-full centered text-2xl"><%= initials(standup_member.team_member.name) %></div>
             <% end %>
             <%= if !attending_standup?(@current_team_member, @team.standup) do %>
-              <%= link "+ join standup", to: "#", phx_click: "join-standup" %>
+              <div class="flex flex-start">
+                <a href="#" phx-click="join-standup" class="join-standup-link flex flex-start items-center"><%= icon "log-in" %> <span class="ml-2">join standup</span></a>
+              </div>
             <% end %>
           </div>
         </section>
@@ -40,10 +44,21 @@ defmodule LemonadeWeb.TeamBoardLive do
 
   def handle_event("join-standup", _, %{assigns: assigns} = socket) do
     standup = TeamBoard.join_standup(assigns.team.standup, assigns.current_team_member)
-    team = assigns.team
+    %{team: team, current_team_member: current_team_member} = assigns
     team = put_in(team.standup, standup)
+    current_team_member = TeamBoard.get_current_team_member(current_team_member.user, team)
 
-    {:noreply, assign(socket, team: team)}
+    {:noreply, assign(socket, team: team, current_team_member: current_team_member)}
+  end
+
+  def handle_event("leave-standup", _, %{assigns: assigns} = socket) do
+    standup_member = TeamBoard.leave_standup(assigns.current_team_member.standup_member)
+    %{team: team, current_team_member: current_team_member} = assigns
+    standup_members = Enum.reject(team.standup.standup_members, &(&1.id == standup_member.id))
+    team = put_in(team.standup.standup_members, standup_members)
+    current_team_member = TeamBoard.get_current_team_member(current_team_member.user, team)
+
+    {:noreply, assign(socket, team: team, current_team_member: current_team_member)}
   end
 
   defp attending_standup?(current_team_member, standup) do

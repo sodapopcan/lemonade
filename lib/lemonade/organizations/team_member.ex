@@ -6,6 +6,7 @@ defmodule Lemonade.Organizations.TeamMember do
     field :name, :string
     belongs_to :user, Lemonade.Accounts.User
     belongs_to :team, Lemonade.Organizations.Team
+    has_one :standup_member, Lemonade.TeamBoard.Standups.StandupMember
 
     timestamps()
   end

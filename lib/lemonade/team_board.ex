@@ -14,7 +14,7 @@ defmodule Lemonade.TeamBoard do
             preload: [
               :organization,
               [standup: [standup_members: :team_member]],
-              [team_members: :user]
+              [team_members: [:user]]
             ]
         )
 
@@ -28,14 +28,10 @@ defmodule Lemonade.TeamBoard do
     Repo.one(
       from m in TeamMember,
         where: m.user_id == ^user.id and m.team_id == ^team.id,
-        preload: [:user]
+        preload: [:user, :standup_member]
     )
   end
 
   defdelegate join_standup(standup, team_member), to: Standups
-
-  def leave_standup(standup_member) do
-    standup_member
-    |> Repo.delete!()
-  end
+  defdelegate leave_standup(standup_member), to: Standups
 end

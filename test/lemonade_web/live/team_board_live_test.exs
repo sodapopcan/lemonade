@@ -28,12 +28,26 @@ defmodule Lemonade.TeamBoardLiveTest do
     assert render(view) =~ "join standup"
   end
 
-  test "joining standup", %{conn: conn} do
-    {:ok, view, _html} = live(conn, @path)
+  describe "standup" do
+    test "joining standup", %{conn: conn} do
+      {:ok, view, _html} = live(conn, @path)
 
-    view
-    |> render_click("join-standup")
+      view
+      |> render_click("join-standup")
 
-    refute render(view) =~ "join standup"
+      refute render(view) =~ "join-standup-link"
+    end
+
+    test "leaving standup", %{conn: conn} do
+      {:ok, view, _html}= live(conn, @path)
+
+      view
+      |> render_click("join-standup")
+
+      view
+      |> render_click("leave-standup")
+
+      refute render(view) =~ "leave-standup-link"
+    end
   end
 end

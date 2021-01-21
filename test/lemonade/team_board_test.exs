@@ -16,12 +16,18 @@ defmodule Lemonade.TeamBoardTest do
       ]
     }
 
-    user = Lemonade.Accounts.get_user_by_email(user.email)
-
     Organizations.bootstrap_organization(user, attrs)
+
+    user = Lemonade.Accounts.get_user_by_email(user.email)
 
     {:ok, team} = TeamBoard.load_board(user)
 
     %{user: user, team: team}
+  end
+
+  test "get the current team member", %{user: user, team: team} do
+    current_team_member = TeamBoard.get_current_team_member(user, team)
+
+    assert current_team_member.user == user
   end
 end
