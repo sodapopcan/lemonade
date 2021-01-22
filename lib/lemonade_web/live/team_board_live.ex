@@ -33,8 +33,8 @@ defmodule LemonadeWeb.TeamBoardLive do
   end
 
   def handle_event("leave-standup", _, %{assigns: assigns} = socket) do
-    standup_member = TeamBoard.leave_standup(assigns.current_team_member.standup_member)
     %{team: team, current_team_member: current_team_member} = assigns
+    {:ok, standup_member} = TeamBoard.leave_standup(current_team_member)
     standup_members = Enum.reject(team.standup.standup_members, &(&1.id == standup_member.id))
     team = put_in(team.standup.standup_members, standup_members)
     current_team_member = TeamBoard.get_current_team_member(current_team_member.user, team)

@@ -11,9 +11,9 @@ defmodule Lemonade.TeamBoard.Standups do
     |> Repo.preload(standup_members: :team_member)
   end
 
-  def leave_standup(standup_member) do
-    standup_member
-    |> StandupMember.changeset(%{left_at: DateTime.utc_now})
-    |> Repo.update!()
+  def leave_standup(team_member) do
+    StandupMember
+    |> Repo.get_by(team_member_id: team_member.id)
+    |> Repo.delete()
   end
 end

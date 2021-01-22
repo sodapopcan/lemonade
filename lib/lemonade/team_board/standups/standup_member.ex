@@ -7,7 +7,6 @@ defmodule Lemonade.TeamBoard.Standups.StandupMember do
   schema "standup_members" do
     belongs_to :standup, Lemonade.TeamBoard.Standups.Standup
     belongs_to :team_member, TeamMember
-    field :left_at, :naive_datetime
 
     timestamps()
   end
@@ -15,7 +14,7 @@ defmodule Lemonade.TeamBoard.Standups.StandupMember do
   @doc false
   def changeset(standup_member, attrs) do
     standup_member
-    |> cast(attrs, [:left_at, :team_member_id])
+    |> cast(attrs, [:team_member_id])
     |> validate_required([])
   end
 end

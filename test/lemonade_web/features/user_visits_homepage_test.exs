@@ -1,5 +1,5 @@
 defmodule LemonadeWeb.UserVisitsHomepageTest do
-  use LemonadeWeb.FeatureCase, async: true
+  use LemonadeWeb.FeatureCase
 
   test "user can visit homepage", %{session: session} do
     session
