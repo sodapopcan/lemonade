@@ -33,5 +33,5 @@ defmodule Lemonade.TeamBoard do
   end
 
   defdelegate join_standup(standup, team_member), to: Standups
-  defdelegate leave_standup(standup_member), to: Standups
+  defdelegate leave_standup(standup, team_member), to: Standups
 end

@@ -37,7 +37,7 @@ defmodule Lemonade.TeamBoard.StandupsTest do
 
       assert standup_member
 
-      leave_standup = Standups.leave_standup(team_member)
+      leave_standup = Standups.leave_standup(standup, team_member)
 
       assert {:ok, %StandupMember{}} = leave_standup
     end
