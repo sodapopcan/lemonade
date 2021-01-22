@@ -28,7 +28,7 @@ defmodule Lemonade.TeamBoard do
     Repo.one(
       from m in TeamMember,
         where: m.user_id == ^user.id and m.team_id == ^team.id,
-        preload: [:user, :standup_member]
+        preload: [:user]
     )
   end
 
