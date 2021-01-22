@@ -24,12 +24,10 @@ defmodule LemonadeWeb.TeamBoardLive do
   end
 
   def handle_event("join-standup", _, %{assigns: assigns} = socket) do
-    standup = TeamBoard.join_standup(assigns.team.standup, assigns.current_team_member)
     %{team: team, current_team_member: current_team_member} = assigns
-    team = put_in(team.standup, standup)
-    current_team_member = TeamBoard.get_current_team_member(current_team_member.user, team)
+    standup = TeamBoard.join_standup(team.standup, current_team_member)
 
-    {:noreply, assign(socket, team: team, current_team_member: current_team_member)}
+    {:noreply, assign(socket, team: put_in(team.standup, standup))}
   end
 
   def handle_event("leave-standup", _, %{assigns: assigns} = socket) do
@@ -37,8 +35,7 @@ defmodule LemonadeWeb.TeamBoardLive do
     {:ok, standup_member} = TeamBoard.leave_standup(team.standup, current_team_member)
     standup_members = Enum.reject(team.standup.standup_members, &(&1.id == standup_member.id))
     team = put_in(team.standup.standup_members, standup_members)
-    current_team_member = TeamBoard.get_current_team_member(current_team_member.user, team)
 
-    {:noreply, assign(socket, team: team, current_team_member: current_team_member)}
+    {:noreply, assign(socket, team: team)}
   end
 end
