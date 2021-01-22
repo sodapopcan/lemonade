@@ -26,6 +26,6 @@ config :lemonade, LemonadeWeb.Endpoint,
 config :logger, level: :warn
 
 # Wallaby
-# config :wallaby, driver: Wallaby.Chrome
-# config :lemonade, :sql_sandbox, true
+config :wallaby, driver: Wallaby.Chrome
+config :lemonade, :sql_sandbox, true
 
