@@ -2,6 +2,7 @@ defmodule LemonadeWeb.TeamBoardLive do
   use LemonadeWeb, :live_view
 
   alias Lemonade.{Accounts, TeamBoard}
+  alias LemonadeWeb.{LayoutComponent, StandupComponent}
 
   def mount(_, %{"user_token" => user_token}, socket) do
     with current_user <- Accounts.get_user_by_session_token(user_token),
@@ -15,9 +16,9 @@ defmodule LemonadeWeb.TeamBoardLive do
 
   def render(assigns) do
     ~L"""
-    <%= live_component @socket, LemonadeWeb.LayoutComponent, id: "logged-in-layout", current_user: @current_team_member.user, team: @team do %>
+    <%= live_component @socket, LayoutComponent, id: "logged-in-layout", current_user: @current_team_member.user, team: @team do %>
       <div class="px-4 pt-2 group">
-        <%= live_component @socket, LemonadeWeb.StandupComponent, id: "stand-up", current_team_member: @current_team_member, standup: @team.standup %>
+        <%= live_component @socket, StandupComponent, id: "stand-up", current_team_member: @current_team_member, standup: @team.standup %>
       </div>
     <% end %>
     """
