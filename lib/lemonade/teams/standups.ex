@@ -23,9 +23,12 @@ defmodule Lemonade.Teams.Standups do
     end
   end
 
-  def leave_standup(_standup, team_member) do
+  def leave_standup(standup, team_member) do
     StandupMember
     |> Repo.get_by(team_member_id: team_member.id)
     |> Repo.delete()
+
+    {:ok, Repo.reload(standup) |> Repo.preload(:standup_members)}
+    |> Teams.broadcast(:left_standup)
   end
 end

@@ -31,18 +31,21 @@ defmodule LemonadeWeb.TeamLive do
     {:noreply, assign(socket, standup: standup)}
   end
 
+  def handle_info({:left_standup, standup}, socket) do
+    {:noreply, assign(socket, standup: standup)}
+  end
+
   def handle_event("join-standup", _, %{assigns: assigns} = socket) do
     %{standup: standup, current_team_member: current_team_member} = assigns
-    {:ok, standup} = Teams.join_standup(standup, current_team_member)
+    {:ok, _standup} = Teams.join_standup(standup, current_team_member)
 
     {:noreply, socket}
   end
 
   def handle_event("leave-standup", _, %{assigns: assigns} = socket) do
     %{standup: standup, current_team_member: current_team_member} = assigns
-    {:ok, standup_member} = Teams.leave_standup(standup, current_team_member)
-    standup_members = Enum.reject(standup.standup_members, &(&1.id == standup_member.id))
+    {:ok, _standup} = Teams.leave_standup(standup, current_team_member)
 
-    {:noreply, update(socket, :standup, fn standup -> %{standup | standup_members: standup_members} end)}
+    {:noreply, socket}
   end
 end

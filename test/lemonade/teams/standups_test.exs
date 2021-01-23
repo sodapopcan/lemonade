@@ -28,13 +28,10 @@ defmodule Lemonade.Teams.StandupsTest do
       %{standup: standup, team_members: [team_member | _]} = team
 
       {:ok, standup} = Standups.join_standup(standup, team_member)
-      standup_member = Enum.find(standup.standup_members, &(&1.team_member_id == team_member.id))
+      assert Enum.find(standup.standup_members, &(&1.team_member_id == team_member.id))
 
-      assert standup_member
-
-      leave_standup = Standups.leave_standup(standup, team_member)
-
-      assert {:ok, %StandupMember{}} = leave_standup
+      {:ok, standup} = Standups.leave_standup(standup, team_member)
+      refute Enum.find(standup.standup_members, &(&1.team_member_id == team_member.id))
     end
   end
 end
