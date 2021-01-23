@@ -9,6 +9,8 @@ defmodule LemonadeWeb.TeamLive do
          team <- Teams.get_team_by_user(current_user),
          standup <- Teams.get_standup_by_team(team),
          current_team_member <- Teams.get_current_team_member(current_user, team) do
+
+      if connected?(socket), do: Teams.subscribe(team.id)
       {:ok, assign(socket, current_team_member: current_team_member, team: team, standup: standup)}
     else
       {:error, _} -> {:ok, redirect(socket, to: "/setup")}
@@ -25,11 +27,15 @@ defmodule LemonadeWeb.TeamLive do
     """
   end
 
+  def handle_info({:joined_standup, standup}, socket) do
+    {:noreply, assign(socket, standup: standup)}
+  end
+
   def handle_event("join-standup", _, %{assigns: assigns} = socket) do
     %{standup: standup, current_team_member: current_team_member} = assigns
-    standup = Teams.join_standup(standup, current_team_member)
+    {:ok, standup} = Teams.join_standup(standup, current_team_member)
 
-    {:noreply, assign(socket, standup: standup)}
+    {:noreply, socket}
   end
 
   def handle_event("leave-standup", _, %{assigns: assigns} = socket) do

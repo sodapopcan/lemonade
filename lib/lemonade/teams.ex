@@ -38,6 +38,16 @@ defmodule Lemonade.Teams do
     )
   end
 
+  def subscribe(team_id) do
+    Phoenix.PubSub.subscribe(Lemonade.PubSub, "team:#{team_id}")
+  end
+
+  def broadcast({:error, _reason} = error, _event), do: error
+  def broadcast({:ok, %{team_id: team_id} = entity}, event) do
+    Phoenix.PubSub.broadcast(Lemonade.PubSub, "team:#{team_id}", {event, entity})
+    {:ok, entity}
+  end
+
   defdelegate get_standup_by_team(team), to: Standups
   defdelegate join_standup(standup, team_member), to: Standups
   defdelegate leave_standup(standup, team_member), to: Standups

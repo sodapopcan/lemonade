@@ -2,7 +2,8 @@ defmodule Lemonade.Teams.Standups do
   import Ecto.Query, warn: false
   alias Lemonade.Repo
 
-  alias Lemonade.Teams.Standups.{Standup, StandupMember}
+  alias Lemonade.Teams
+  alias Teams.Standups.{Standup, StandupMember}
 
   def get_standup_by_team(team) do
     Standup
@@ -13,8 +14,13 @@ defmodule Lemonade.Teams.Standups do
   def join_standup(standup, team_member) do
     standup
     |> Standup.add_member_changeset(team_member)
-    |> Repo.update!()
-    |> Repo.preload(standup_members: :team_member)
+    |> Repo.update()
+    |> case do
+      {:ok, standup} ->
+        {:ok, Repo.preload(standup, standup_members: :team_member)}
+        |> Teams.broadcast(:joined_standup)
+      error -> error
+    end
   end
 
   def leave_standup(_standup, team_member) do

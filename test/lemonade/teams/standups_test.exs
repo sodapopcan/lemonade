@@ -27,7 +27,7 @@ defmodule Lemonade.Teams.StandupsTest do
     test "joining and leaving standup", %{team: team} do
       %{standup: standup, team_members: [team_member | _]} = team
 
-      standup = Standups.join_standup(standup, team_member)
+      {:ok, standup} = Standups.join_standup(standup, team_member)
       standup_member = Enum.find(standup.standup_members, &(&1.team_member_id == team_member.id))
 
       assert standup_member
