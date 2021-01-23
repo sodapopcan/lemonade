@@ -9,8 +9,8 @@ defmodule LemonadeWeb.TeamLive do
          team <- Teams.get_team_by_user(current_user),
          standup <- Teams.get_standup_by_team(team),
          current_team_member <- Teams.get_current_team_member(current_user, team) do
-
       if connected?(socket), do: Teams.subscribe(team.id)
+
       {:ok, assign(socket, current_team_member: current_team_member, team: team, standup: standup)}
     else
       {:error, _} -> {:ok, redirect(socket, to: "/setup")}
