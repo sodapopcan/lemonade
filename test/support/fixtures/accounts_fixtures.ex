@@ -5,8 +5,8 @@ defmodule Lemonade.AccountsFixtures do
   """
 
   def valid_user_name, do: "Hubert Farnsworth"
-  def unique_user_email, do: "user#{System.unique_integer()}@example.com"
-  def valid_user_password, do: "hello world!"
+  def unique_user_email, do: "employee-#{System.unique_integer()}@example.com"
+  def valid_user_password, do: "goodnewseveryone!"
 
   def user_fixture(attrs \\ %{}) do
     {:ok, user} =
