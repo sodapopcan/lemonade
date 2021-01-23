@@ -1,7 +1,8 @@
 defmodule Lemonade.Teams.StandupsTest do
   use Lemonade.DataCase, async: true
 
-  alias Lemonade.Organizations
+  import Lemonade.OrganizationsFixtures
+
   alias Lemonade.Teams
   alias Teams.Standups
   alias Standups.{StandupMember}
@@ -9,17 +10,7 @@ defmodule Lemonade.Teams.StandupsTest do
   setup do
     user = create(:user)
 
-    Organizations.bootstrap_organization(
-      user,
-      %{
-        "name" => "Planet Express",
-        "teams" => [
-          %{
-            "name" => "Delivery Team"
-          }
-        ]
-      }
-    )
+    bootstrapped_organization_fixture(user)
 
     user = Lemonade.Accounts.get_user_by_email(user.email)
 

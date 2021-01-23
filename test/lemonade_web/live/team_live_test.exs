@@ -1,16 +1,15 @@
 defmodule Lemonade.TeamLiveTest do
   use LemonadeWeb.ConnCase, async: true
+
   import Phoenix.LiveViewTest
+  import Lemonade.OrganizationsFixtures
 
   @path "/team"
 
   setup :register_and_log_in_user
 
   setup %{user: user} do
-    {:ok, organization} = Lemonade.Organizations.bootstrap_organization(user, %{
-      "name" => "Planet Express",
-      "teams" => [%{"name" => "Delivery Team"}]
-    })
+    organization = bootstrapped_organization_fixture(user)
 
     %{organization: organization}
   end
