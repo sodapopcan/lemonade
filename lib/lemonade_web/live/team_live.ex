@@ -28,10 +28,10 @@ defmodule LemonadeWeb.TeamLive do
   end
 
   def handle_info({:joined_standup, standup}, socket) do
-    {:noreply, assign(socket, standup: standup)}
+    {:noreply, update(socket, :standup, fn _ -> standup end)}
   end
 
   def handle_info({:left_standup, standup}, socket) do
-    {:noreply, assign(socket, standup: standup)}
+    {:noreply, update(socket, :standup, fn _ -> standup end)}
   end
 end
