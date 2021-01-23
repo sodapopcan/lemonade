@@ -4,14 +4,19 @@ defmodule Lemonade.TeamLiveTest do
   import Phoenix.LiveViewTest
   import Lemonade.OrganizationsFixtures
 
+  alias Lemonade.Teams
+
   @path "/team"
 
   setup :register_and_log_in_user
 
   setup %{user: user} do
     organization = bootstrapped_organization_fixture(user)
+    user = Lemonade.Repo.reload(user)
+    team = Teams.get_team_by_user(user)
+    standup = Teams.get_standup_by_team(team)
 
-    %{organization: organization}
+    %{organization: organization, team: team, standup: standup}
   end
 
   test "disconnected and connected render", %{conn: conn, organization: organization} do
@@ -28,23 +33,23 @@ defmodule Lemonade.TeamLiveTest do
   end
 
   describe "standup" do
-    test "joining standup", %{conn: conn} do
+    test "joining standup", %{conn: conn, standup: standup} do
       {:ok, view, _html} = live(conn, @path)
 
-      view
-      |> render_click("join-standup")
-
-      refute render(view) =~ "join-standup-link"
     end
 
-    test "leaving standup", %{conn: conn} do
+    test "joining and leaving standup", %{conn: conn} do
       {:ok, view, _html}= live(conn, @path)
 
       view
-      |> render_click("join-standup")
+      |> element(".join-standup-link")
+      |> render_click()
+
+      refute render(view) =~ "join-standup-link"
 
       view
-      |> render_click("leave-standup")
+      |> element(".leave-standup-link")
+      |> render_click()
 
       refute render(view) =~ "leave-standup-link"
     end

@@ -21,7 +21,7 @@ defmodule LemonadeWeb.TeamLive do
     ~L"""
     <%= live_component @socket, LayoutComponent, id: "logged-in-layout", current_user: @current_team_member.user, team: @team do %>
       <div class="px-4 pt-2 group">
-        <%= live_component @socket, StandupComponent, id: "stand-up", current_team_member: @current_team_member, standup: @standup %>
+        <%= live_component @socket, StandupComponent, id: "standup", current_team_member: @current_team_member, standup: @standup %>
       </div>
     <% end %>
     """
@@ -33,19 +33,5 @@ defmodule LemonadeWeb.TeamLive do
 
   def handle_info({:left_standup, standup}, socket) do
     {:noreply, assign(socket, standup: standup)}
-  end
-
-  def handle_event("join-standup", _, %{assigns: assigns} = socket) do
-    %{standup: standup, current_team_member: current_team_member} = assigns
-    {:ok, _standup} = Teams.join_standup(standup, current_team_member)
-
-    {:noreply, socket}
-  end
-
-  def handle_event("leave-standup", _, %{assigns: assigns} = socket) do
-    %{standup: standup, current_team_member: current_team_member} = assigns
-    {:ok, _standup} = Teams.leave_standup(standup, current_team_member)
-
-    {:noreply, socket}
   end
 end
