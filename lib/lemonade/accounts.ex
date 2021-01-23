@@ -346,4 +346,13 @@ defmodule Lemonade.Accounts do
       {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
+
+  @doc """
+  Affiliates a user with an organization.
+  """
+  def join_organization(user, organization) do
+    user
+    |> User.join_organization_changeset(organization)
+    |> Repo.update()
+  end
 end

@@ -511,4 +511,18 @@ defmodule Lemonade.AccountsTest do
       refute inspect(%User{password: "123456"}) =~ "password: \"123456\""
     end
   end
+
+  describe "join organization" do
+    setup do
+      %{user: user_fixture()}
+    end
+
+    test "user joins and organization", %{user: user} do
+      organization = Lemonade.OrganizationsFixtures.bootstrapped_organization_fixture(user)
+
+      {:ok, user} = Accounts.join_organization(user, organization)
+
+      assert user.organization_id == organization.id
+    end
+  end
 end
