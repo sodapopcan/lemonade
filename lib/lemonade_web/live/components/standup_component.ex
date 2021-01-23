@@ -5,7 +5,7 @@ defmodule LemonadeWeb.StandupComponent do
 
   def render(assigns) do
     ~L"""
-    <section>
+    <section class="mb-4 group">
       <header class="flex flex-start items-center">
         <h1 class="pb-2 text-xl">Standup</h1>
         <div class="px-4 pb-2 opacity-0 group-hover:opacity-100">

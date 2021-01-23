@@ -20,7 +20,7 @@ defmodule LemonadeWeb.TeamLive do
   def render(assigns) do
     ~L"""
     <%= live_component @socket, LayoutComponent, id: "logged-in-layout", current_user: @current_team_member.user, team: @team do %>
-      <div class="px-4 pt-2 group">
+      <div class="px-4 pt-2">
         <%= live_component @socket, StandupComponent, id: "standup", current_team_member: @current_team_member, standup: @standup %>
       </div>
     <% end %>
