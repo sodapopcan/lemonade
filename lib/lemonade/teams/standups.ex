@@ -4,6 +4,12 @@ defmodule Lemonade.Teams.Standups do
 
   alias Lemonade.Teams.Standups.{Standup, StandupMember}
 
+  def get_standup_by_team(team) do
+    Standup
+    |> Repo.get_by(team_id: team.id)
+    |> Repo.preload(standup_members: :team_member)
+  end
+
   def join_standup(standup, team_member) do
     standup
     |> Standup.add_member_changeset(team_member)

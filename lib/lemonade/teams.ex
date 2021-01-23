@@ -24,6 +24,12 @@ defmodule Lemonade.Teams do
     end
   end
 
+  def get_team_by_user(user) do
+    Team
+    |> Repo.get_by(organization_id: user.organization_id)
+    |> Repo.preload(:organization)
+  end
+
   def get_current_team_member(user, team) do
     Repo.one(
       from m in TeamMember,
@@ -32,6 +38,7 @@ defmodule Lemonade.Teams do
     )
   end
 
+  defdelegate get_standup_by_team(team), to: Standups
   defdelegate join_standup(standup, team_member), to: Standups
   defdelegate leave_standup(standup, team_member), to: Standups
 end

@@ -17,6 +17,10 @@ defmodule Lemonade.TeamsTest do
     %{user: user, team: team}
   end
 
+  test "get team by user", %{user: user} do
+    assert Teams.get_team_by_user(user)
+  end
+
   test "get the current team member", %{user: user, team: team} do
     current_team_member = Teams.get_current_team_member(user, team)
 

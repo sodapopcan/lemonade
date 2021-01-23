@@ -5,7 +5,7 @@ defmodule Lemonade.Teams.StandupsTest do
 
   alias Lemonade.Teams
   alias Teams.Standups
-  alias Standups.{StandupMember}
+  alias Standups.{Standup, StandupMember}
 
   setup do
     user = create(:user)
@@ -20,11 +20,15 @@ defmodule Lemonade.Teams.StandupsTest do
   end
 
   describe "standups" do
+    test "get standup by team", %{team: %{id: team_id} = team} do
+      assert %Standup{team_id: ^team_id, standup_members: []} = Standups.get_standup_by_team(team)
+    end
+
     test "joining and leaving standup", %{team: team} do
       %{standup: standup, team_members: [team_member | _]} = team
 
       standup = Standups.join_standup(standup, team_member)
-      standup_member = Enum.find(standup.standup_members, & &1.team_member_id == team_member.id)
+      standup_member = Enum.find(standup.standup_members, &(&1.team_member_id == team_member.id))
 
       assert standup_member
 
