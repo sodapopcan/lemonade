@@ -24,7 +24,7 @@ defmodule LemonadeWeb.SetupLiveTest do
         |> form("form", params)
         |> render_submit()
 
-      assert_redirected(view, "/team-board")
+      assert_redirected(view, "/team")
     end
   end
 end

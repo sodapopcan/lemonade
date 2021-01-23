@@ -3,7 +3,7 @@ defmodule Lemonade.OrganizationsTest do
 
   alias Lemonade.{Accounts, Organizations}
   alias Organizations.{Organization, Team, TeamMember}
-  alias Lemonade.TeamBoard.Standups.{Standup}
+  alias Lemonade.Teams.Standups.{Standup}
 
   describe "organizations" do
     setup do

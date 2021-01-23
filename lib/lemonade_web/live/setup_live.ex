@@ -8,7 +8,7 @@ defmodule LemonadeWeb.SetupLive do
     current_user = Accounts.get_user_by_session_token(user_token)
 
     if current_user.organization_id do
-      {:ok, redirect(socket, to: "/team-board")}
+      {:ok, redirect(socket, to: "/team")}
     else
       changeset = Organizations.bootstrap_organization_changeset(current_user, %{teams: [%{}]})
 
@@ -70,7 +70,7 @@ defmodule LemonadeWeb.SetupLive do
   def handle_event("bootstrap-organization", %{"organization" => organization_params}, socket) do
     case Organizations.bootstrap_organization(socket.assigns.current_user, organization_params) do
       {:ok, _organization} ->
-        {:noreply, redirect(socket, to: Routes.team_board_path(socket, :index))}
+        {:noreply, redirect(socket, to: Routes.team_path(socket, :index))}
 
       {:error, changeset} ->
         {:noreply, assign(socket, changeset: changeset)}

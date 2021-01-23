@@ -16,7 +16,7 @@ defmodule LemonadeWeb.UserSessionControllerTest do
 
     test "redirects if already logged in", %{conn: conn, user: user} do
       conn = conn |> log_in_user(user) |> get(Routes.user_session_path(conn, :new))
-      assert redirected_to(conn) == Routes.team_board_path(conn, :index)
+      assert redirected_to(conn) == Routes.team_path(conn, :index)
     end
   end
 

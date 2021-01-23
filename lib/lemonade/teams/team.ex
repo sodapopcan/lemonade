@@ -3,7 +3,7 @@ defmodule Lemonade.Organizations.Team do
   import Ecto.Changeset
 
   alias Lemonade.Organizations.{Organization, TeamMember}
-  alias Lemonade.TeamBoard.Standups.Standup
+  alias Lemonade.Teams.Standups.Standup
 
   schema "teams" do
     field :name, :string

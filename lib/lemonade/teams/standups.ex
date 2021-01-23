@@ -1,8 +1,8 @@
-defmodule Lemonade.TeamBoard.Standups do
+defmodule Lemonade.Teams.Standups do
   import Ecto.Query, warn: false
   alias Lemonade.Repo
 
-  alias Lemonade.TeamBoard.Standups.{Standup, StandupMember}
+  alias Lemonade.Teams.Standups.{Standup, StandupMember}
 
   def join_standup(standup, team_member) do
     standup

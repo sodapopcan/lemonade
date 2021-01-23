@@ -23,7 +23,7 @@ defmodule LemonadeWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live "/setup", SetupLive, :index
-    live "/team-board", TeamBoardLive, :index
+    live "/team", TeamLive, :index
   end
 
   # Enables LiveDashboard only for development

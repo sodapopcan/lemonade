@@ -1,8 +1,8 @@
-defmodule Lemonade.TeamBoardLiveTest do
+defmodule Lemonade.TeamLiveTest do
   use LemonadeWeb.ConnCase, async: true
   import Phoenix.LiveViewTest
 
-  @path "/team-board"
+  @path "/team"
 
   setup :register_and_log_in_user
 

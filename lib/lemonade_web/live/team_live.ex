@@ -1,13 +1,13 @@
-defmodule LemonadeWeb.TeamBoardLive do
+defmodule LemonadeWeb.TeamLive do
   use LemonadeWeb, :live_view
 
-  alias Lemonade.{Accounts, TeamBoard}
+  alias Lemonade.{Accounts, Teams}
   alias LemonadeWeb.{LayoutComponent, StandupComponent}
 
   def mount(_, %{"user_token" => user_token}, socket) do
     with current_user <- Accounts.get_user_by_session_token(user_token),
-         {:ok, team} <- TeamBoard.load_board(current_user),
-         current_team_member <- TeamBoard.get_current_team_member(current_user, team) do
+         {:ok, team} <- Teams.load_board(current_user),
+         current_team_member <- Teams.get_current_team_member(current_user, team) do
       {:ok, assign(socket, current_team_member: current_team_member, team: team)}
     else
       {:error, _} -> {:ok, redirect(socket, to: "/setup")}
@@ -26,14 +26,14 @@ defmodule LemonadeWeb.TeamBoardLive do
 
   def handle_event("join-standup", _, %{assigns: assigns} = socket) do
     %{team: team, current_team_member: current_team_member} = assigns
-    standup = TeamBoard.join_standup(team.standup, current_team_member)
+    standup = Teams.join_standup(team.standup, current_team_member)
 
     {:noreply, assign(socket, team: put_in(team.standup, standup))}
   end
 
   def handle_event("leave-standup", _, %{assigns: assigns} = socket) do
     %{team: team, current_team_member: current_team_member} = assigns
-    {:ok, standup_member} = TeamBoard.leave_standup(team.standup, current_team_member)
+    {:ok, standup_member} = Teams.leave_standup(team.standup, current_team_member)
     standup_members = Enum.reject(team.standup.standup_members, &(&1.id == standup_member.id))
     team = put_in(team.standup.standup_members, standup_members)
 

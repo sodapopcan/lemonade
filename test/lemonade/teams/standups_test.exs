@@ -1,9 +1,9 @@
-defmodule Lemonade.TeamBoard.StandupsTest do
+defmodule Lemonade.Teams.StandupsTest do
   use Lemonade.DataCase, async: true
 
   alias Lemonade.Organizations
-  alias Lemonade.TeamBoard
-  alias TeamBoard.Standups
+  alias Lemonade.Teams
+  alias Teams.Standups
   alias Standups.{StandupMember}
 
   setup do
@@ -23,7 +23,7 @@ defmodule Lemonade.TeamBoard.StandupsTest do
 
     user = Lemonade.Accounts.get_user_by_email(user.email)
 
-    {:ok, team} = TeamBoard.load_board(user)
+    {:ok, team} = Teams.load_board(user)
 
     %{team: team}
   end
