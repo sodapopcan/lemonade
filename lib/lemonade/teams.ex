@@ -29,12 +29,22 @@ defmodule Lemonade.Teams do
     |> Repo.preload(:organization)
   end
 
+  def get_team_by_organization(%{id: id}) do
+    Repo.get_by(Team, organization_id: id)
+  end
+
   def get_current_team_member(user, team) do
     Repo.one(
       from m in TeamMember,
         where: m.user_id == ^user.id and m.team_id == ^team.id,
         preload: [:user]
     )
+  end
+
+  def create_team(user, organization, attrs) do
+    %Team{organization: organization, created_by: user}
+    |> Team.changeset(attrs)
+    |> Repo.insert()
   end
 
   def subscribe(team_id) do

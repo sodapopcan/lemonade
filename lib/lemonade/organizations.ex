@@ -3,7 +3,6 @@ defmodule Lemonade.Organizations do
   alias Lemonade.Repo
 
   alias Lemonade.Organizations.Organization
-  alias Lemonade.Teams.Team
   alias Lemonade.Accounts
 
   def bootstrap_organization(user, attrs) do
@@ -28,15 +27,5 @@ defmodule Lemonade.Organizations do
 
   def get_organization_by_owner(user) do
     Repo.one(from Organization, where: [owned_by_id: ^user.id])
-  end
-
-  def create_team(user, organization, attrs) do
-    %Team{organization: organization, created_by: user}
-    |> Team.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  def get_team_by_organization(%{id: id}) do
-    Repo.one(from Team, where: [organization_id: ^id])
   end
 end
