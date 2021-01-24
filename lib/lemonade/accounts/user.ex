@@ -139,4 +139,12 @@ defmodule Lemonade.Accounts.User do
       add_error(changeset, :current_password, "is not valid")
     end
   end
+  @doc """
+  Sets the user's affiliated organization.
+  """
+  def join_organization_changeset(user, organization) do
+    user
+    |> cast(%{organization_id: organization.id}, [:organization_id])
+  end
+
 end

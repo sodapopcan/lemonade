@@ -52,6 +52,9 @@ defmodule Lemonade.OrganizationsTest do
                  }
                ]
              } = organization
+
+      user = Repo.reload(user)
+      assert user.organization_id == organization.id
     end
 
     test "prevents duplication organization names", %{user: user, attrs: attrs} do
