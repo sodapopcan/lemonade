@@ -6,14 +6,12 @@ defmodule Lemonade.Organizations do
   alias Lemonade.Organizations.{Organization, OrganizationMember}
   alias Lemonade.Accounts
 
-  def bootstrap_organization(%{name: name, email: email} = user, attrs) do
+  def bootstrap_organization(user, attrs) do
     result =
     Multi.new()
       |> Multi.insert(:organization, bootstrap_organization_changeset(user, attrs))
-      |> Multi.run(:organization_members, fn repo, %{organization: organization} ->
-        %OrganizationMember{organization: organization, user: user, added_by: user}
-        |> OrganizationMember.changeset(%{name: name, email: email})
-        |> repo.insert()
+      |> Multi.run(:organization_members, fn _repo, %{organization: organization} ->
+        join_organization(organization, user)
       end)
       |> Repo.transaction()
 
@@ -32,5 +30,11 @@ defmodule Lemonade.Organizations do
 
   def get_organization_by_owner(user) do
     Repo.one(from Organization, where: [owned_by_id: ^user.id])
+  end
+
+  def join_organization(organization, %{name: name, email: email} = user) do
+    %OrganizationMember{organization: organization, user: user, added_by: user}
+    |> OrganizationMember.changeset(%{name: name, email: email})
+    |> Repo.insert()
   end
 end
