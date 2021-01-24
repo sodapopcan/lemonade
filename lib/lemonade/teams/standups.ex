@@ -31,4 +31,10 @@ defmodule Lemonade.Teams.Standups do
     {:ok, Repo.reload(standup) |> Repo.preload(:standup_members)}
     |> Teams.broadcast(:left_standup)
   end
+
+  def create_standup(team) do
+    %Standup{team: team}
+    |> Standup.changeset(%{})
+    |> Repo.insert()
+  end
 end

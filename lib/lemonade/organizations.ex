@@ -4,6 +4,7 @@ defmodule Lemonade.Organizations do
   alias Ecto.Multi
 
   alias Lemonade.Organizations.{Organization, OrganizationMember}
+  alias Lemonade.Teams.Standups
 
   def bootstrap_organization(user, attrs) do
     result =
@@ -19,11 +20,14 @@ defmodule Lemonade.Organizations do
                                      } ->
         Lemonade.Teams.join_team(team, organization_member)
       end)
+      |> Multi.run(:standup, fn _repo, %{organization: %{teams: [team | _]}} ->
+        Standups.create_standup(team)
+      end)
       |> Repo.transaction()
 
     case result do
       {:ok, %{organization: organization}} ->
-        {:ok, organization |> Repo.preload([:organization_members, teams: [:team_members]])}
+        {:ok, organization |> Repo.preload([:organization_members, teams: [:team_members, :standup]])}
 
       {:error, _, changeset, _} ->
         {:error, changeset}

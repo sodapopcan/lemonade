@@ -1,10 +1,10 @@
 defmodule Lemonade.OrganizationsTest do
   use Lemonade.DataCase, async: true
 
-  alias Lemonade.{Accounts, Organizations, Teams}
+  alias Lemonade.{Organizations, Teams}
   alias Organizations.{Organization, OrganizationMember}
   alias Teams.{Team, TeamMember}
-  # alias Lemonade.Teams.Standups.{Standup}
+  alias Lemonade.Teams.Standups.{Standup}
 
   describe "organizations" do
     setup do
@@ -47,8 +47,8 @@ defmodule Lemonade.OrganizationsTest do
                        organization_member_id: organization_member_id,
                        name: ^user_name
                      }
-                   ]
-                   # standup: %Standup{}
+                   ],
+                   standup: %Standup{}
                  }
                ]
              } = organization
