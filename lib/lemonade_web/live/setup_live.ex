@@ -6,6 +6,7 @@ defmodule LemonadeWeb.SetupLive do
 
   def mount(_, %{"user_token" => user_token}, socket) do
     current_user = Accounts.get_user_by_session_token(user_token)
+    current_organization_member = Organizations.get_organization_member_by_user(current_user)
 
     if current_user.organization_id do
       {:ok, redirect(socket, to: "/team")}
@@ -23,7 +24,7 @@ defmodule LemonadeWeb.SetupLive do
 
   def render(assigns) do
     ~L"""
-    <%= live_component @socket, LemonadeWeb.LayoutComponent, id: "logged-in-layout", current_user: @current_user, team: nil do %>
+    <%= live_component @socket, LemonadeWeb.LayoutComponent, id: "logged-in-layout", team: nil, organization: nil, current_organization_member: @current_user do %>
       <div class="w-screen h-screen flex justify-center items-center">
         <div class="relative w-1/4">
           <div class="mb-4">

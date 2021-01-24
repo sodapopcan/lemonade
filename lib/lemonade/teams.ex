@@ -13,7 +13,7 @@ defmodule Lemonade.Teams do
             preload: [
               :organization,
               [standup: [standup_members: :team_member]],
-              [team_members: [:user]]
+              [:team_members]
             ]
         )
 
@@ -33,12 +33,8 @@ defmodule Lemonade.Teams do
     Repo.get_by(Team, organization_id: id)
   end
 
-  def get_current_team_member(user, team) do
-    Repo.one(
-      from m in TeamMember,
-        where: m.user_id == ^user.id and m.team_id == ^team.id,
-        preload: [:user]
-    )
+  def get_team_member_by_organization_member(%{id: team_id}, %{id: organization_member_id}) do
+    Repo.get_by(TeamMember, organization_member_id: organization_member_id, team_id: team_id)
   end
 
   def join_team(team, organization_member) do

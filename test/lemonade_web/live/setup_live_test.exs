@@ -13,7 +13,7 @@ defmodule LemonadeWeb.SetupLiveTest do
   end
 
   describe "organization setup" do
-    test "setup", %{conn: conn} do
+    test "setup", %{conn: conn, user: user} do
       {:ok, view, _html} = live(conn, "/setup")
 
       params = %{

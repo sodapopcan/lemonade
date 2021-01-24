@@ -14,17 +14,19 @@ defmodule Lemonade.TeamsTest do
 
     {:ok, team} = Teams.load_board(user)
 
-    %{user: user, team: team, organization: team.organization}
+    organization_member = Lemonade.Organizations.get_organization_member_by_user(user)
+
+    %{user: user, team: team, organization: team.organization, organization_member: organization_member}
   end
 
   test "get team by user", %{user: user} do
     assert Teams.get_team_by_user(user)
   end
 
-  test "get the current team member", %{user: user, team: team} do
-    current_team_member = Teams.get_current_team_member(user, team)
+  test "get the current team member", %{organization_member: organization_member, team: team} do
+    team_member = Teams.get_team_member_by_organization_member(team, organization_member)
 
-    assert current_team_member.user == user
+    assert team_member.organization_member_id == organization_member.id
   end
 
   test "create a team", %{user: user, organization: organization} do

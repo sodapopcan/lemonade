@@ -12,8 +12,8 @@ defmodule Lemonade.TeamLiveTest do
 
   setup %{user: user} do
     organization = bootstrapped_organization_fixture(user)
-    user = Lemonade.Repo.reload(user)
-    team = Teams.get_team_by_user(user)
+    organization_member = Lemonade.Organizations.get_organization_member_by_user(user)
+    team = Teams.get_team_by_organization(organization)
     standup = Teams.get_standup_by_team(team)
 
     %{organization: organization, team: team, standup: standup}
