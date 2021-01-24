@@ -24,11 +24,4 @@ defmodule Lemonade.Teams.Team do
     |> validate_length(:name, min: 2, max: 36)
     |> unique_constraint([:name, :organization_id])
   end
-
-  def bootstrap_changeset(team, attrs) do
-    team
-    |> changeset(attrs)
-    |> cast_assoc(:team_members, required: true, with: &TeamMember.bootstrap_changeset/2)
-    |> cast_assoc(:standup, required: true, with: &Standup.bootstrap_changeset/2)
-  end
 end
