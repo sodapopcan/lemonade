@@ -5,7 +5,7 @@ defmodule Lemonade.Teams.StandupsTest do
 
   alias Lemonade.Teams
   alias Teams.Standups
-  alias Standups.{Standup, StandupMember}
+  alias Standups.Standup
 
   setup do
     user = create(:user)

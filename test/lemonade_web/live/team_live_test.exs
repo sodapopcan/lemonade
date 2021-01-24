@@ -33,11 +33,6 @@ defmodule Lemonade.TeamLiveTest do
   end
 
   describe "standup" do
-    test "joining standup", %{conn: conn, standup: standup} do
-      {:ok, view, _html} = live(conn, @path)
-
-    end
-
     test "joining and leaving standup", %{conn: conn} do
       {:ok, view, _html}= live(conn, @path)
 
