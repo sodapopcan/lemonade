@@ -41,6 +41,12 @@ defmodule Lemonade.Teams do
     )
   end
 
+  def join_team(team, organization_member) do
+    %TeamMember{team: team, organization_member: organization_member}
+    |> TeamMember.changeset(%{name: organization_member.name})
+    |> Repo.insert()
+  end
+
   def create_team(user, organization, attrs) do
     %Team{organization: organization, created_by: user}
     |> Team.changeset(attrs)

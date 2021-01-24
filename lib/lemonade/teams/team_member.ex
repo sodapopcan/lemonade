@@ -3,10 +3,11 @@ defmodule Lemonade.Teams.TeamMember do
   import Ecto.Changeset
 
   alias Lemonade.Teams.{Team, Standups}
+  alias Lemonade.Organizations.OrganizationMember
 
   schema "team_members" do
     field :name, :string
-    belongs_to :user, Lemonade.Accounts.User
+    belongs_to :organization_member, OrganizationMember
     belongs_to :team, Team
     has_one :standup_member, Standups.StandupMember
 
@@ -18,10 +19,5 @@ defmodule Lemonade.Teams.TeamMember do
     team_member
     |> cast(attrs, [:name])
     |> validate_required([:name])
-  end
-
-  def bootstrap_changeset(team_member, attrs) do
-    team_member
-    |> cast(attrs, [:name, :user_id])
   end
 end
