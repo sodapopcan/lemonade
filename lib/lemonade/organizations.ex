@@ -1,23 +1,28 @@
 defmodule Lemonade.Organizations do
   import Ecto.Query, warn: false
   alias Lemonade.Repo
+  alias Ecto.Multi
 
-  alias Lemonade.Organizations.Organization
+  alias Lemonade.Organizations.{Organization, OrganizationMember}
   alias Lemonade.Accounts
 
-  def bootstrap_organization(user, attrs) do
-    multi =
-      Ecto.Multi.new()
-        |> Ecto.Multi.insert(:organization, bootstrap_organization_changeset(user, attrs))
-        |> Ecto.Multi.run(:user, fn repo, %{organization: organization} ->
-          user
-          |> Accounts.User.join_organization_changeset(organization)
-          |> repo.update()
-        end)
+  def bootstrap_organization(%{name: name, email: email} = user, attrs) do
+    result =
+    Multi.new()
+      |> Multi.insert(:organization, bootstrap_organization_changeset(user, attrs))
+      |> Multi.run(:organization_members, fn repo, %{organization: organization} ->
+        %OrganizationMember{organization: organization, user: user, added_by: user}
+        |> OrganizationMember.changeset(%{name: name, email: email})
+        |> repo.insert()
+      end)
+      |> Repo.transaction()
 
-    case Repo.transaction(multi) do
-      {:ok, %{organization: organization}} -> {:ok, organization}
-      {:error, _, changeset, _} -> {:error, changeset}
+    case result do
+      {:ok, %{organization: organization}} ->
+        {:ok, organization |> Repo.preload(:organization_members)}
+
+      {:error, _, changeset, _} ->
+        {:error, changeset}
     end
   end
 

@@ -2,6 +2,7 @@ defmodule Lemonade.Organizations.Organization do
   use Lemonade.Schema
   import Ecto.Changeset
 
+  alias Lemonade.Organizations.OrganizationMember
   alias Lemonade.Teams.Team
   alias Lemonade.Accounts.User
 
@@ -10,7 +11,7 @@ defmodule Lemonade.Organizations.Organization do
     belongs_to :created_by, User
     belongs_to :owned_by, User
     has_many :teams, Team
-    has_many :users, User
+    has_many :organization_members, OrganizationMember
 
     timestamps()
   end
@@ -29,13 +30,9 @@ defmodule Lemonade.Organizations.Organization do
     |> changeset(attrs)
     |> cast_assoc(:teams,
       required: true,
-      with: fn _team, attrs ->
-        attrs =
-          attrs
-         |> Map.put("team_members", [%{"name" => user.name, "user_id" => user.id}])
-         |> Map.put("standup", %{})
-
-        Team.bootstrap_changeset(%Team{created_by: user}, attrs)
+      with: fn team, attrs ->
+        %Team{team | created_by: user}
+        |> Team.changeset(attrs)
       end
     )
   end

@@ -114,14 +114,6 @@ defmodule Lemonade.Accounts.User do
   end
 
   @doc """
-  Sets the user's affiliated organization.
-  """
-  def join_organization_changeset(user, organization) do
-    user
-    |> cast(%{organization_id: organization.id}, [:organization_id])
-  end
-
-  @doc """
   Verifies the password.
 
   If there is no user or the user doesn't have a password, we call
