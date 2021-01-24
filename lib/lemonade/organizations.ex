@@ -2,7 +2,8 @@ defmodule Lemonade.Organizations do
   import Ecto.Query, warn: false
   alias Lemonade.Repo
 
-  alias Lemonade.Organizations.{Organization, Team}
+  alias Lemonade.Organizations.Organization
+  alias Lemonade.Teams.Team
   alias Lemonade.Accounts
 
   def bootstrap_organization(user, attrs) do

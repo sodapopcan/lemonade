@@ -2,8 +2,7 @@ defmodule Lemonade.Teams do
   import Ecto.Query, warn: false
   alias Lemonade.Repo
 
-  alias Lemonade.Organizations.{Team, TeamMember}
-  alias Lemonade.Teams.Standups
+  alias Lemonade.Teams.{Team, TeamMember, Standups}
 
   def load_board(user) do
     if user.organization_id do

@@ -1,8 +1,9 @@
-defmodule Lemonade.Organizations.Team do
+defmodule Lemonade.Teams.Team do
   use Lemonade.Schema
   import Ecto.Changeset
 
-  alias Lemonade.Organizations.{Organization, TeamMember}
+  alias Lemonade.Organizations.Organization
+  alias Lemonade.Teams.TeamMember
   alias Lemonade.Teams.Standups.Standup
 
   schema "teams" do

@@ -2,10 +2,10 @@ defmodule Lemonade.Teams.Standups.StandupMember do
   use Lemonade.Schema
   import Ecto.Changeset
 
-  alias Lemonade.Organizations.TeamMember
+  alias Lemonade.Teams.{Standups, TeamMember}
 
   schema "standup_members" do
-    belongs_to :standup, Lemonade.Teams.Standups.Standup
+    belongs_to :standup, Standups.Standup
     belongs_to :team_member, TeamMember
 
     timestamps()

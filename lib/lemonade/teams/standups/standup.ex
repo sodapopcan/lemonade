@@ -5,7 +5,7 @@ defmodule Lemonade.Teams.Standups.Standup do
   alias Lemonade.Teams.Standups.StandupMember
 
   schema "standups" do
-    belongs_to :team, Lemonade.Organizations.Team
+    belongs_to :team, Lemonade.Teams.Team
     has_many :standup_members, StandupMember
 
     timestamps()
