@@ -4,12 +4,6 @@ defmodule Lemonade.Teams do
 
   alias Lemonade.Teams.{Team, TeamMember, Standups}
 
-  def get_team_by_user(user) do
-    Team
-    |> Repo.get_by(organization_id: user.organization_id)
-    |> Repo.preload(:organization)
-  end
-
   def get_team_by_organization(%{id: id}) do
     Repo.get_by(Team, organization_id: id)
   end

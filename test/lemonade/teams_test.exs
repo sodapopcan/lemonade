@@ -13,18 +13,12 @@ defmodule Lemonade.TeamsTest do
       organization_members: [organization_member | _]
     } = organization = bootstrapped_organization_fixture(user)
 
-    user = Lemonade.Accounts.get_user_by_email(user.email)
-
     %{
       user: user,
       team: team,
       organization: organization,
       organization_member: organization_member
     }
-  end
-
-  test "get team by user", %{user: user} do
-    assert Teams.get_team_by_user(user)
   end
 
   test "get the current team member", %{organization_member: organization_member, team: team} do

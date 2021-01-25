@@ -8,7 +8,7 @@ defmodule LemonadeWeb.TeamLive do
     current_user = Accounts.get_user_by_session_token(user_token)
     organization = Organizations.get_organization_by_user(current_user)
     current_organization_member = Organizations.get_organization_member_by_user(current_user)
-    team = Teams.get_team_by_user(current_user)
+    team = Teams.get_team_by_organization(organization)
     standup = Teams.get_standup_by_team(team)
     current_team_member =
       Teams.get_team_member_by_organization_member(team, current_organization_member)
