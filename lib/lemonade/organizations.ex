@@ -7,6 +7,27 @@ defmodule Lemonade.Organizations do
   alias Lemonade.Accounts
   alias Lemonade.Teams.Standups
 
+  def get_organization_by_user(user) do
+    Repo.get_by(Organization, id: user.organization_id)
+  end
+
+  def get_organization_by_owner(user) do
+    Repo.one(from Organization, where: [owned_by_id: ^user.id])
+  end
+
+  def get_organization_member_by_user(%{id: user_id}) do
+    Repo.one(from OrganizationMember, where: [user_id: ^user_id])
+  end
+
+  def join_organization(organization, %{name: name, email: email} = user) do
+    %OrganizationMember{organization: organization, user: user, added_by: user}
+    |> OrganizationMember.changeset(%{name: name, email: email})
+    |> Repo.insert()
+  end
+
+  @doc """
+  Bootstraps an organization with the minimum require data to use the app.
+  """
   def bootstrap_organization(user, attrs) do
     result =
       Multi.new()
@@ -31,7 +52,8 @@ defmodule Lemonade.Organizations do
 
     case result do
       {:ok, %{organization: organization}} ->
-        {:ok, organization |> Repo.preload([:organization_members, teams: [:team_members, :standup]])}
+        {:ok,
+         organization |> Repo.preload([:organization_members, teams: [:team_members, :standup]])}
 
       {:error, _, changeset, _} ->
         {:error, changeset}
@@ -40,23 +62,5 @@ defmodule Lemonade.Organizations do
 
   def bootstrap_organization_changeset(user, attrs \\ %{}) do
     Organization.bootstrap_changeset(user, attrs)
-  end
-
-  def get_organization_by_user(user)do
-    Repo.get_by(Organization, id: user.organization_id)
-  end
-
-  def get_organization_by_owner(user) do
-    Repo.one(from Organization, where: [owned_by_id: ^user.id])
-  end
-
-  def get_organization_member_by_user(%{id: user_id}) do
-    Repo.one(from OrganizationMember, where: [user_id: ^user_id])
-  end
-
-  def join_organization(organization, %{name: name, email: email} = user) do
-    %OrganizationMember{organization: organization, user: user, added_by: user}
-    |> OrganizationMember.changeset(%{name: name, email: email})
-    |> Repo.insert()
   end
 end

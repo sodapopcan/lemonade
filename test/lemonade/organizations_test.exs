@@ -22,6 +22,13 @@ defmodule Lemonade.OrganizationsTest do
       %{user: user, attrs: attrs}
     end
 
+    test "prevents duplication organization names", %{user: user, attrs: attrs} do
+      Organizations.bootstrap_organization(user, attrs)
+      {:error, errors} = Organizations.bootstrap_organization(user, attrs)
+
+      assert %{errors: [name: {"has already been taken", _}]} = errors
+    end
+
     test "bootstrap organization", %{user: user, attrs: attrs} do
       {:ok, organization} =Organizations.bootstrap_organization(user, attrs)
 
@@ -55,13 +62,6 @@ defmodule Lemonade.OrganizationsTest do
 
       user = Repo.reload(user)
       assert user.organization_id == organization.id
-    end
-
-    test "prevents duplication organization names", %{user: user, attrs: attrs} do
-      Organizations.bootstrap_organization(user, attrs)
-      {:error, errors} = Organizations.bootstrap_organization(user, attrs)
-
-      assert %{errors: [name: {"has already been taken", _}]} = errors
     end
   end
 end
