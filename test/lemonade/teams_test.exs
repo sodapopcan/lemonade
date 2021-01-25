@@ -8,15 +8,19 @@ defmodule Lemonade.TeamsTest do
   setup do
     user = create(:user)
 
-    organization = bootstrapped_organization_fixture(user)
+    %{
+      teams: [team | _],
+      organization_members: [organization_member | _]
+    } = organization = bootstrapped_organization_fixture(user)
 
     user = Lemonade.Accounts.get_user_by_email(user.email)
 
-    [team | _] = organization.teams
-
-    organization_member = Lemonade.Organizations.get_organization_member_by_user(user)
-
-    %{user: user, team: team, organization: organization, organization_member: organization_member}
+    %{
+      user: user,
+      team: team,
+      organization: organization,
+      organization_member: organization_member
+    }
   end
 
   test "get team by user", %{user: user} do
