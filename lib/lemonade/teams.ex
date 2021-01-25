@@ -5,11 +5,13 @@ defmodule Lemonade.Teams do
   alias Lemonade.Teams.{Team, TeamMember, Standups}
 
   def get_team_by_organization(%{id: id}) do
-    Repo.get_by(Team, organization_id: id)
+    Team
+    |> Repo.get_by(organization_id: id)
   end
 
   def get_team_member_by_organization_member(%{id: team_id}, %{id: organization_member_id}) do
-    Repo.get_by(TeamMember, organization_member_id: organization_member_id, team_id: team_id)
+    TeamMember
+    |> Repo.get_by(organization_member_id: organization_member_id, team_id: team_id)
   end
 
   def join_team(team, organization_member) do
