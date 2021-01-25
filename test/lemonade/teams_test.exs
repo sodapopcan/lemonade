@@ -7,11 +7,12 @@ defmodule Lemonade.TeamsTest do
 
   setup do
     user = create(:user)
+    organization = bootstrapped_organization_fixture(user)
 
     %{
       teams: [team | _],
       organization_members: [organization_member | _]
-    } = organization = bootstrapped_organization_fixture(user)
+    } = organization
 
     %{
       user: user,
