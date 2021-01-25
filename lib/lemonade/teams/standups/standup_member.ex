@@ -17,7 +17,5 @@ defmodule Lemonade.Teams.Standups.StandupMember do
     standup_member
     |> cast(attrs, [:name])
     |> validate_required([:name])
-    # |> put_assoc(:standup, required: false)
-    # |> put_assoc(:team_member, required: false)
   end
 end
