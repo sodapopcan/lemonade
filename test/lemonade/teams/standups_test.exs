@@ -10,11 +10,9 @@ defmodule Lemonade.Teams.StandupsTest do
   setup do
     user = create(:user)
 
-    bootstrapped_organization_fixture(user)
+    organization = bootstrapped_organization_fixture(user)
 
-    user = Lemonade.Accounts.get_user_by_email(user.email)
-
-    {:ok, team} = Teams.load_board(user)
+    [team | _] = organization.teams
 
     %{team: team}
   end

@@ -4,25 +4,6 @@ defmodule Lemonade.Teams do
 
   alias Lemonade.Teams.{Team, TeamMember, Standups}
 
-  def load_board(user) do
-    if user.organization_id do
-      team =
-        Repo.one(
-          from t in Team,
-            where: t.organization_id == ^user.organization_id,
-            preload: [
-              :organization,
-              [standup: [standup_members: :team_member]],
-              [:team_members]
-            ]
-        )
-
-      {:ok, team}
-    else
-      {:error, "User does not belong to an organization"}
-    end
-  end
-
   def get_team_by_user(user) do
     Team
     |> Repo.get_by(organization_id: user.organization_id)
