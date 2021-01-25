@@ -30,7 +30,7 @@ defmodule Lemonade.OrganizationsTest do
     end
 
     test "bootstrap organization", %{user: user, attrs: attrs} do
-      {:ok, organization} =Organizations.bootstrap_organization(user, attrs)
+      {:ok, organization} = Organizations.bootstrap_organization(user, attrs)
 
       %{id: user_id, name: user_name} = user
 
