@@ -16,7 +16,7 @@ defmodule LemonadeWeb.StandupComponent do
       </header>
       <div class="flex items-center h-20">
         <%= for standup_member <- @standup.standup_members do %>
-          <div class="h-20 w-20 bg-yellow-300 rounded-full centered text-2xl mr-2"><%= initials(standup_member.team_member.name) %></div>
+          <div class="h-20 w-20 bg-yellow-300 rounded-full centered text-2xl mr-2"><%= initials(standup_member.name) %></div>
         <% end %>
         <%= if !attending_standup?(@current_team_member, @standup) do %>
           <div class="flex flex-start">
@@ -43,8 +43,8 @@ defmodule LemonadeWeb.StandupComponent do
   end
 
   defp attending_standup?(current_team_member, standup) do
-    Enum.any?(standup.standup_members, fn %{team_member: team_member} ->
-      team_member.id == current_team_member.id
+    Enum.any?(standup.standup_members, fn %{team_member_id: team_member_id} ->
+      team_member_id == current_team_member.id
     end)
   end
 end

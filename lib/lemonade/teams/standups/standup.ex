@@ -17,10 +17,4 @@ defmodule Lemonade.Teams.Standups.Standup do
     |> cast(attrs, [])
     |> validate_required([])
   end
-
-  def add_member_changeset(standup, team_member) do
-    standup
-    |> changeset(%{standup_members: [%{team_member_id: team_member.id}]})
-    |> cast_assoc(:standup_members)
-  end
 end

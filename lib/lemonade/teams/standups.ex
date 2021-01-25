@@ -12,13 +12,15 @@ defmodule Lemonade.Teams.Standups do
   end
 
   def join_standup(standup, team_member) do
-    standup
-    |> Standup.add_member_changeset(team_member)
-    |> Repo.update()
+    %StandupMember{standup: standup, team_member: team_member}
+    |> StandupMember.changeset(%{name: team_member.name})
+    |> Repo.insert()
     |> case do
-      {:ok, standup} ->
-        {:ok, Repo.preload(standup, standup_members: :team_member)}
-        |> Teams.broadcast(:joined_standup)
+      {:ok, _standup_member} ->
+        standup = Repo.reload(standup) |> Repo.preload(:standup_members)
+        Teams.broadcast({:ok, standup}, :joined_standup)
+        {:ok, standup}
+
       error -> error
     end
   end

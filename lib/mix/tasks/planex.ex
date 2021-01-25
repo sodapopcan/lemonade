@@ -56,7 +56,7 @@ defmodule Mix.Tasks.Planex do
 
             {:ok, team_member} = Lemonade.Teams.join_team(team, organization_member)
 
-            # Lemonade.Teams.join_standup(team.standup |> Lemonade.Repo.preload(:standup_members), team_member)
+            Lemonade.Teams.join_standup(team.standup |> Lemonade.Repo.preload(:standup_members), team_member)
             user
           end)
 
