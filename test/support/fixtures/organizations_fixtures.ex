@@ -10,10 +10,10 @@ defmodule Lemonade.OrganizationsFixtures do
     attrs =
       attrs
       |> Enum.into(%{
-        "name" => "Planet Express",
-        "teams" => [
+        name: "Planet Express",
+        teams: [
           %{
-            "name" => "Delivery Team"
+            name: "Delivery Team"
           }
         ]
       })
