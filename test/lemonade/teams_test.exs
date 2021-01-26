@@ -6,20 +6,7 @@ defmodule Lemonade.TeamsTest do
   alias Lemonade.Teams
 
   setup do
-    user = create(:user)
-    organization = bootstrapped_organization_fixture(user)
-
-    %{
-      teams: [team | _],
-      organization_members: [organization_member | _]
-    } = organization
-
-    %{
-      user: user,
-      team: team,
-      organization: organization,
-      organization_member: organization_member
-    }
+    bootstrapped_organization_fixture()
   end
 
   test "get the current team member", %{organization_member: organization_member, team: team} do

@@ -5,8 +5,14 @@ defmodule Lemonade.OrganizationsFixtures do
   """
 
   alias Lemonade.Organizations
+  alias Lemonade.Organizations.Organization
 
-  def bootstrapped_organization_fixture(user, attrs \\ %{}) do
+  def bootstrapped_organization_fixture() do
+    Lemonade.AccountsFixtures.user_fixture()
+    |> bootstrapped_organization_fixture()
+  end
+
+  def bootstrapped_organization_fixture(%Lemonade.Accounts.User{} = user, attrs \\ %{}) do
     attrs =
       attrs
       |> Enum.into(%{
@@ -20,6 +26,32 @@ defmodule Lemonade.OrganizationsFixtures do
 
     {:ok, organization} = Organizations.bootstrap_organization(user, attrs)
 
+    %{
+      teams: [team | _],
+      organization_members: [organization_member | _]
+    } = organization
+
+    %{
+      user: Lemonade.Repo.reload(user),
+      team: team,
+      organization: organization,
+      organization_member: organization_member
+    }
+  end
+
+  @doc """
+  This is only useful for one test that ensures the user gets an organization id.
+  This is going away.
+  """
+  def organization_fixture(user, attrs \\ %{}) do
+    attrs = attrs |> Enum.into(%{name: "Planet Express"})
+
+    {:ok, organization} =
+      %Organization{created_by: user, owned_by: user}
+      |> Organization.changeset(attrs)
+      |> Lemonade.Repo.insert()
+
     organization
   end
+
 end

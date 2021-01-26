@@ -4,18 +4,12 @@ defmodule Lemonade.TeamLiveTest do
   import Phoenix.LiveViewTest
   import Lemonade.OrganizationsFixtures
 
-  alias Lemonade.Teams
-
   @path "/team"
 
   setup :register_and_log_in_user
 
   setup %{user: user} do
-    organization = bootstrapped_organization_fixture(user)
-    team = Teams.get_team_by_organization(organization)
-    standup = Teams.get_standup_by_team(team)
-
-    %{organization: organization, team: team, standup: standup}
+    bootstrapped_organization_fixture(user)
   end
 
   test "disconnected and connected render", %{conn: conn, organization: organization} do

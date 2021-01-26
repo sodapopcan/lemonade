@@ -8,13 +8,7 @@ defmodule Lemonade.Teams.StandupsTest do
   alias Standups.Standup
 
   setup do
-    user = create(:user)
-
-    organization = bootstrapped_organization_fixture(user)
-
-    [team | _] = organization.teams
-
-    %{team: team}
+    bootstrapped_organization_fixture()
   end
 
   describe "standups" do
@@ -31,5 +25,13 @@ defmodule Lemonade.Teams.StandupsTest do
       {:ok, standup} = Standups.leave_standup(standup, team_member)
       refute Enum.find(standup.standup_members, &(&1.team_member_id == team_member.id))
     end
+
+    # test "incrementing position column" do
+    #   user = create(:user)
+    #   %{standup: standup, team_members: [team_member | _]} = team
+
+    #   {:ok, standup} = Standups.join_standup(standup, team_member)
+    #   {:ok, standup} = Standups.join_standup(standup, team_member)
+    # end
   end
 end

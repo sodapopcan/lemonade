@@ -518,7 +518,7 @@ defmodule Lemonade.AccountsTest do
     end
 
     test "user joins and organization", %{user: user} do
-      organization = Lemonade.OrganizationsFixtures.bootstrapped_organization_fixture(user)
+      organization = Lemonade.OrganizationsFixtures.organization_fixture(user)
 
       {:ok, user} = Accounts.join_organization(user, organization)
 
