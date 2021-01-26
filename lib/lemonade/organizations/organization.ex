@@ -28,12 +28,6 @@ defmodule Lemonade.Organizations.Organization do
   def bootstrap_changeset(user, attrs) do
     %__MODULE__{created_by: user, owned_by: user}
     |> changeset(attrs)
-    |> cast_assoc(:teams,
-      required: true,
-      with: fn team, attrs ->
-        %Team{team | created_by: user}
-        |> Team.changeset(attrs)
-      end
-    )
+    |> cast_assoc(:teams)
   end
 end

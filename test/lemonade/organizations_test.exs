@@ -48,7 +48,6 @@ defmodule Lemonade.OrganizationsTest do
                teams: [
                  %Team{
                    name: "Delivery Team",
-                   created_by: ^user,
                    team_members: [
                      %TeamMember{
                        organization_member_id: organization_member_id,

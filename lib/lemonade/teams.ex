@@ -9,6 +9,12 @@ defmodule Lemonade.Teams do
     |> Repo.get_by(organization_id: id)
   end
 
+  def create_team(organization, attrs) do
+    %Team{organization: organization}
+    |> Team.changeset(attrs)
+    |> Repo.insert()
+  end
+
   def get_team_member_by_organization_member(%{id: team_id}, %{id: organization_member_id}) do
     TeamMember
     |> Repo.get_by(organization_member_id: organization_member_id, team_id: team_id)
@@ -17,12 +23,6 @@ defmodule Lemonade.Teams do
   def join_team(team, organization_member) do
     %TeamMember{team: team, organization_member: organization_member}
     |> TeamMember.changeset(%{name: organization_member.name})
-    |> Repo.insert()
-  end
-
-  def create_team(user, organization, attrs) do
-    %Team{organization: organization, created_by: user}
-    |> Team.changeset(attrs)
     |> Repo.insert()
   end
 

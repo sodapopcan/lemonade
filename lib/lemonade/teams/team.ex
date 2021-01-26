@@ -11,7 +11,6 @@ defmodule Lemonade.Teams.Team do
     belongs_to :organization, Organization
     has_many :team_members, TeamMember
     has_one :standup, Standup
-    belongs_to :created_by, Lemonade.Accounts.User
 
     timestamps()
   end
