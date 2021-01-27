@@ -25,6 +25,6 @@ defmodule Lemonade.Organizations.Organization do
   def bootstrap_changeset(attrs) do
     %__MODULE__{}
     |> changeset(attrs)
-    |> cast_assoc(:teams)
+    |> cast_assoc(:teams, required: true)
   end
 end
