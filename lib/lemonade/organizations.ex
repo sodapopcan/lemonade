@@ -7,10 +7,6 @@ defmodule Lemonade.Organizations do
   alias Lemonade.Accounts
   alias Lemonade.Teams.Standups
 
-  def get_organization_by_user(user) do
-    Repo.get_by(Organization, id: user.organization_id)
-  end
-
   def get_organization_by_organization_member(%OrganizationMember{} = organization_member) do
     Repo.one(from Organization, where: [id: ^organization_member.organization_id])
   end
