@@ -22,7 +22,7 @@ defmodule Lemonade.Factory do
   end
 
   def build(:organization_member) do
-    user = create(:user)
+    user = build(:user)
 
     %OrganizationMember{
       name: user.name,
