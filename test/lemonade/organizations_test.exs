@@ -7,7 +7,15 @@ defmodule Lemonade.OrganizationsTest do
   alias Lemonade.Teams.Standups.{Standup}
 
   describe "organizations" do
-    setup do
+    test "prevents duplication organization names" do
+      create(:organization, name: "Planet Express")
+
+      assert_raise Ecto.ConstraintError, fn ->
+        create(:organization, name: "Planet Express")
+      end
+    end
+
+    test "bootstrap organization" do
       user = create(:user)
 
       attrs = %{
@@ -19,17 +27,6 @@ defmodule Lemonade.OrganizationsTest do
         ]
       }
 
-      %{user: user, attrs: attrs}
-    end
-
-    test "prevents duplication organization names", %{user: user, attrs: attrs} do
-      Organizations.bootstrap_organization(user, attrs)
-      {:error, errors} = Organizations.bootstrap_organization(user, attrs)
-
-      assert %{errors: [name: {"has already been taken", _}]} = errors
-    end
-
-    test "bootstrap organization", %{user: user, attrs: attrs} do
       {:ok, organization} = Organizations.bootstrap_organization(user, attrs)
 
       %{id: user_id, name: user_name} = user
