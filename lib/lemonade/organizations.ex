@@ -16,7 +16,7 @@ defmodule Lemonade.Organizations do
   end
 
   def join_organization(organization, %{name: name, email: email} = user) do
-    %OrganizationMember{organization: organization, user: user, added_by: user}
+    %OrganizationMember{organization: organization, user: user}
     |> OrganizationMember.changeset(%{name: name, email: email})
     |> Repo.insert()
   end

@@ -27,7 +27,6 @@ defmodule Lemonade.Factory do
     %OrganizationMember{
       name: user.name,
       email: user.email,
-      added_by: user,
       user: user,
       organization: build(:organization)
     }

@@ -10,7 +10,6 @@ defmodule Lemonade.Organizations.OrganizationMember do
     field :name, :string
     belongs_to :organization, Organization
     belongs_to :user, User
-    belongs_to :added_by, User
 
     timestamps()
   end
