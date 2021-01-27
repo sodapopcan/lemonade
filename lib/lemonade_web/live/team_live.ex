@@ -6,8 +6,8 @@ defmodule LemonadeWeb.TeamLive do
 
   def mount(_, %{"user_token" => user_token}, socket) do
     current_user = Accounts.get_user_by_session_token(user_token)
-    organization = Organizations.get_organization_by_user(current_user)
     current_organization_member = Organizations.get_organization_member_by_user(current_user)
+    organization = Organizations.get_organization_by_organization_member(current_organization_member)
     team = Teams.get_team_by_organization(organization)
     standup = Teams.get_standup_by_team(team)
     current_team_member =

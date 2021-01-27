@@ -9,7 +9,7 @@ defmodule Lemonade.Accounts.User do
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
-    belongs_to :organization, Lemonade.Organizations.Organization
+    has_one :organization_member, Lemonade.Organizations.OrganizationMember
 
     timestamps()
   end
@@ -139,12 +139,4 @@ defmodule Lemonade.Accounts.User do
       add_error(changeset, :current_password, "is not valid")
     end
   end
-  @doc """
-  Sets the user's affiliated organization.
-  """
-  def join_organization_changeset(user, organization) do
-    user
-    |> cast(%{organization_id: organization.id}, [:organization_id])
-  end
-
 end

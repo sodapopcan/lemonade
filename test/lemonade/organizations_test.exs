@@ -58,9 +58,6 @@ defmodule Lemonade.OrganizationsTest do
                  }
                ]
              } = organization
-
-      user = Repo.reload(user)
-      assert user.organization_id == organization.id
     end
   end
 end

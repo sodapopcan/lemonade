@@ -49,8 +49,6 @@ defmodule Mix.Tasks.Planex do
                 password: "Password12345"
               })
 
-            Lemonade.Accounts.join_organization(user, organization)
-
             {:ok, organization_member} =
               Lemonade.Organizations.join_organization(organization, user)
 

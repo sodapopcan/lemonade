@@ -8,7 +8,7 @@ defmodule LemonadeWeb.SetupLive do
     current_user = Accounts.get_user_by_session_token(user_token)
     current_organization_member = Organizations.get_organization_member_by_user(current_user)
 
-    if current_user.organization_id do
+    if current_organization_member do
       {:ok, redirect(socket, to: "/team")}
     else
       changeset = Organizations.bootstrap_organization_changeset(current_user, %{teams: [%{}]})
