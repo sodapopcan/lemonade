@@ -18,10 +18,6 @@ defmodule Lemonade.Factory do
     }
   end
 
-  def build(:organization, with_users: user) do
-    build(:organization, %{created_by: user, owned_by: user})
-  end
-
   def build(:team) do
     %Team{
       name: "Team #{System.unique_integer()}"

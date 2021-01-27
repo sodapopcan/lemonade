@@ -30,14 +30,10 @@ defmodule Lemonade.TeamsTest do
     assert %{errors: [name: {"has already been taken", _}]} = errors
   end
 
-  test "allows duplicate team names across organizations", %{
-    user: user,
-    organization: organization
-  } do
+  test "allows duplicate team names across organizations", %{organization: organization} do
     Teams.create_team(organization, %{name: "Delivery Team"})
 
-    mom_corp =
-      create(:organization, %{name: "Mom Corp", created_by_id: user.id, owned_by_id: user.id})
+    mom_corp = create(:organization, %{name: "Mom Corp"})
 
     assert {:ok, _} = Teams.create_team(mom_corp, %{name: "Delivery Team"})
   end

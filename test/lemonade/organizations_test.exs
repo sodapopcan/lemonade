@@ -36,8 +36,6 @@ defmodule Lemonade.OrganizationsTest do
 
       assert %Organization{
                name: "Planet Express",
-               created_by: ^user,
-               owned_by: ^user,
                organization_members: [
                  %OrganizationMember{
                    id: organization_member_id,

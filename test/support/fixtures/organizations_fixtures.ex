@@ -47,7 +47,7 @@ defmodule Lemonade.OrganizationsFixtures do
     attrs = attrs |> Enum.into(%{name: "Planet Express"})
 
     {:ok, organization} =
-      %Organization{created_by: user, owned_by: user}
+      %Organization{}
       |> Organization.changeset(attrs)
       |> Lemonade.Repo.insert()
 

@@ -11,7 +11,7 @@ defmodule LemonadeWeb.SetupLive do
     if current_organization_member do
       {:ok, redirect(socket, to: "/team")}
     else
-      changeset = Organizations.bootstrap_organization_changeset(current_user, %{teams: [%{}]})
+      changeset = Organizations.bootstrap_organization_changeset(%{teams: [%{}]})
 
       {:ok,
        assign(socket,

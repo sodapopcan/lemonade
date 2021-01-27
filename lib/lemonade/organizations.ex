@@ -11,10 +11,6 @@ defmodule Lemonade.Organizations do
     Repo.one(from Organization, where: [id: ^organization_member.organization_id])
   end
 
-  def get_organization_by_owner(user) do
-    Repo.one(from Organization, where: [owned_by_id: ^user.id])
-  end
-
   def get_organization_member_by_user(%Accounts.User{} = %{id: user_id}) do
     Repo.one(from OrganizationMember, where: [user_id: ^user_id])
   end
@@ -31,7 +27,7 @@ defmodule Lemonade.Organizations do
   def bootstrap_organization(user, attrs) do
     result =
       Multi.new()
-      |> Multi.insert(:organization, bootstrap_organization_changeset(user, attrs))
+      |> Multi.insert(:organization, bootstrap_organization_changeset(attrs))
       |> Multi.run(:organization_member, fn _repo, %{organization: organization} ->
         join_organization(organization, user)
       end)
@@ -57,7 +53,7 @@ defmodule Lemonade.Organizations do
     end
   end
 
-  def bootstrap_organization_changeset(user, attrs \\ %{}) do
-    Organization.bootstrap_changeset(user, attrs)
+  def bootstrap_organization_changeset(attrs \\ %{}) do
+    Organization.bootstrap_changeset(attrs)
   end
 end
