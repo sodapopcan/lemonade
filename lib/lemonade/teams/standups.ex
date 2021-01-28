@@ -20,13 +20,8 @@ defmodule Lemonade.Teams.Standups do
     |> StandupMember.changeset(%{name: team_member.name})
     |> Repo.insert()
     |> case do
-      {:ok, _standup_member} ->
-        standup = Repo.reload(standup) |> preload_standup_members()
-        Teams.broadcast({:ok, standup}, :standup_updated)
-        {:ok, standup}
-
-      error ->
-        error
+      {:ok, _standup_member} -> broadcast(standup)
+      error -> error
     end
   end
 
@@ -38,18 +33,12 @@ defmodule Lemonade.Teams.Standups do
     )
   end
 
-  defp preload_standup_members(standup) do
-    standup
-    |> Repo.preload(standup_members: from(StandupMember, order_by: :position))
-  end
-
   def leave_standup(standup, team_member) do
     StandupMember
     |> Repo.get_by(team_member_id: team_member.id)
     |> Repo.delete()
 
-    {:ok, Repo.reload(standup) |> preload_standup_members()}
-    |> Teams.broadcast(:standup_updated)
+    broadcast(standup)
   end
 
   def shuffle_standup(standup) do
@@ -63,9 +52,7 @@ defmodule Lemonade.Teams.Standups do
         |> Repo.update()
       end)
 
-      standup = standup |> Repo.reload() |> preload_standup_members()
-
-      Teams.broadcast({:ok, standup}, :standup_updated)
+      broadcast(standup)
     end)
   end
 
@@ -73,5 +60,21 @@ defmodule Lemonade.Teams.Standups do
     %Standup{team: team}
     |> Standup.changeset(%{})
     |> Repo.insert()
+  end
+
+  defp broadcast(standup) do
+    {:ok, reload_standup(standup)}
+    |> Teams.broadcast(:standup_updated)
+  end
+
+  defp reload_standup(standup) do
+    standup
+    |> Repo.reload()
+    |> preload_standup_members()
+  end
+
+  defp preload_standup_members(standup) do
+    standup
+    |> Repo.preload(standup_members: from(StandupMember, order_by: :position))
   end
 end
