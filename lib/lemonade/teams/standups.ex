@@ -52,7 +52,6 @@ defmodule Lemonade.Teams.Standups do
     |> Teams.broadcast(:standup_updated)
   end
 
-  @untested true
   def shuffle_standup(standup) do
     Repo.transaction(fn ->
       standup.standup_members
