@@ -29,15 +29,15 @@ defmodule Lemonade.Teams.StandupsTest do
     test "increment position column" do
       team = create(:team)
       standup = create(:standup, team: team)
-      %{id: team_member_1_id} = team_member_1 = create(:team_member, team: team)
-      %{id: team_member_2_id} = team_member_2 = create(:team_member, team: team)
+      %{id: id1} = team_member_1 = create(:team_member, team: team)
+      %{id: id2} = team_member_2 = create(:team_member, team: team)
 
       {:ok, standup} = Standups.join_standup(standup, team_member_1)
       {:ok, standup} = Standups.join_standup(standup, team_member_2)
 
       assert [
-               %{team_member_id: ^team_member_1_id, position: 1},
-               %{team_member_id: ^team_member_2_id, position: 2}
+               %{team_member_id: ^id1, position: 1},
+               %{team_member_id: ^id2, position: 2}
              ] = standup.standup_members
     end
 
