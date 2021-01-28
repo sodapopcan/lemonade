@@ -12,7 +12,11 @@ defmodule Lemonade.Teams.Standups do
   end
 
   def join_standup(standup, team_member) do
-    %StandupMember{standup: standup, team_member: team_member}
+    %StandupMember{
+      standup: standup,
+      team_member: team_member,
+      position: max_position(standup) + 1
+    }
     |> StandupMember.changeset(%{name: team_member.name})
     |> Repo.insert()
     |> case do
@@ -21,8 +25,17 @@ defmodule Lemonade.Teams.Standups do
         Teams.broadcast({:ok, standup}, :joined_standup)
         {:ok, standup}
 
-      error -> error
+      error ->
+        error
     end
+  end
+
+  defp max_position(standup) do
+    Repo.one(
+      from m in StandupMember,
+        where: m.standup_id == ^standup.id,
+        select: m.position |> max() |> coalesce(0)
+    )
   end
 
   def leave_standup(standup, team_member) do

@@ -23,15 +23,21 @@ defmodule Lemonade.Teams.StandupsTest do
       {:ok, standup} = Standups.leave_standup(standup, team_member)
       refute team_member.id in Enum.map(standup.standup_members, & &1.team_member_id)
     end
+  end
 
-#     test "incrementing position column" do
-#       team = create(:team)
-#       standup = create(:standup, team: team)
-#       team_member_1 = create(:team_member, team: team)
-#       team_member_2 = create(:team_member, team: team)
+  describe "standup members" do
+    test "incrementing position column" do
+      team = create(:team)
+      standup = create(:standup, team: team)
+      %{id: team_member_1_id} = team_member_1 = create(:team_member, team: team)
+      %{id: team_member_2_id} = team_member_2 = create(:team_member, team: team)
 
-#       {:ok, standup} = Standups.join_standup(standup, team_member)
-#       {:ok, standup} = Standups.join_standup(standup, team_member)
-#     end
+      {:ok, standup} = Standups.join_standup(standup, team_member_1)
+      {:ok, standup} = Standups.join_standup(standup, team_member_2)
+      assert [
+               %{team_member_id: ^team_member_1_id, position: 1},
+               %{team_member_id: ^team_member_2_id, position: 2}
+             ] = standup.standup_members
+    end
   end
 end
