@@ -70,5 +70,5 @@ defmodule Lemonade.Factory do
   def create(factory_name, attrs \\ []),
     do: build(factory_name, attrs) |> Repo.insert!()
 
-  defp uniq_int, do: System.unique_integer([:positive])
+  defp uniq_int, do: System.unique_integer()
 end
