@@ -22,7 +22,7 @@ defmodule Lemonade.TeamLiveTest do
   test "bare state", %{conn: conn} do
     {:ok, view, _html} = live(conn, @path)
 
-    assert render(view) =~ "join standup"
+    assert render(view) =~ "join-standup-link"
   end
 
   describe "standup" do
