@@ -8,7 +8,7 @@ defmodule Lemonade.Teams.Standups do
   def get_standup_by_team(team) do
     Standup
     |> Repo.get_by(team_id: team.id)
-    |> Repo.preload(standup_members: :team_member)
+    |> Repo.preload(:standup_members)
   end
 
   def join_standup(standup, team_member) do
