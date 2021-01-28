@@ -21,7 +21,7 @@ defmodule LemonadeWeb.StandupComponent do
         <% end %>
         <%= if !attending_standup?(@current_team_member, @standup) do %>
           <div class="flex flex-start">
-            <a href="#" phx-click="join-standup" phx-target="<%= @myself %>" class="join-standup-link flex flex-start items-center"><%= icon "log-in" %> <span class="ml-2">join standup</span></a>
+            <a href="#" phx-click="join-standup" phx-target="<%= @myself %>" class="join-standup-link h-20 w-20 hover:bg-gray-200 rounded-full centered text-center mr-2"><%= icon "log-in" %></a>
           </div>
         <% end %>
       </div>
