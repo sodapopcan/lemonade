@@ -16,7 +16,7 @@ defmodule Lemonade.Teams.Standups.StandupMember do
   @doc false
   def changeset(standup_member, attrs) do
     standup_member
-    |> cast(attrs, [:name])
+    |> cast(attrs, [:name, :position])
     |> validate_required([:name])
   end
 end

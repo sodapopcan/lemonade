@@ -39,4 +39,5 @@ defmodule Lemonade.Teams do
   defdelegate get_standup_by_team(team), to: Standups
   defdelegate join_standup(standup, team_member), to: Standups
   defdelegate leave_standup(standup, team_member), to: Standups
+  defdelegate shuffle_standup(standup), to: Standups
 end

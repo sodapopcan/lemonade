@@ -8,9 +8,10 @@ defmodule LemonadeWeb.StandupComponent do
     <section class="mb-4 group">
       <header class="flex flex-start items-center">
         <h1 class="pb-2 text-xl">Standup</h1>
-        <div class="px-4 pb-2 opacity-0 group-hover:opacity-100">
+        <div class="px-4 pb-2 opacity-0 flex flex-start group-hover:opacity-100">
           <%= if attending_standup?(@current_team_member, @standup) do %>
-            <a href="#" phx-click="leave-standup" phx-target="<%= @myself %>" title="leave standup" class="leave-standup-link"><%= icon("log-out") %></a>
+            <a href="#" phx-click="leave-standup" phx-target="<%= @myself %>" title="Leave standup" class="leave-standup-link ml-2"><%= icon("log-out") %></a>
+            <a href="#" phx-click="shuffle-standup" phx-target="<%= @myself %>" title="Randomize standup" class="shuffle-standup-link ml-2"><%= icon("refresh-cw") %></a>
           <% end %>
         </div>
       </header>
@@ -39,6 +40,11 @@ defmodule LemonadeWeb.StandupComponent do
     %{standup: standup, current_team_member: current_team_member} = assigns
     {:ok, _standup} = Teams.leave_standup(standup, current_team_member)
 
+    {:noreply, socket}
+  end
+
+  def handle_event("shuffle-standup", _, %{assigns: %{standup: standup}} = socket) do
+    Teams.shuffle_standup(standup)
     {:noreply, socket}
   end
 

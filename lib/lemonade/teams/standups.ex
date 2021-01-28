@@ -22,7 +22,7 @@ defmodule Lemonade.Teams.Standups do
     |> case do
       {:ok, _standup_member} ->
         standup = Repo.reload(standup) |> preload_standup_members()
-        Teams.broadcast({:ok, standup}, :joined_standup)
+        Teams.broadcast({:ok, standup}, :standup_updated)
         {:ok, standup}
 
       error ->
@@ -49,7 +49,25 @@ defmodule Lemonade.Teams.Standups do
     |> Repo.delete()
 
     {:ok, Repo.reload(standup) |> preload_standup_members()}
-    |> Teams.broadcast(:left_standup)
+    |> Teams.broadcast(:standup_updated)
+  end
+
+  @untested true
+  def shuffle_standup(standup) do
+    Repo.transaction(fn ->
+      standup.standup_members
+      |> Enum.shuffle()
+      |> Enum.with_index()
+      |> Enum.each(fn {member, index} ->
+        member
+        |> StandupMember.changeset(%{position: index + 1})
+        |> Repo.update()
+      end)
+
+      standup = standup |> Repo.reload() |> preload_standup_members()
+
+      Teams.broadcast({:ok, standup}, :standup_updated)
+    end)
   end
 
   def create_standup(team) do
