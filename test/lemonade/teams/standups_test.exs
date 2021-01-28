@@ -25,8 +25,8 @@ defmodule Lemonade.Teams.StandupsTest do
     end
   end
 
-  describe "standup members" do
-    test "incrementing position column" do
+  describe "position" do
+    test "increment position column" do
       team = create(:team)
       standup = create(:standup, team: team)
       %{id: team_member_1_id} = team_member_1 = create(:team_member, team: team)
@@ -34,9 +34,33 @@ defmodule Lemonade.Teams.StandupsTest do
 
       {:ok, standup} = Standups.join_standup(standup, team_member_1)
       {:ok, standup} = Standups.join_standup(standup, team_member_2)
+
       assert [
                %{team_member_id: ^team_member_1_id, position: 1},
                %{team_member_id: ^team_member_2_id, position: 2}
+             ] = standup.standup_members
+    end
+
+    test "get standup with preloaded members in the correct order" do
+      team = create(:team)
+      team_member = create(:team_member, team: team)
+      standup = create(:standup, team: team)
+
+      create_standup_member =
+        &create(:standup_member, standup: standup, team_member: team_member, position: &1)
+
+      %{id: id4} = create_standup_member.(4)
+      %{id: id2} = create_standup_member.(2)
+      %{id: id1} = create_standup_member.(1)
+      %{id: id3} = create_standup_member.(3)
+
+      standup = Standups.get_standup_by_team(team)
+
+      assert [
+               %{id: ^id1, position: 1},
+               %{id: ^id2, position: 2},
+               %{id: ^id3, position: 3},
+               %{id: ^id4, position: 4}
              ] = standup.standup_members
     end
   end

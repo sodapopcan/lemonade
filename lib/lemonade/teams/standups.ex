@@ -8,7 +8,7 @@ defmodule Lemonade.Teams.Standups do
   def get_standup_by_team(team) do
     Standup
     |> Repo.get_by(team_id: team.id)
-    |> Repo.preload(:standup_members)
+    |> preload_standup_members()
   end
 
   def join_standup(standup, team_member) do
@@ -21,7 +21,7 @@ defmodule Lemonade.Teams.Standups do
     |> Repo.insert()
     |> case do
       {:ok, _standup_member} ->
-        standup = Repo.reload(standup) |> Repo.preload(:standup_members)
+        standup = Repo.reload(standup) |> preload_standup_members()
         Teams.broadcast({:ok, standup}, :joined_standup)
         {:ok, standup}
 
@@ -38,12 +38,17 @@ defmodule Lemonade.Teams.Standups do
     )
   end
 
+  defp preload_standup_members(standup) do
+    standup
+    |> Repo.preload(standup_members: from(StandupMember, order_by: :position))
+  end
+
   def leave_standup(standup, team_member) do
     StandupMember
     |> Repo.get_by(team_member_id: team_member.id)
     |> Repo.delete()
 
-    {:ok, Repo.reload(standup) |> Repo.preload(:standup_members)}
+    {:ok, Repo.reload(standup) |> preload_standup_members()}
     |> Teams.broadcast(:left_standup)
   end
 

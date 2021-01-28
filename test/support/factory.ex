@@ -57,6 +57,7 @@ defmodule Lemonade.Factory do
 
   def build(:standup_member) do
     %StandupMember{
+      name: "Standup Member #{uniq_int()}",
       standup: build(:standup)
     }
   end
