@@ -40,7 +40,7 @@ defmodule LemonadeWeb.TeamLive do
         </div>
         <div class="relative" id="time-off-selector" x-data="{ open: false }">
           <a href="#" @click="open = true"><%= icon "plus" %></a>
-      <%= f = form_for @changeset, "#", x_show: "open", class: "absolute -left-2 -top-2 p-2 w-96 rounded bg-yellow-400 shadow-md", x_ref: "form", phx_submit: "book-time-off" %>
+          <%= f = form_for @changeset, "#", x_show: "open", class: "absolute -left-2 -top-2 p-2 w-96 rounded bg-yellow-400 shadow-md", x_ref: "form", phx_submit: "book-time-off" %>
             <h1>Time Off</h1>
             <div id="date-rage-picker-wrapper" phx-update="ignore" class="centered p-4">
               <input type="hidden" id="date-range-picker" />
