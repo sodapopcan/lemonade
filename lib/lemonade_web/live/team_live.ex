@@ -57,7 +57,7 @@ defmodule LemonadeWeb.TeamLive do
               </label>
             </div>
             <div class="text-right">
-              <button @click="open = false; $refs.form.reset()">Cancel</button>
+              <button type="button" @click="open = false; $refs.form.reset()">Cancel</button>
               <button type="submit">OK</button>
             </div>
           </form>
