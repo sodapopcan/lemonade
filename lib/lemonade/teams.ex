@@ -42,6 +42,10 @@ defmodule Lemonade.Teams do
     |> broadcast(:booked_vacation)
   end
 
+  def change_vacation(vacation, attrs) do
+    vacation |> Vacation.changeset(attrs)
+  end
+
   alias Lemonade.PubSub
 
   def subscribe(team_id) do

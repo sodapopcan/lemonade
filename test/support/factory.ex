@@ -2,7 +2,7 @@ defmodule Lemonade.Factory do
   alias Lemonade.Repo
   alias Lemonade.Accounts.User
   alias Lemonade.Organizations.{Organization, OrganizationMember}
-  alias Lemonade.Teams.{Team, TeamMember}
+  alias Lemonade.Teams.{Team, TeamMember, Vacation}
   alias Lemonade.Teams.Standups.{Standup, StandupMember}
 
   def build(:user) do
@@ -62,6 +62,18 @@ defmodule Lemonade.Factory do
     }
   end
 
+  def build(:vacation) do
+    team_member = create(:team_member)
+
+    %Vacation{
+      team_member: team_member,
+      team: team_member.team,
+      starts_at: naive_now(),
+      ends_at: naive_now(),
+      type: "all day"
+    }
+  end
+
   ## API
   #
   def build(factory_name, attrs),
@@ -71,7 +83,7 @@ defmodule Lemonade.Factory do
     do: build(factory_name, attrs) |> Repo.insert!()
 
   defp unique, do: System.unique_integer()
-  defp unique(string), do: "#{string} #{unique()}"
+  defp unique(string) when is_binary(string), do: "#{string} #{unique()}"
   defp unique_user(name, domain) do
     int = unique()
     name = 
@@ -82,4 +94,5 @@ defmodule Lemonade.Factory do
 
     {"#{name} #{int}", "#{email_user}#{int}@#{domain}"}
   end
+  defp naive_now(), do: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
 end

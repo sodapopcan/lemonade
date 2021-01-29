@@ -2,6 +2,7 @@ defmodule LemonadeWeb.TeamLive do
   use LemonadeWeb, :live_view
 
   alias Lemonade.{Accounts, Organizations, Teams}
+  alias Lemonade.Teams.Vacation
   alias LemonadeWeb.{LayoutComponent, StandupComponent}
 
   def mount(_, %{"user_token" => user_token}, socket) do
@@ -12,6 +13,7 @@ defmodule LemonadeWeb.TeamLive do
     standup = Teams.get_standup_by_team(team)
     current_team_member =
       Teams.get_team_member_by_organization_member(team, current_organization_member)
+    changeset = Teams.change_vacation(%Vacation{}, %{type: "all day"})
 
     if connected?(socket), do: Teams.subscribe(team.id)
 
@@ -22,7 +24,8 @@ defmodule LemonadeWeb.TeamLive do
        current_organization_member: current_organization_member,
        current_team_member: current_team_member,
        team: team,
-       standup: standup
+       standup: standup,
+       changeset: changeset
      )}
   end
 
@@ -37,24 +40,24 @@ defmodule LemonadeWeb.TeamLive do
         </div>
         <div class="relative" id="time-off-selector" x-data="{ open: false }">
           <a href="#" @click="open = true"><%= icon "plus" %></a>
-          <form x-show="open" class="absolute -left-2 -top-2 p-2 w-96 rounded bg-yellow-400 shadow-md" x-ref="form" phx-submit="book-time-off">
+      <%= f = form_for @changeset, "#", x_show: "open", class: "absolute -left-2 -top-2 p-2 w-96 rounded bg-yellow-400 shadow-md", x_ref: "form", phx_submit: "book-time-off" %>
             <h1>Time Off</h1>
             <div id="date-rage-picker-wrapper" phx-update="ignore" class="centered p-4">
               <input type="hidden" id="date-range-picker" />
-              <input type="hidden" id="vacation-starts-at" name="starts_at" />
-              <input type="hidden" id="vacation-ends-at" name="ends_at" />
+              <%= hidden_input f, :starts_at, id: "vacation-starts-at" %>
+              <%= hidden_input f, :ends_at, id: "vacation-ends-at" %>
             </div>
             <div class="flex justify-between mx-8">
               <label>
-                <input type="radio" name="type" value="all day" checked />
+                <%= radio_button f, :type, "all day" %>
                 all day
               </label>
               <label>
-                <input type="radio" name="type" value="morning" />
+                <%= radio_button f, :type, "morning" %>
                 morning
               </label>
               <label>
-                <input type="radio" name="type" value="afternoon" />
+                <%= radio_button f, :type, "afternoon" %>
                 afternoon
               </label>
             </div>
