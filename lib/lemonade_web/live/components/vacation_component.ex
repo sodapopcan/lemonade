@@ -14,13 +14,15 @@ defmodule LemonadeWeb.VacationComponent do
     ~L"""
     <div class="flex flex-start items-center">
       <%= icon "calendar", class: "w-4 h-4 mr-2" %>
-      <div class="flex items-center bold text-xs p-2">
-        <div class="font-bold centered mr-2">PF</div>
-        <div class="mr-2">Mar 10-13</div>
-      </div>
+      <%= for v <- @vacations do %>
+        <div class="flex items-center bold text-xs p-2">
+          <div class="font-bold centered mr-2"><%= initials v.name %></div>
+          <div class="mr-2">Mar 10-13</div>
+        </div>
+      <% end %>
       <div class="relative" id="time-off-selector" x-data="{ open: false }">
         <a href="#" @click="open = true"><%= icon "plus" %></a>
-      <%= f = form_for @changeset, "#", x_show: "open", class: "absolute -left-2 -top-2 p-2 w-96 rounded bg-yellow-400 shadow-md", x_ref: "form", phx_submit: "book-time-off", phx-target="<%= @myself %>" %>
+          <%= f = form_for @changeset, "#", x_show: "open", class: "absolute -left-2 -top-2 p-2 w-96 rounded bg-yellow-400 shadow-md", x_ref: "form", phx_submit: "book-time-off", phx_target: @myself %>
           <h1>Time Off</h1>
           <div id="date-rage-picker-wrapper" phx-update="ignore" class="centered p-4">
             <input type="hidden" id="date-range-picker" />
