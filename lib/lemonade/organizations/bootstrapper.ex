@@ -13,19 +13,9 @@ defmodule Lemonade.Organizations.Bootstrapper do
     result =
       Multi.new()
       |> Multi.insert(:organization, bootstrap_organization_changeset(attrs))
-      |> Multi.run(:organization_member, fn _repo, %{organization: organization} ->
-        join_organization(organization, user)
-      end)
-      |> Multi.run(:team_members, fn _repo,
-                                     %{
-                                       organization: %{teams: [team | _]},
-                                       organization_member: organization_member
-                                     } ->
-        Lemonade.Teams.join_team(team, organization_member)
-      end)
-      |> Multi.run(:standup, fn _repo, %{organization: %{teams: [team | _]}} ->
-        Standups.create_standup(team)
-      end)
+      |> Multi.run(:organization_member, fn _, %{organization: o} -> join_organization(o, user) end)
+      |> Multi.run(:team_members, &join_team/2)
+      |> Multi.run(:standup, &create_standup/2)
       |> Repo.transaction()
 
     case result do
@@ -38,13 +28,24 @@ defmodule Lemonade.Organizations.Bootstrapper do
     end
   end
 
+  def bootstrap_organization_changeset(attrs) do
+    Organization.bootstrap_changeset(attrs)
+  end
+
   def join_organization(organization, %{name: name, email: email} = user) do
     %OrganizationMember{organization: organization, user: user}
     |> OrganizationMember.changeset(%{name: name, email: email})
     |> Repo.insert()
   end
 
-  def bootstrap_organization_changeset(attrs) do
-    Organization.bootstrap_changeset(attrs)
+  defp join_team(_repo, %{
+         organization: %{teams: [team | _]},
+         organization_member: organization_member
+       }) do
+    Lemonade.Teams.join_team(team, organization_member)
+  end
+
+  defp create_standup(_repo, %{organization: %{teams: [team | _]}}) do
+    Standups.create_standup(team)
   end
 end
