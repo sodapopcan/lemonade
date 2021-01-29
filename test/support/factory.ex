@@ -6,18 +6,18 @@ defmodule Lemonade.Factory do
   alias Lemonade.Teams.Standups.{Standup, StandupMember}
 
   def build(:user) do
-    uniq_int = uniq_int()
+    {name, email} = unique_user("User", "example.com")
 
     %User{
-      name: "User #{uniq_int}",
-      email: "user#{uniq_int}@example.com",
+      name: name,
+      email: email,
       hashed_password: Bcrypt.hash_pwd_salt("valid password")
     }
   end
 
   def build(:organization) do
     %Organization{
-      name: "Team #{uniq_int()}"
+      name: unique("Team")
     }
   end
 
@@ -34,7 +34,7 @@ defmodule Lemonade.Factory do
 
   def build(:team) do
     %Team{
-      name: "Team #{uniq_int()}",
+      name: unique("Team"),
       organization: build(:organization)
     }
   end
@@ -57,7 +57,7 @@ defmodule Lemonade.Factory do
 
   def build(:standup_member) do
     %StandupMember{
-      name: "Standup Member #{uniq_int()}",
+      name: unique("Standup Member"),
       standup: build(:standup)
     }
   end
@@ -70,5 +70,16 @@ defmodule Lemonade.Factory do
   def create(factory_name, attrs \\ []),
     do: build(factory_name, attrs) |> Repo.insert!()
 
-  defp uniq_int, do: System.unique_integer()
+  defp unique, do: System.unique_integer()
+  defp unique(string), do: "#{string} #{unique()}"
+  defp unique_user(name, domain) do
+    int = unique()
+    name = 
+    email_user =
+      name
+      |> String.downcase()
+      |> String.replace(" ", "")
+
+    {"#{name} #{int}", "#{email_user}#{int}@#{domain}"}
+  end
 end
