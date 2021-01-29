@@ -18,6 +18,7 @@ import NProgress from "nprogress"
 import { LiveSocket } from "phoenix_live_view"
 import Hooks from "./hooks"
 import "alpinejs"
+import Litepicker from "litepicker"
 
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
@@ -31,13 +32,19 @@ let liveSocket = new LiveSocket("/live", Socket, {
       if (from.__x) {
         window.Alpine.clone(from.__x, to)
       }
-    }
+    },
   },
 })
 
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", (info) => NProgress.start())
 window.addEventListener("phx:page-loading-stop", (info) => NProgress.done())
+
+window.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("date-range-picker")
+  const wrapper = document.getElementById("date-range-picker-wrapper")
+  new Litepicker({ element: input, parentEl: wrapper, inlineMode: true, singleMode: false })
+})
 
 // connect if there are any LiveViews on the page
 liveSocket.connect()

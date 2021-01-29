@@ -35,20 +35,32 @@ defmodule LemonadeWeb.TeamLive do
           <div class="font-bold centered mr-2">PF</div>
           <div class="mr-2">Mar 10-13</div>
         </div>
-        <div class="relative" x-data="{ open: false }">
+        <div class="relative" id="time-off-selector" x-data="{ open: false }">
           <a href="#" @click="open = true"><%= icon "plus" %></a>
-          <div x-show="open" @click.away="open = false" class="absolute -left-2 -top-2 p-2 w-96 rounded bg-yellow-400 shadow-md">
+          <form x-show="open" class="absolute -left-2 -top-2 p-2 w-96 rounded bg-yellow-400 shadow-md" x-ref="form" phx-submit="book-time-off">
             <h1>Time Off</h1>
-            <div>
-              <button type="radio">all day</button>
+            <div id="date-rage-picker-wrapper" phx-update="ignore" class="centered p-4">
+              <input id="date-range-picker" name="daterange" class="hidden" />
             </div>
-            <div>
-              <button type="radio">morning</button>
+            <div class="flex justify-between mx-8">
+              <label>
+                <input type="radio" name="type" value="all day" checked />
+                all day
+              </label>
+              <label>
+                <input type="radio" name="type" value="morning" />
+                morning
+              </label>
+              <label>
+                <input type="radio" name="type" value="afternoon" />
+                afternoon
+              </label>
             </div>
-            <div>
-              <button type="radio">afternoon</button>
+            <div class="text-right">
+              <button @click="open = false; $refs.form.reset()">Cancel</button>
+              <button type="submit">OK</button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       <div class="px-4 pt-2">
@@ -60,5 +72,12 @@ defmodule LemonadeWeb.TeamLive do
 
   def handle_info({:standup_updated, standup}, socket) do
     {:noreply, update(socket, :standup, fn _ -> standup end)}
+  end
+
+  def handle_event("book-time-off", params, socket) do
+    IO.puts "\n#################"
+    IO.inspect(params, label: "params")
+
+    {:noreply, socket}
   end
 end
