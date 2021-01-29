@@ -2,7 +2,6 @@ defmodule LemonadeWeb.TeamLive do
   use LemonadeWeb, :live_view
 
   alias Lemonade.{Accounts, Organizations, Teams}
-  alias Lemonade.Teams.Vacation
   alias LemonadeWeb.{LayoutComponent, VacationComponent, StandupComponent}
 
   def mount(_, %{"user_token" => user_token}, socket) do
