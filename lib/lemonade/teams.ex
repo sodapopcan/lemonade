@@ -41,6 +41,21 @@ defmodule Lemonade.Teams do
     |> Repo.insert()
   end
 
+  def get_vacations_by_team(%Team{} = team) do
+    Repo.all(
+      from v in Vacation,
+        where: v.team_id == ^team.id,
+        join: m in TeamMember,
+        on: v.team_member_id == m.id,
+        select: %{
+          name: m.name,
+          starts_at: v.starts_at,
+          ends_at: v.ends_at,
+          type: v.type
+        }
+    )
+  end
+
   def change_vacation(vacation, attrs) do
     vacation |> Vacation.changeset(attrs)
   end
@@ -52,6 +67,7 @@ defmodule Lemonade.Teams do
   end
 
   def broadcast({:error, _reason} = error, _event), do: error
+
   def broadcast({:ok, %{team_id: team_id} = entity}, event) do
     Phoenix.PubSub.broadcast(PubSub, "team:#{team_id}", {event, entity})
     {:ok, entity}

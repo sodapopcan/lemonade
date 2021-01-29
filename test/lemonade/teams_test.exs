@@ -56,12 +56,36 @@ defmodule Lemonade.TeamsTest do
         })
 
       assert %{
-        team_member_id: ^team_member_id,
-        team_id: ^team_id,
+               team_member_id: ^team_member_id,
+               team_id: ^team_id,
+               starts_at: ~N[2020-01-01 00:00:00],
+               ends_at: ~N[2020-01-01 00:00:00],
+               type: "all day"
+             } = vacation
+    end
+
+    test "get by team" do
+      team = create(:team)
+      team_member = create(:team_member, name: "Philip Fry", team: team)
+
+      create(
+        :vacation,
+        team: team,
+        team_member: team_member,
         starts_at: ~N[2020-01-01 00:00:00],
-        ends_at: ~N[2020-01-01 00:00:00],
-        type: "all day"
-      } = vacation
+        ends_at: ~N[2020-01-01 00:00:00]
+      )
+
+      vacations = Teams.get_vacations_by_team(team)
+
+      assert [
+        %{
+          name: "Philip Fry",
+          starts_at: ~N[2020-01-01 00:00:00],
+          ends_at: ~N[2020-01-01 00:00:00],
+          type: "all day"
+        }
+      ] = vacations
     end
   end
 end
