@@ -40,7 +40,9 @@ defmodule LemonadeWeb.TeamLive do
           <form x-show="open" class="absolute -left-2 -top-2 p-2 w-96 rounded bg-yellow-400 shadow-md" x-ref="form" phx-submit="book-time-off">
             <h1>Time Off</h1>
             <div id="date-rage-picker-wrapper" phx-update="ignore" class="centered p-4">
-              <input id="date-range-picker" name="daterange" class="hidden" />
+              <input type="hidden" id="date-range-picker" />
+              <input type="hidden" id="vacation-starts-at" name="starts_at" />
+              <input type="hidden" id="vacation-ends-at" name="ends_at" />
             </div>
             <div class="flex justify-between mx-8">
               <label>

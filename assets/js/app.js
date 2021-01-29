@@ -43,7 +43,20 @@ window.addEventListener("phx:page-loading-stop", (info) => NProgress.done())
 window.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("date-range-picker")
   const wrapper = document.getElementById("date-range-picker-wrapper")
-  new Litepicker({ element: input, parentEl: wrapper, inlineMode: true, singleMode: false })
+  const vacationStartsAt = document.getElementById("vacation-starts-at")
+  const vacationEndsAt = document.getElementById("vacation-ends-at")
+  new Litepicker({
+    element: input,
+    parentEl: wrapper,
+    inlineMode: true,
+    singleMode: false,
+    disableWeekends: true,
+    firstDay: 0,
+    onSelect: (startsAt, endsAt) => {
+      vacationStartsAt.value = startsAt;
+      vacationEndsAt.value = endsAt;
+    }
+  })
 })
 
 // connect if there are any LiveViews on the page
