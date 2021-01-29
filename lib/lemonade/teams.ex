@@ -39,7 +39,6 @@ defmodule Lemonade.Teams do
     %Vacation{team_member: team_member, team_id: team_member.team_id}
     |> Vacation.changeset(attrs)
     |> Repo.insert()
-    |> broadcast(:booked_vacation)
   end
 
   def change_vacation(vacation, attrs) do

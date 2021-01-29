@@ -79,9 +79,9 @@ defmodule LemonadeWeb.TeamLive do
     {:noreply, update(socket, :standup, fn _ -> standup end)}
   end
 
-  def handle_event("book-time-off", params, socket) do
-    IO.puts "\n#################"
-    IO.inspect(params, label: "params")
+  def handle_event("book-time-off", %{"vacation" => attrs}, %{assigns: assigns} = socket) do
+    %{current_team_member: current_team_member} = assigns
+    Teams.book_vacation(current_team_member, attrs)
 
     {:noreply, socket}
   end

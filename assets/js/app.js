@@ -53,8 +53,8 @@ window.addEventListener("DOMContentLoaded", () => {
     disableWeekends: true,
     firstDay: 0,
     onSelect: (startsAt, endsAt) => {
-      vacationStartsAt.value = startsAt;
-      vacationEndsAt.value = endsAt;
+      vacationStartsAt.value = startsAt.toISOString()
+      vacationEndsAt.value = endsAt.toISOString()
     }
   })
 })
