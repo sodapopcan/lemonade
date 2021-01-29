@@ -5,7 +5,7 @@ defmodule Lemonade.Teams.Vacation do
   schema "vacations" do
     field :ends_at, :naive_datetime
     field :starts_at, :naive_datetime
-    field :type, :string
+    field :type, :string, default: "all day"
     belongs_to :team, Lemonade.Teams.Team
     belongs_to :team_member, Lemonade.Teams.TeamMember
 

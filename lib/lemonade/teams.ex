@@ -33,6 +33,15 @@ defmodule Lemonade.Teams do
   defdelegate leave_standup(standup, team_member), to: Standups
   defdelegate shuffle_standup(standup), to: Standups
 
+  alias Lemonade.Teams.Vacation
+
+  def book_vacation(team_member, attrs) do
+    %Vacation{team_member: team_member, team_id: team_member.team_id}
+    |> Vacation.changeset(attrs)
+    |> Repo.insert()
+    |> broadcast(:booked_vacation)
+  end
+
   alias Lemonade.PubSub
 
   def subscribe(team_id) do

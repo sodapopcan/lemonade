@@ -43,4 +43,25 @@ defmodule Lemonade.TeamsTest do
 
     assert team.id == found_team.id
   end
+
+  describe "vacations" do
+    test "booking a vacation" do
+      team_member = create(:team_member)
+      %{id: team_member_id, team_id: team_id} = team_member
+
+      {:ok, vacation} =
+        Teams.book_vacation(team_member, %{
+          starts_at: "2020-01-01 00:00:00",
+          ends_at: "2020-01-01 00:00:00"
+        })
+
+      assert %{
+        team_member_id: ^team_member_id,
+        team_id: ^team_id,
+        starts_at: ~N[2020-01-01 00:00:00],
+        ends_at: ~N[2020-01-01 00:00:00],
+        type: "all day"
+      } = vacation
+    end
+  end
 end
