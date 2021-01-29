@@ -29,6 +29,28 @@ defmodule LemonadeWeb.TeamLive do
   def render(assigns) do
     ~L"""
     <%= live_component @socket, LayoutComponent, id: "logged-in-layout", organization: @organization, current_organization_member: @current_organization_member, team: @team do %>
+      <div class="px-4 pt-2 flex flex-start items-center">
+        <%= icon "calendar", class: "w-4 h-4 mr-2" %>
+        <div class="flex items-center bold text-xs p-2">
+          <div class="font-bold centered mr-2">PF</div>
+          <div class="mr-2">Mar 10-13</div>
+        </div>
+        <div class="relative" x-data="{ open: false }">
+          <a href="#" @click="open = true"><%= icon "plus" %></a>
+          <div x-show="open" @click.away="open = false" class="absolute -left-2 -top-2 p-2 w-96 rounded bg-yellow-400 shadow-md">
+            <h1>Time Off</h1>
+            <div>
+              <button type="radio">all day</button>
+            </div>
+            <div>
+              <button type="radio">morning</button>
+            </div>
+            <div>
+              <button type="radio">afternoon</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="px-4 pt-2">
         <%= live_component @socket, StandupComponent, id: "standup", current_team_member: @current_team_member, standup: @standup %>
       </div>
