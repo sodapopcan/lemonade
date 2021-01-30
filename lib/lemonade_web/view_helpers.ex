@@ -26,7 +26,7 @@ defmodule LemonadeWeb.ViewHelpers do
   def labeled_radio_button(f, name, value) do
     ~e"""
     <label>
-      <%= radio_button f, :type, "all day" %>
+      <%= radio_button f, name, value %>
       <%= value %>
     </label>
     """
