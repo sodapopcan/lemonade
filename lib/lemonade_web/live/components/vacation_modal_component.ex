@@ -15,23 +15,26 @@ defmodule LemonadeWeb.VacationModalComponent do
     ~L"""
     <div class="relative" id="time-off-selector" x-data="{ open: false }">
       <a href="#" @click="open = true" class="centered py-1 px-2"><%= icon "plus" %></a>
-      <%= f = form_for @changeset, "#", x_show: "open", class: "absolute -left-2 -top-2 p-4 w-96 rounded bg-yellow-400 shadow-md", x_ref: "form", phx_submit: "book-time-off", phx_target: @myself %>
-        <h1>Vacation</h1>
-        <div id="date-rage-picker-wrapper" phx-update="ignore" class="centered p-4">
-          <input type="hidden" id="date-range-picker" />
-          <%= hidden_input f, :starts_at, id: "vacation-starts-at" %>
-          <%= hidden_input f, :ends_at, id: "vacation-ends-at" %>
+      <div x-show="open", class="phx-modal centered" @click="open = false">
+        <div x-on:click.stop class="p-4 w-96 rounded bg-yellow-400 shadow-md">
+          <%= f = form_for @changeset, "#", x_ref: "form", phx_submit: "book-time-off", phx_target: @myself %>
+            <h1>Vacation</h1>
+            <div id="date-rage-picker-wrapper" phx-update="ignore" class="centered p-4">
+              <input type="hidden" id="date-range-picker" />
+              <%= hidden_input f, :starts_at, id: "vacation-starts-at" %>
+              <%= hidden_input f, :ends_at, id: "vacation-ends-at" %>
+            </div>
+            <div class="flex justify-between mx-8">
+              <%= labeled_radio_button f, :type, "all day" %>
+              <%= labeled_radio_button f, :type, "morning" %>
+              <%= labeled_radio_button f, :type, "afternoon" %>
+            </div>
+            <div class="text-right">
+              <button type="button" class="button" @click="open = false; $refs.form.reset()">Cancel</button>
+              <button type="submit" class="button-primary bg-yellow-200">OK</button>
+          </form>
         </div>
-        <div class="flex justify-between mx-8">
-          <%= labeled_radio_button f, :type, "all day" %>
-          <%= labeled_radio_button f, :type, "morning" %>
-          <%= labeled_radio_button f, :type, "afternoon" %>
-        </div>
-        <div class="text-right">
-          <button type="button" class="button" @click="open = false; $refs.form.reset()">Cancel</button>
-          <button type="submit" class="button-primary bg-yellow-200">OK</button>
-        </div>
-      </form>
+      </div>
     </div>
     """
   end

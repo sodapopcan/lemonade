@@ -8,11 +8,11 @@ defmodule LemonadeWeb.VacationComponent do
       <%= live_component @socket, LemonadeWeb.VacationModalComponent, id: "vacation-modal" %>
       <div id="vacations" phx-update="append" class="flex">
         <%= for vacation <- @vacations do %>
-          <div id="<%= vacation.id %>" class="flex items-center bold text-xs mx-1 rounded shadow">
-            <div class="font-bold centered py-1 px-2 bg-gray-100">
+          <div id="<%= vacation.id %>" class="flex items-center text-xs mx-1 bg-gray-50 rounded-full shadow">
+            <div class="centered py-1 px-2 bg-gray-100 rounded-full">
               <%= initials vacation.team_member.name %>
             </div>
-            <div class="py-1 px-2 bg-gray-50">
+            <div class="py-1 px-2 mr-1 rounded-r-full">
               <%= format_date_range vacation.starts_at, vacation.ends_at %>
             </div>
           </div>
