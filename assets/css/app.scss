@@ -11,6 +11,12 @@
   .centered {
     @apply flex justify-center items-center;
   }
+  .button {
+    @apply px-4 py-2 rounded;
+  }
+  .button-primary {
+    @apply px-4 py-2 rounded;
+  }
 }
 
 @import "./roboto.scss";
