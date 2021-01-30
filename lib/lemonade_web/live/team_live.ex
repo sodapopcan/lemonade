@@ -4,6 +4,7 @@ defmodule LemonadeWeb.TeamLive do
   alias Lemonade.{Accounts, Organizations, Teams}
   alias LemonadeWeb.{LayoutComponent, VacationComponent, StandupComponent}
 
+  @impl true
   def mount(_, %{"user_token" => user_token}, socket) do
     current_user = Accounts.get_user_by_session_token(user_token)
     current_organization_member = Organizations.get_organization_member_by_user(current_user)
@@ -28,6 +29,7 @@ defmodule LemonadeWeb.TeamLive do
      )}
   end
 
+  @impl true
   def render(assigns) do
     ~L"""
     <%= live_component @socket, LayoutComponent, id: "logged-in-layout", organization: @organization, current_organization_member: @current_organization_member, team: @team do %>
@@ -42,6 +44,7 @@ defmodule LemonadeWeb.TeamLive do
     """
   end
 
+  @impl true
   def handle_info({:standup_updated, standup}, socket) do
     {:noreply, update(socket, :standup, fn _ -> standup end)}
   end

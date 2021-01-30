@@ -3,6 +3,7 @@ defmodule LemonadeWeb.StandupComponent do
 
   alias Lemonade.Teams
 
+  @impl true
   def render(assigns) do
     ~L"""
     <section class="mb-4 group">
@@ -29,6 +30,7 @@ defmodule LemonadeWeb.StandupComponent do
     """
   end
 
+  @impl true
   def handle_event("join-standup", _, %{assigns: assigns} = socket) do
     %{standup: standup, current_team_member: current_team_member} = assigns
     {:ok, _standup} = Teams.join_standup(standup, current_team_member)

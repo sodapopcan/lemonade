@@ -1,6 +1,7 @@
 defmodule LemonadeWeb.VacationComponent do
   use LemonadeWeb, :live_component
 
+  @impl true
   def render(assigns) do
     ~L"""
     <div class="flex flex-start items-center">

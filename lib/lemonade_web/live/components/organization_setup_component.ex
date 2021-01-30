@@ -1,6 +1,7 @@
 defmodule LemonadeWeb.OrganizationSetupComponent do
   use LemonadeWeb, :live_component
 
+  @impl true
   def render(assigns) do
     ~L"""
     <p>To get started, enter the name of your organization.  If this is for personal use, just use your name.</p>

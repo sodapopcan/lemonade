@@ -4,6 +4,7 @@ defmodule LemonadeWeb.VacationModalComponent do
   alias Lemonade.Teams
   alias Lemonade.Teams.Vacation
 
+  @impl true
   def mount(socket) do
     changeset = Teams.change_vacation(%Vacation{}, %{type: "all day"})
 
@@ -11,6 +12,7 @@ defmodule LemonadeWeb.VacationModalComponent do
   end
 
 
+  @impl true
   def render(assigns) do
     ~L"""
     <div class="relative" id="time-off-selector" x-data="{ open: false }">
@@ -39,6 +41,7 @@ defmodule LemonadeWeb.VacationModalComponent do
     """
   end
 
+  @impl true
   def handle_event("book-time-off", %{"vacation" => attrs}, %{assigns: assigns} = socket) do
     %{current_team_member: current_team_member} = assigns
     Teams.book_vacation(current_team_member, attrs)

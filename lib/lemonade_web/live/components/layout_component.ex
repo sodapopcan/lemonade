@@ -1,6 +1,7 @@
 defmodule LemonadeWeb.LayoutComponent do
   use LemonadeWeb, :live_component
 
+  @impl true
   def render(assigns) do
     ~L"""
     <div class="w-screen" x-data="{mainTitle: 'Lemonade'}">

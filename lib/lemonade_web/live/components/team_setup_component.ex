@@ -1,6 +1,7 @@
 defmodule LemonadeWeb.TeamSetupComponent do
   use LemonadeWeb, :live_component
 
+  @impl true
   def render(assigns) do
     ~L"""
     <p>With Lemonade being a collaborative tool, you need to create a team.</p>

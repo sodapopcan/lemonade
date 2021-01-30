@@ -4,6 +4,7 @@ defmodule LemonadeWeb.SetupLive do
 
   alias Lemonade.{Accounts, Organizations}
 
+  @impl true
   def mount(_, %{"user_token" => user_token}, socket) do
     current_user = Accounts.get_user_by_session_token(user_token)
     current_organization_member = Organizations.get_organization_member_by_user(current_user)
@@ -22,6 +23,7 @@ defmodule LemonadeWeb.SetupLive do
     end
   end
 
+  @impl true
   def render(assigns) do
     ~L"""
     <%= live_component @socket, LemonadeWeb.LayoutComponent, id: "logged-in-layout", team: nil, organization: nil, current_organization_member: @current_user do %>
@@ -68,6 +70,7 @@ defmodule LemonadeWeb.SetupLive do
     """
   end
 
+  @impl true
   def handle_event("bootstrap-organization", %{"organization" => organization_params}, socket) do
     case Organizations.bootstrap_organization(socket.assigns.current_user, organization_params) do
       {:ok, _organization} ->
