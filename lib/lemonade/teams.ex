@@ -39,21 +39,12 @@ defmodule Lemonade.Teams do
     %Vacation{team_member: team_member, team_id: team_member.team_id}
     |> Vacation.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:vacation_updated)
   end
 
   def get_vacations_by_team(%Team{} = team) do
-    Repo.all(
-      from v in Vacation,
-        where: v.team_id == ^team.id,
-        join: m in TeamMember,
-        on: v.team_member_id == m.id,
-        select: %{
-          name: m.name,
-          starts_at: v.starts_at,
-          ends_at: v.ends_at,
-          type: v.type
-        }
-    )
+    from(v in Vacation, where: v.team_id == ^team.id, preload: :team_member)
+    |> Repo.all()
   end
 
   def change_vacation(vacation, attrs) do

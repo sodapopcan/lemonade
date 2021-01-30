@@ -45,4 +45,8 @@ defmodule LemonadeWeb.TeamLive do
   def handle_info({:standup_updated, standup}, socket) do
     {:noreply, update(socket, :standup, fn _ -> standup end)}
   end
+
+  def handle_info({:vacation_updated, vacation}, socket) do
+    {:noreply, update(socket, :vacations, fn vacations-> [vacation | vacations] end)}
+  end
 end

@@ -14,12 +14,15 @@ defmodule LemonadeWeb.VacationComponent do
     ~L"""
     <div class="flex flex-start items-center">
       <%= icon "calendar", class: "w-4 h-4 mr-2" %>
-      <%= for v <- @vacations do %>
-        <div class="flex items-center bold text-xs p-2">
-          <div class="font-bold centered mr-2"><%= initials v.name %></div>
-          <div class="mr-2">Mar 10-13</div>
-        </div>
-      <% end %>
+      <div id="vacations" phx-update="append" class="flex">
+        <%= for vacation <- @vacations do %>
+          <div id="<%= vacation.id %>" class="flex items-center bold text-xs p-2">
+            <div class="font-bold centered mr-2"><%= initials vacation.team_member.name %></div>
+            <div class="mr-2"><%= format_date_range vacation.starts_at, vacation.ends_at %></div>
+          </div>
+        <% end %>
+      </div>
+
       <div class="relative" id="time-off-selector" x-data="{ open: false }">
         <a href="#" @click="open = true"><%= icon "plus" %></a>
           <%= f = form_for @changeset, "#", x_show: "open", class: "absolute -left-2 -top-2 p-2 w-96 rounded bg-yellow-400 shadow-md", x_ref: "form", phx_submit: "book-time-off", phx_target: @myself %>
@@ -59,4 +62,22 @@ defmodule LemonadeWeb.VacationComponent do
 
     {:noreply, socket}
   end
+
+  def format_date_range(starts_at, ends_at) do
+    fstarts_at = format(starts_at, "%b %-d")
+    fends_at = format_ends_at(starts_at, ends_at)
+
+    raw "#{fstarts_at}#{fends_at}"
+  end
+
+  defp format_ends_at(date, date = ends_at), do: ""
+
+  defp format_ends_at(%{month: month}, %{month: month} = ends_at) do
+    format(ends_at, "&ndash;%-d")
+  end
+
+  defp format_ends_at(starts_at, ends_at) do
+    format(ends_at, "&ndash;%b %-d")
+  end
+  defp format(date, pattern), do: Timex.format!(date, pattern, :strftime)
 end
