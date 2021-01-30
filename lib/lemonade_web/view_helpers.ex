@@ -1,4 +1,7 @@
 defmodule LemonadeWeb.ViewHelpers do
+  import Phoenix.HTML
+  import Phoenix.HTML.Form
+
   def icon(name, attrs \\ []) do
     Phoenix.HTML.raw """
       <svg class="feather-icon #{attrs[:class]}" title="#{attrs[:title]}">
@@ -18,5 +21,14 @@ defmodule LemonadeWeb.ViewHelpers do
     last = String.last(rest)
 
     "#{first}#{last}"
+  end
+
+  def labeled_radio_button(f, name, value) do
+    ~e"""
+    <label>
+      <%= radio_button f, :type, "all day" %>
+      <%= value %>
+    </label>
+    """
   end
 end
