@@ -6,7 +6,7 @@ defmodule LemonadeWeb.VacationComponent do
     ~L"""
     <div class="flex flex-start items-center">
       <%= icon "calendar", class: "w-4 h-4 mr-2" %>
-      <%= live_component @socket, LemonadeWeb.VacationModalComponent, id: "vacation-modal" %>
+      <%= live_patch icon("plus"), to: "?vacation=new" %>
       <div id="vacations" phx-update="append" class="flex">
         <%= for vacation <- @vacations do %>
           <div id="<%= vacation.id %>" class="flex items-center text-xs mx-1 bg-gray-50 rounded-full shadow">
@@ -15,7 +15,7 @@ defmodule LemonadeWeb.VacationComponent do
             </div>
             <div class="py-1 px-2 mr-1 rounded-r-full">
               <%= if @current_team_member == vacation.team_member do %>
-                <%= link format_date_range(vacation.starts_at, vacation.ends_at), to: "#" %>
+                <%= live_patch format_date_range(vacation.starts_at, vacation.ends_at), to: "?vacation=#{vacation.id}" %>
               <% else %>
                 <%= format_date_range vacation.starts_at, vacation.ends_at %>
               <% end %>
@@ -24,6 +24,7 @@ defmodule LemonadeWeb.VacationComponent do
         <% end %>
       </div>
     </div>
+    <%= live_component @socket, LemonadeWeb.VacationModalComponent, id: "vacation-modal", vacation_id: @vacation_id %>
     """
   end
 
