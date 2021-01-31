@@ -1,4 +1,4 @@
-defmodule LemonadeWeb.VacationModalComponent do
+defmodule LemonadeWeb.VacationFormComponent do
   use LemonadeWeb, :live_component
 
   alias Lemonade.Teams
