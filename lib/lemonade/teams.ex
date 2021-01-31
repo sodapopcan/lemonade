@@ -39,6 +39,7 @@ defmodule Lemonade.Teams do
   defdelegate update_vacation(vacation, attrs), to: Vacations
   defdelegate cancel_vacation(vacation), to: Vacations
   defdelegate get_vacations_by_team(team), to: Vacations
+  defdelegate get_vacations_by_team_member(team_member), to: Vacations
   defdelegate get_vacation!(id), to: Vacations
   defdelegate change_vacation(vacation, attrs), to: Vacations
 

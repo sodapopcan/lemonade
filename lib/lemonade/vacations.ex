@@ -3,7 +3,7 @@ defmodule Lemonade.Teams.Vacations do
   import Lemonade.Teams, only: [broadcast: 2]
 
   alias Lemonade.Repo
-  alias Lemonade.Teams.Team
+  alias Lemonade.Teams.{Team, TeamMember}
   alias Lemonade.Teams.Vacations.Vacation
 
   def book_vacation(team_member, attrs) do
@@ -47,8 +47,13 @@ defmodule Lemonade.Teams.Vacations do
     end
   end
 
-  def get_vacations_by_team(%Team{} = team) do
-    from(v in Vacation, where: v.team_id == ^team.id, preload: :team_member)
+  def get_vacations_by_team(%Team{id: id}) do
+    from(v in Vacation, where: v.team_id == ^id, preload: :team_member)
+    |> Repo.all()
+  end
+
+  def get_vacations_by_team_member(%TeamMember{id: id}) do
+    from(v in Vacation, where: v.team_member_id == ^id, preload: :team_member)
     |> Repo.all()
   end
 
