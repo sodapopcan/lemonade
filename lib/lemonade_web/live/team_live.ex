@@ -25,7 +25,8 @@ defmodule LemonadeWeb.TeamLive do
        current_team_member: current_team_member,
        team: team,
        standup: standup,
-       vacations: vacations
+       vacations: vacations,
+       vacation_id: nil
      )}
   end
 
@@ -43,6 +44,7 @@ defmodule LemonadeWeb.TeamLive do
           id: "vacation-component",
           current_team_member: @current_team_member,
           vacations: @vacations,
+          vacation_id: @vacation_id,
           live_action: @live_action %>
       </div>
 
@@ -57,14 +59,11 @@ defmodule LemonadeWeb.TeamLive do
   end
 
   @impl true
-  def handle_params(%{"vacation" => vacation}, _, socket) do
-    vacation = vacation == "new"
-    {:noreply, assign(socket, vacation_id: vacation)}
+  def handle_params(%{"id" => id}, _, socket) do
+    {:noreply, assign(socket, vacation_id: id)}
   end
 
-  def handle_params(_, _, socket) do
-    {:noreply, assign(socket, vacation_id: false)}
-  end
+  def handle_params(_, _, socket), do: {:noreply, socket}
 
   @impl true
   def handle_info({:standup_updated, standup}, socket) do

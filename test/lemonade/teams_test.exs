@@ -87,5 +87,12 @@ defmodule Lemonade.TeamsTest do
         }
       ] = vacations
     end
+
+    test "get by id" do
+      vacation = create(:vacation)
+      found_vacation = Teams.get_vacation!(vacation.id)
+
+      assert vacation.id == found_vacation.id
+    end
   end
 end

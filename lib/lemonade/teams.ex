@@ -42,10 +42,19 @@ defmodule Lemonade.Teams do
     |> broadcast(:vacation_updated)
   end
 
+  def update_vacation(%Vacation{} = vacation, attrs) do
+    vacation
+    |> change_vacation(attrs)
+    |> Repo.update()
+    |> broadcast(:vacation_upadted)
+  end
+
   def get_vacations_by_team(%Team{} = team) do
     from(v in Vacation, where: v.team_id == ^team.id, preload: :team_member)
     |> Repo.all()
   end
+
+  def get_vacation!(id), do: Repo.get!(Vacation, id)
 
   def change_vacation(vacation, attrs) do
     vacation |> Vacation.changeset(attrs)

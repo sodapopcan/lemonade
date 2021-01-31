@@ -15,7 +15,8 @@ defmodule LemonadeWeb.VacationComponent do
             </div>
             <div class="py-1 px-2 mr-1 rounded-r-full">
               <%= if @current_team_member == vacation.team_member do %>
-                <%= live_patch format_date_range(vacation.starts_at, vacation.ends_at), to: "?vacation=#{vacation.id}" %>
+                <%= live_patch format_date_range(vacation.starts_at, vacation.ends_at),
+                  to: Routes.team_path(@socket, :vacations, vacation.id) %>
               <% else %>
                 <%= format_date_range vacation.starts_at, vacation.ends_at %>
               <% end %>
@@ -26,7 +27,7 @@ defmodule LemonadeWeb.VacationComponent do
 
       <%= if @live_action == :vacations do %>
         <%= live_modal @socket, LemonadeWeb.VacationFormComponent,
-        id: :new,
+        id: @vacation_id || :new,
         return_to: Routes.team_path(@socket, :index) %>
       <% end %>
     </div>
