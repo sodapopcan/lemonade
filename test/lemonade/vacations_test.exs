@@ -47,6 +47,43 @@ defmodule Lemonade.Teams.VacationsTest do
              ] = vacations
     end
 
+    test "get by team, ordered by member then date" do
+      team = create(:team)
+      team_member_1 = create(:team_member, team: team)
+      team_member_2 = create(:team_member, team: team)
+
+      IO.inspect(team.id)
+      IO.inspect(team_member_1.team_id)
+
+      %{id: vacation_1_id} =
+        create(:vacation,
+          team_member: team_member_1,
+          team: team,
+          starts_at: ~N[1981-04-24 00:00:00],
+          ends_at: ~N[1981-04-30 00:00:00]
+        )
+
+      %{id: vacation_2_id} =
+        create(:vacation,
+          team_member: team_member_1,
+          team: team,
+          starts_at: ~N[1981-07-16 00:00:00],
+          ends_at: ~N[1981-07-16 00:00:00]
+        )
+
+      %{id: vacation_3_id} =
+        create(:vacation,
+          team_member: team_member_2,
+          team: team,
+          starts_at: ~N[1981-05-12 00:00:00],
+          ends_at: ~N[1981-05-30 00:00:00]
+        )
+
+      vacations = Vacations.get_vacations_by_team(team)
+
+      assert [%{id: ^vacation_1_id}, %{id: ^vacation_3_id}, %{id: ^vacation_2_id}] = vacations
+    end
+
     test "get by id" do
       vacation = create(:vacation)
       found_vacation = Vacations.get_vacation!(vacation.id)
