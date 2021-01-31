@@ -11,16 +11,16 @@ defmodule LemonadeWeb.VacationComponent do
       <%= live_patch icon("plus"), to: Routes.team_path(@socket, :vacations), id: "add-vacation-link" %>
       <div id="vacations" class="flex">
         <%= for vacation <- @vacations do %>
-          <div id="<%= vacation.id %>" class="flex items-center text-xs mx-1 bg-gray-50 rounded-full shadow">
+          <div id="<%= vacation.id %>" class="group flex items-center text-xs mx-1 bg-gray-50 rounded-full shadow">
             <div class="centered py-1 px-2 bg-gray-100 rounded-full">
               <%= initials(vacation.team_member.name) %>
             </div>
-            <div class="py-1 px-2 mr-1 rounded-r-full">
+            <div class="py-1 px-2 mr-1 rounded-r-full flex items-center">
               <%= if @current_team_member == vacation.team_member do %>
                 <%= live_patch format_date_range(vacation.starts_at, vacation.ends_at),
-                  to: Routes.team_path(@socket, :vacations, vacation.id) %>
+                  to: Routes.team_path(@socket, :vacations, vacation.id), class: "a mr-2" %>
 
-                <%= link icon("x"), to: "#", phx_click: "cancel-vacation", phx_value_id: vacation.id, phx_target: @myself %> 
+                <%= link icon("x"), to: "#", class: "a-muted", phx_click: "cancel-vacation", phx_value_id: vacation.id, phx_target: @myself %> 
               <% else %>
                 <%= format_date_range vacation.starts_at, vacation.ends_at %>
               <% end %>
