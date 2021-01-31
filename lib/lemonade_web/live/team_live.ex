@@ -63,14 +63,16 @@ defmodule LemonadeWeb.TeamLive do
     {:noreply, assign(socket, vacation_id: id)}
   end
 
-  def handle_params(_, _, socket), do: {:noreply, socket}
+  def handle_params(_, _, socket) do
+    {:noreply, socket}
+  end
 
   @impl true
   def handle_info({:standup_updated, standup}, socket) do
     {:noreply, update(socket, :standup, fn _ -> standup end)}
   end
 
-  def handle_info({:vacation_updated, vacation}, socket) do
-    {:noreply, update(socket, :vacations, fn vacations-> [vacation | vacations] end)}
+  def handle_info({:vacation_updated, _vacation}, socket) do
+    {:noreply, assign(socket, vacations: Teams.get_vacations_by_team(socket.assigns.team))}
   end
 end

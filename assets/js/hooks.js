@@ -21,6 +21,8 @@ Hooks.DateRangePicker = {
       inlineMode: true,
       singleMode: false,
       disableWeekends: true,
+      startDate: vacationStartsAt.value,
+      endDate: vacationEndsAt.value,
       firstDay: 0,
       onSelect: (startsAt, endsAt) => {
         vacationStartsAt.value = startsAt.toISOString()

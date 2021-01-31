@@ -1,13 +1,15 @@
 defmodule LemonadeWeb.VacationComponent do
   use LemonadeWeb, :live_component
 
+  alias Lemonade.Teams
+
   @impl true
   def render(assigns) do
     ~L"""
     <div class="flex flex-start items-center">
       <%= icon "calendar", class: "w-4 h-4 mr-2" %>
       <%= live_patch icon("plus"), to: Routes.team_path @socket, :vacations %>
-      <div id="vacations" phx-update="append" class="flex">
+      <div id="vacations" class="flex">
         <%= for vacation <- @vacations do %>
           <div id="<%= vacation.id %>" class="flex items-center text-xs mx-1 bg-gray-50 rounded-full shadow">
             <div class="centered py-1 px-2 bg-gray-100 rounded-full">
@@ -17,6 +19,8 @@ defmodule LemonadeWeb.VacationComponent do
               <%= if @current_team_member == vacation.team_member do %>
                 <%= live_patch format_date_range(vacation.starts_at, vacation.ends_at),
                   to: Routes.team_path(@socket, :vacations, vacation.id) %>
+
+                <%= link icon("x"), to: "#", phx_click: "cancel-vacation", phx_value_id: vacation.id, phx_target: @myself %> 
               <% else %>
                 <%= format_date_range vacation.starts_at, vacation.ends_at %>
               <% end %>
@@ -28,10 +32,18 @@ defmodule LemonadeWeb.VacationComponent do
       <%= if @live_action == :vacations do %>
         <%= live_modal @socket, LemonadeWeb.VacationFormComponent,
         id: @vacation_id || :new,
+        current_team_member: @current_team_member,
         return_to: Routes.team_path(@socket, :index) %>
       <% end %>
     </div>
     """
+  end
+
+  @impl true
+  def handle_event("cancel-vacation", %{"id" => vacation_id}, socket) do
+    Teams.get_vacation!(vacation_id) |> Teams.cancel_vacation()
+
+    {:noreply, socket}
   end
 
   defp format_date_range(starts_at, ends_at) do
