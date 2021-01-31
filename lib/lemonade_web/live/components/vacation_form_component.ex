@@ -4,6 +4,7 @@ defmodule LemonadeWeb.VacationFormComponent do
   alias Lemonade.Teams
   alias Lemonade.Teams.Vacation
 
+  @impl true
   def mount(socket) do
     changeset = Teams.change_vacation(%Vacation{}, %{type: "all day"})
 
