@@ -12,7 +12,6 @@ Hooks.Focus = {
 Hooks.DateRangePicker = {
   mounted() {
     const input = document.getElementById("date-range-picker")
-    if (!input) return
     const wrapper = document.getElementById("date-range-picker-wrapper")
     const vacationStartsAt = document.getElementById("vacation-starts-at")
     const vacationEndsAt = document.getElementById("vacation-ends-at")
