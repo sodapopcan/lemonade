@@ -40,26 +40,6 @@ let liveSocket = new LiveSocket("/live", Socket, {
 window.addEventListener("phx:page-loading-start", (info) => NProgress.start())
 window.addEventListener("phx:page-loading-stop", (info) => NProgress.done())
 
-window.addEventListener("DOMContentLoaded", () => {
-  const input = document.getElementById("date-range-picker")
-  if (!input) return;
-  const wrapper = document.getElementById("date-range-picker-wrapper")
-  const vacationStartsAt = document.getElementById("vacation-starts-at")
-  const vacationEndsAt = document.getElementById("vacation-ends-at")
-  new Litepicker({
-    element: input,
-    parentEl: wrapper,
-    inlineMode: true,
-    singleMode: false,
-    disableWeekends: true,
-    firstDay: 0,
-    onSelect: (startsAt, endsAt) => {
-      vacationStartsAt.value = startsAt.toISOString()
-      vacationEndsAt.value = endsAt.toISOString()
-    }
-  })
-})
-
 // connect if there are any LiveViews on the page
 liveSocket.connect()
 
