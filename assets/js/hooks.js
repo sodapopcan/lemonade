@@ -1,5 +1,6 @@
 const Hooks = {}
 
+const $ = (id) => document.getElementById(id)
 const listen = (element, eventName, callback) =>
   element.addEventListener(eventName, callback)
 
@@ -11,10 +12,10 @@ Hooks.Focus = {
 
 Hooks.DateRangePicker = {
   mounted() {
-    const input = document.getElementById("date-range-picker")
-    const wrapper = document.getElementById("date-range-picker-wrapper")
-    const vacationStartsAt = document.getElementById("vacation-starts-at")
-    const vacationEndsAt = document.getElementById("vacation-ends-at")
+    const input = $("date-range-picker")
+    const wrapper = $("date-range-picker-wrapper")
+    const vacationStartsAt = $("vacation-starts-at")
+    const vacationEndsAt = $("vacation-ends-at")
     new Litepicker({
       element: input,
       parentEl: wrapper,
