@@ -64,7 +64,7 @@ defmodule LemonadeWeb.TeamLive do
   end
 
   def handle_params(_, _, socket) do
-    {:noreply, socket}
+    {:noreply, assign(socket, vacation_id: nil)}
   end
 
   @impl true
