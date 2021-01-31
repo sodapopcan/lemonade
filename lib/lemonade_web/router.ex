@@ -24,6 +24,8 @@ defmodule LemonadeWeb.Router do
 
     live "/setup", SetupLive, :index
     live "/team", TeamLive, :index
+    live "/team/vacations", TeamLive, :vacations
+    live "/team/vacations/:id", TeamLive, :vacations
   end
 
   # Enables LiveDashboard only for development

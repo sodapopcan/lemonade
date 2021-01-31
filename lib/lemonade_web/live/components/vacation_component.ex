@@ -6,7 +6,7 @@ defmodule LemonadeWeb.VacationComponent do
     ~L"""
     <div class="flex flex-start items-center">
       <%= icon "calendar", class: "w-4 h-4 mr-2" %>
-      <%= live_patch icon("plus"), to: "?vacation=new" %>
+      <%= live_patch icon("plus"), to: Routes.team_path @socket, :vacations %>
       <div id="vacations" phx-update="append" class="flex">
         <%= for vacation <- @vacations do %>
           <div id="<%= vacation.id %>" class="flex items-center text-xs mx-1 bg-gray-50 rounded-full shadow">
@@ -23,8 +23,8 @@ defmodule LemonadeWeb.VacationComponent do
           </div>
         <% end %>
       </div>
+    <%= if @live_action == :vacations, do: live_modal @socket, LemonadeWeb.VacationModalComponent, return_to: Routes.team_path(@socket, :index), id: :new %>
     </div>
-    <%= live_component @socket, LemonadeWeb.VacationModalComponent, id: "vacation-modal", vacation_id: @vacation_id %>
     """
   end
 

@@ -25,21 +25,32 @@ defmodule LemonadeWeb.TeamLive do
        current_team_member: current_team_member,
        team: team,
        standup: standup,
-       vacations: vacations,
-       vacation_id: false
+       vacations: vacations
      )}
   end
 
   @impl true
   def render(assigns) do
     ~L"""
-    <%= live_component @socket, LayoutComponent, id: "logged-in-layout", organization: @organization, current_organization_member: @current_organization_member, team: @team do %>
+    <%= live_component @socket, LayoutComponent,
+      id: "logged-in-layout",
+      organization: @organization,
+      current_organization_member: @current_organization_member,
+      team: @team do %>
+
       <div class="px-4 pt-2">
-        <%= live_component @socket, VacationComponent, id: "vacation-component", current_team_member: @current_team_member, vacations: @vacations, vacation_id: @vacation_id %>
+        <%= live_component @socket, VacationComponent,
+          id: "vacation-component",
+          current_team_member: @current_team_member,
+          vacations: @vacations,
+          live_action: @live_action %>
       </div>
 
       <div class="px-4 pt-2">
-        <%= live_component @socket, StandupComponent, id: "standup", current_team_member: @current_team_member, standup: @standup %>
+        <%= live_component @socket, StandupComponent,
+          id: "standup",
+          current_team_member: @current_team_member,
+          standup: @standup %>
       </div>
     <% end %>
     """
