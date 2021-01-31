@@ -33,59 +33,14 @@ defmodule Lemonade.Teams do
   defdelegate leave_standup(standup, team_member), to: Standups
   defdelegate shuffle_standup(standup), to: Standups
 
-  alias Lemonade.Teams.Vacation
+  alias Lemonade.Teams.Vacations
 
-  def book_vacation(team_member, attrs) do
-    %Vacation{team_member: team_member, team_id: team_member.team_id}
-    |> Vacation.changeset(attrs)
-    |> Repo.insert()
-    |> case do
-      {:ok, vacation} ->
-        {:ok, vacation |> Repo.preload(:team_member)}
-        |> broadcast(:vacation_updated)
-
-      error ->
-        error
-    end
-  end
-
-  def update_vacation(%Vacation{} = vacation, attrs) do
-    vacation
-    |> change_vacation(attrs)
-    |> Repo.update()
-    |> case do
-      {:ok, vacation} ->
-        {:ok, vacation |> Repo.preload(:team_member)}
-        |> broadcast(:vacation_updated)
-
-      error ->
-        error
-    end
-  end
-
-  def cancel_vacation(%Vacation{} = vacation) do
-    vacation
-    |> change_vacation(%{})
-    |> Repo.delete()
-    |> case do
-      {:ok, vacation} ->
-        {:ok, vacation} |> broadcast(:vacation_updated)
-
-      error ->
-        error
-    end
-  end
-
-  def get_vacations_by_team(%Team{} = team) do
-    from(v in Vacation, where: v.team_id == ^team.id, preload: :team_member)
-    |> Repo.all()
-  end
-
-  def get_vacation!(id), do: Repo.get!(Vacation, id)
-
-  def change_vacation(vacation, attrs) do
-    vacation |> Vacation.changeset(attrs)
-  end
+  defdelegate book_vacation(team_member, attrs), to: Vacations
+  defdelegate update_vacation(vacation, attrs), to: Vacations
+  defdelegate cancel_vacation(vacation), to: Vacations
+  defdelegate get_vacations_by_team(team), to: Vacations
+  defdelegate get_vacation!(id), to: Vacations
+  defdelegate change_vacation(vacation, attrs), to: Vacations
 
   alias Lemonade.PubSub
 

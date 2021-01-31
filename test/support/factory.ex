@@ -2,8 +2,9 @@ defmodule Lemonade.Factory do
   alias Lemonade.Repo
   alias Lemonade.Accounts.User
   alias Lemonade.Organizations.{Organization, OrganizationMember}
-  alias Lemonade.Teams.{Team, TeamMember, Vacation}
+  alias Lemonade.Teams.{Team, TeamMember}
   alias Lemonade.Teams.Standups.{Standup, StandupMember}
+  alias Lemonade.Teams.Vacations.Vacation
 
   def build(:user) do
     {name, email} = unique_user("User", "example.com")

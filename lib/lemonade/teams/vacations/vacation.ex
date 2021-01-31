@@ -1,4 +1,4 @@
-defmodule Lemonade.Teams.Vacation do
+defmodule Lemonade.Teams.Vacations.Vacation do
   use Lemonade.Schema
   import Ecto.Changeset
 

@@ -8,7 +8,7 @@ defmodule LemonadeWeb.VacationComponent do
     ~L"""
     <div class="flex flex-start items-center">
       <%= icon "calendar", class: "w-4 h-4 mr-2" %>
-      <%= live_patch icon("plus"), to: Routes.team_path @socket, :vacations %>
+      <%= live_patch icon("plus"), to: Routes.team_path(@socket, :vacations), id: "add-vacation-link" %>
       <div id="vacations" class="flex">
         <%= for vacation <- @vacations do %>
           <div id="<%= vacation.id %>" class="flex items-center text-xs mx-1 bg-gray-50 rounded-full shadow">

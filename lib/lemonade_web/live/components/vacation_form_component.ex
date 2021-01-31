@@ -2,7 +2,7 @@ defmodule LemonadeWeb.VacationFormComponent do
   use LemonadeWeb, :live_component
 
   alias Lemonade.Teams
-  alias Lemonade.Teams.Vacation
+  alias Lemonade.Teams.Vacations.Vacation
 
   @impl true
   def update(%{id: :new, current_team_member: current_team_member}, socket) do
