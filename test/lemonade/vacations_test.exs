@@ -38,13 +38,13 @@ defmodule Lemonade.Teams.VacationsTest do
       vacations = Vacations.get_vacations_by_team(team)
 
       assert [
-        %{
-          team_member: %{name: "Philip Fry"},
-          starts_at: ~N[2020-01-01 00:00:00],
-          ends_at: ~N[2020-01-01 00:00:00],
-          type: "all day"
-        }
-      ] = vacations
+               %{
+                 team_member: %{name: "Philip Fry"},
+                 starts_at: ~N[2020-01-01 00:00:00],
+                 ends_at: ~N[2020-01-01 00:00:00],
+                 type: "all day"
+               }
+             ] = vacations
     end
 
     test "get by id" do
