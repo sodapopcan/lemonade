@@ -51,7 +51,7 @@ defmodule Lemonade.Teams.Vacations do
     Repo.all(
       from v in Vacation,
         where: v.team_id == ^id,
-        order_by: [:starts_at, :team_member_id],
+        order_by: :starts_at,
         preload: :team_member
     )
   end
