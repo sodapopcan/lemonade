@@ -13,15 +13,12 @@ defmodule LemonadeWeb.VacationFormComponent do
 
   def update(%{id: id, current_team_member: current_team_member}, socket) do
     vacation = Teams.get_vacation!(id)
+    vacations = get_other_vacation_days(current_team_member, vacation)
     changeset = Teams.change_vacation(vacation, %{})
-    vacations =
-    Teams.get_vacations_by_team_member(current_team_member)
-      |> Enum.reject(fn %{id: id} -> vacation.id == id end)
-      |> Enum.map(&extract_dates/1)
 
     {:ok,
       socket
-      |> assign(changeset: changeset, vacation: vacation)
+      |> assign(vacation: vacation, changeset: changeset)
       |> push_event("vacations", %{vacations: vacations})}
   end
 
@@ -68,6 +65,12 @@ defmodule LemonadeWeb.VacationFormComponent do
 
   defp submit_action(%{data: %{id: nil}}), do: "book-vacation"
   defp submit_action(_changeset), do: "update-vacation"
+
+  defp get_other_vacation_days(team_member, vacation) do
+    Teams.get_vacations_by_team_member(team_member)
+      |> Enum.reject(fn %{id: id} -> vacation.id == id end)
+      |> Enum.map(&extract_dates/1)
+  end
 
   defp extract_dates(%{starts_at: starts_at, ends_at: ends_at}) do
     [format_date(starts_at), format_date(ends_at)]
