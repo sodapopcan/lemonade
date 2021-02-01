@@ -4,8 +4,8 @@ defmodule Lemonade.Teams.TeamPresence do
     pubsub_server: Lemonade.PubSub
 
   def start_tracking(pid, team_member, subscribe) do
-    {:ok, _} = track(pid, topic(team_member), team_member.id, %{team_member_id: team_member.id})
     subscribe.(topic(team_member))
+    {:ok, _} = track(pid, topic(team_member), team_member.id, %{team_member_id: team_member.id})
   end
 
   def list_team_member_ids(team_member) do
