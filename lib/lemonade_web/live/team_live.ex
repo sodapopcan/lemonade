@@ -14,12 +14,13 @@ defmodule LemonadeWeb.TeamLive do
     standup = Teams.get_standup_by_team(team)
     current_team_member = Teams.get_team_member_by_organization_member(team, current_organization_member)
     vacations = Teams.get_vacations_by_team(team)
-    online_team_member_ids = TeamPresence.list_team_member_ids(current_team_member)
 
     if connected?(socket) do
       TeamPresence.start_tracking(self(), current_team_member)
       Teams.subscribe(team.id)
     end
+
+    online_team_member_ids = TeamPresence.list_team_member_ids(current_team_member)
 
     {:ok,
      assign(
