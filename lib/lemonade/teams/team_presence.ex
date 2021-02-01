@@ -16,6 +16,6 @@ defmodule Lemonade.Teams.TeamPresence do
   end
 
   defp topic(team_member) do
-    "teams:#{team_member.team_id}"
+    "team_presence:#{team_member.team_id}"
   end
 end
