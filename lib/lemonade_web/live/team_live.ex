@@ -18,11 +18,7 @@ defmodule LemonadeWeb.TeamLive do
 
     if connected?(socket) do
       LemonadeWeb.Endpoint.subscribe("teams:#{team.id}")
-      TeamPresence.track_team_member(
-        "teams:#{team.id}",
-        current_team_member.id, %{
-          team_member_id: current_team_member.id
-        })
+      TeamPresence.start_tracking(self(), current_team_member)
 
       Teams.subscribe(team.id)
     end
