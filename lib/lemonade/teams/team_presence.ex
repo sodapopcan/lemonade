@@ -5,16 +5,14 @@ defmodule Lemonade.Teams.TeamPresence do
 
   def start_tracking(pid, team_member, subscribe) do
     subscribe.(topic(team_member))
-    {:ok, _} = track(pid, topic(team_member), team_member.id, %{team_member_id: team_member.id})
+    {:ok, _} = track(pid, topic(team_member), team_member.id, %{})
   end
 
   def list_team_member_ids(team_member) do
     team_member
     |> topic()
     |> list()
-    |> Enum.map(fn {_id, data} ->
-      List.first(data[:metas])[:team_member_id]
-    end)
+    |> Map.keys()
   end
 
   defp topic(team_member) do
