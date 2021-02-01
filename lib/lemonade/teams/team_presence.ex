@@ -3,8 +3,8 @@ defmodule Lemonade.Teams.TeamPresence do
     otp_app: :lemonade,
     pubsub_server: Lemonade.PubSub
 
-  def start_tracking(pid, team_member, subscribe) do
-    subscribe.(topic(team_member))
+  def start_tracking(pid, team_member) do
+    Phoenix.PubSub.subscribe(Lemonade.PubSub, topic(team_member))
     {:ok, _} = track(pid, topic(team_member), team_member.id, %{})
   end
 

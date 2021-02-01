@@ -1,7 +1,6 @@
 defmodule LemonadeWeb.TeamLive do
   use LemonadeWeb, :live_view
 
-  alias LemonadeWeb.Endpoint
   alias LemonadeWeb.{LayoutComponent, VacationComponent, StandupComponent}
   alias Lemonade.{Accounts, Organizations, Teams}
   alias Lemonade.Teams.TeamPresence
@@ -18,7 +17,7 @@ defmodule LemonadeWeb.TeamLive do
     online_team_member_ids = TeamPresence.list_team_member_ids(current_team_member)
 
     if connected?(socket) do
-      TeamPresence.start_tracking(self(), current_team_member, &Endpoint.subscribe/1)
+      TeamPresence.start_tracking(self(), current_team_member)
       Teams.subscribe(team.id)
     end
 
