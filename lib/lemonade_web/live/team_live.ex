@@ -3,7 +3,7 @@ defmodule LemonadeWeb.TeamLive do
 
   alias Lemonade.{Accounts, Organizations, Teams}
   alias LemonadeWeb.{LayoutComponent, VacationComponent, StandupComponent}
-  alias Lemonade.Teams.TeamMemberPresence
+  alias Lemonade.Teams.TeamPresence
 
   @impl true
   def mount(_, %{"user_token" => user_token}, socket) do
@@ -14,11 +14,11 @@ defmodule LemonadeWeb.TeamLive do
     standup = Teams.get_standup_by_team(team)
     current_team_member = Teams.get_team_member_by_organization_member(team, current_organization_member)
     vacations = Teams.get_vacations_by_team(team)
-    online_team_member_ids = TeamMemberPresence.list_team_member_ids("teams:#{team.id}")
+    online_team_member_ids = TeamPresence.list_team_member_ids("teams:#{team.id}")
 
     if connected?(socket) do
       LemonadeWeb.Endpoint.subscribe("teams:#{team.id}")
-      TeamMemberPresence.track_team_member(
+      TeamPresence.track_team_member(
         "teams:#{team.id}",
         current_team_member.id, %{
           team_member_id: current_team_member.id
@@ -89,7 +89,7 @@ defmodule LemonadeWeb.TeamLive do
   end
 
   def handle_info(%{event: "presence_diff"}, socket) do
-    online_team_member_ids = TeamMemberPresence.list_team_member_ids("teams:#{socket.assigns.team.id}")
+    online_team_member_ids = TeamPresence.list_team_member_ids("teams:#{socket.assigns.team.id}")
 
     {:noreply, assign(socket, :online_team_member_ids, online_team_member_ids)}
   end

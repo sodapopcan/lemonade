@@ -1,4 +1,4 @@
-defmodule Lemonade.Teams.TeamMemberPresence do
+defmodule Lemonade.Teams.TeamPresence do
   use Phoenix.Presence,
     otp_app: :lemonade,
     pubsub_server: Lemonade.PubSub

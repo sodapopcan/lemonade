@@ -14,7 +14,7 @@ defmodule Lemonade.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Lemonade.PubSub},
       # Start the Presence Server
-      Lemonade.Teams.TeamMemberPresence,
+      Lemonade.Teams.TeamPresence,
       # Start the Endpoint (http/https)
       LemonadeWeb.Endpoint
       # Start a worker by calling: Lemonade.Worker.start_link(arg)
