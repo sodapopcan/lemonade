@@ -3,6 +3,7 @@ defmodule LemonadeWeb.TeamLive do
 
   alias Lemonade.{Accounts, Organizations, Teams}
   alias LemonadeWeb.{LayoutComponent, VacationComponent, StandupComponent}
+  alias Lemonade.Teams.TeamMemberPresence
 
   @impl true
   def mount(_, %{"user_token" => user_token}, socket) do
@@ -11,11 +12,20 @@ defmodule LemonadeWeb.TeamLive do
     organization = Organizations.get_organization_by_organization_member(current_organization_member)
     team = Teams.get_team_by_organization(organization)
     standup = Teams.get_standup_by_team(team)
-    current_team_member =
-      Teams.get_team_member_by_organization_member(team, current_organization_member)
+    current_team_member = Teams.get_team_member_by_organization_member(team, current_organization_member)
     vacations = Teams.get_vacations_by_team(team)
+    online_team_member_ids = TeamMemberPresence.list_team_member_ids("teams:#{team.id}")
 
-    if connected?(socket), do: Teams.subscribe(team.id)
+    if connected?(socket) do
+      LemonadeWeb.Endpoint.subscribe("teams:#{team.id}")
+      TeamMemberPresence.track_team_member(
+        "teams:#{team.id}",
+        current_team_member.id, %{
+          team_member_id: current_team_member.id
+        })
+
+      Teams.subscribe(team.id)
+    end
 
     {:ok,
      assign(
@@ -23,6 +33,7 @@ defmodule LemonadeWeb.TeamLive do
        organization: organization,
        current_organization_member: current_organization_member,
        current_team_member: current_team_member,
+       online_team_member_ids: online_team_member_ids,
        team: team,
        standup: standup,
        vacations: vacations,
@@ -52,6 +63,7 @@ defmodule LemonadeWeb.TeamLive do
         <%= live_component @socket, StandupComponent,
           id: "standup",
           current_team_member: @current_team_member,
+          online_team_member_ids: @online_team_member_ids,
           standup: @standup %>
       </div>
     <% end %>
@@ -74,5 +86,11 @@ defmodule LemonadeWeb.TeamLive do
 
   def handle_info({:vacation_updated, _vacation}, socket) do
     {:noreply, assign(socket, vacations: Teams.get_vacations_by_team(socket.assigns.team))}
+  end
+
+  def handle_info(%{event: "presence_diff", payload: payload}, socket) do
+    online_team_member_ids = TeamMemberPresence.list_team_member_ids("teams:#{socket.assigns.team.id}")
+
+    {:noreply, assign(socket, :online_team_member_ids, online_team_member_ids)}
   end
 end
