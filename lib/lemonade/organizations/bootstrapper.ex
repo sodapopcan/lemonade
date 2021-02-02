@@ -13,7 +13,9 @@ defmodule Lemonade.Organizations.Bootstrapper do
     result =
       Multi.new()
       |> Multi.insert(:organization, bootstrap_organization_changeset(attrs))
-      |> Multi.run(:organization_member, fn _, %{organization: o} -> join_organization(o, user) end)
+      |> Multi.run(:organization_member, fn _, %{organization: organization} ->
+        join_organization(organization, user)
+      end)
       |> Multi.run(:team_members, &join_team/2)
       |> Multi.run(:standup, &create_standup/2)
       |> Repo.transaction()
@@ -21,7 +23,8 @@ defmodule Lemonade.Organizations.Bootstrapper do
     case result do
       {:ok, %{organization: organization}} ->
         {:ok,
-         organization |> Repo.preload([:organization_members, teams: [:team_members, :standup]])}
+         organization
+         |> Repo.preload([:organization_members, teams: [:team_members, :standup]])}
 
       {:error, _, changeset, _} ->
         {:error, changeset}
