@@ -47,7 +47,7 @@ defmodule Lemonade.Teams.VacationsTest do
              ] = vacations
     end
 
-    test "get by team, ordered by member then date" do
+    test "get by team, ordered by date" do
       team = create(:team)
       team_member_1 = create(:team_member, team: team)
       team_member_2 = create(:team_member, team: team)
