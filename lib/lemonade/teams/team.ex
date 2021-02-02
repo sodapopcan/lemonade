@@ -8,6 +8,7 @@ defmodule Lemonade.Teams.Team do
 
   schema "teams" do
     field :name, :string
+    field :time_zone, :string, default: "UTC"
     belongs_to :organization, Organization
     has_many :team_members, TeamMember
     has_one :standup, Standup
