@@ -52,9 +52,6 @@ defmodule Lemonade.Teams.VacationsTest do
       team_member_1 = create(:team_member, team: team)
       team_member_2 = create(:team_member, team: team)
 
-      IO.inspect(team.id)
-      IO.inspect(team_member_1.team_id)
-
       %{id: vacation_1_id} =
         create(:vacation,
           team_member: team_member_1,
