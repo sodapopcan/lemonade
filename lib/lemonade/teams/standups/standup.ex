@@ -5,6 +5,9 @@ defmodule Lemonade.Teams.Standups.Standup do
   alias Lemonade.Teams.Standups.StandupMember
 
   schema "standups" do
+    field :starts_at, :time
+    field :randomized, :boolean, default: false
+    field :last_randomized_at, :naive_datetime
     belongs_to :team, Lemonade.Teams.Team
     has_many :standup_members, StandupMember
 
@@ -14,7 +17,7 @@ defmodule Lemonade.Teams.Standups.Standup do
   @doc false
   def changeset(standup, attrs) do
     standup
-    |> cast(attrs, [])
+    |> cast(attrs, [:starts_at, :randomized])
     |> validate_required([])
   end
 end

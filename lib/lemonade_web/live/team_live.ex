@@ -61,6 +61,13 @@ defmodule LemonadeWeb.TeamLive do
           online_team_member_ids: @online_team_member_ids,
           standup: @standup %>
       </div>
+
+      <%= if @live_action == :settings do %>
+        <%= live_modal @socket, LemonadeWeb.TeamSettingsFormComponent,
+        id: "team-settings",
+        current_team_member: @current_team_member,
+        return_to: Routes.team_path(@socket, :index) %>
+      <% end %>
     <% end %>
     """
   end
