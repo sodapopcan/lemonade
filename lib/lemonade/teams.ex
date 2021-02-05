@@ -51,8 +51,10 @@ defmodule Lemonade.Teams do
             broadcast({:ok, team |> Repo.reload()}, :team_updated)
 
           _ ->
-            {:ok, team}
+            nil
         end
+
+        {:ok, team}
 
       error ->
         error

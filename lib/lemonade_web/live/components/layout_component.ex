@@ -15,7 +15,9 @@ defmodule LemonadeWeb.LayoutComponent do
         </div>
         <div>
           <a href="#" class="inline-block flex items-center" @click="teamMenuOpen = true">
-            <span class="mr-1"><%= @team.name %></span>
+            <%= if @team do %>
+              <span class="mr-1"><%= @team.name %></span>
+            <% end %>
             <%= icon("chevron-down") %>
           </a>
           <ul class="absolute right-0 rounded border border-yellow-500 bg-yellow-400 p-2" x-show="teamMenuOpen" @click.away="teamMenuOpen = false">
