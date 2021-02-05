@@ -20,6 +20,7 @@ defmodule Lemonade.Teams.Team do
   def changeset(team, attrs) do
     team
     |> cast(attrs, [:name])
+    |> cast_assoc(:standup)
     |> validate_required([:name])
     |> validate_length(:name, min: 2, max: 36)
     |> unique_constraint([:name, :organization_id])

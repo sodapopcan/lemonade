@@ -17,7 +17,7 @@ defmodule Lemonade.Teams.Standups.Standup do
   @doc false
   def changeset(standup, attrs) do
     standup
-    |> cast(attrs, [:starts_at, :randomized])
+    |> cast(attrs, [:starts_at, :randomized, :last_randomized_at])
     |> validate_required([])
   end
 end

@@ -11,7 +11,7 @@ defmodule LemonadeWeb.TeamLive do
     current_organization_member = Organizations.get_organization_member_by_user(current_user)
     organization = Organizations.get_organization_by_organization_member(current_organization_member)
     team = Teams.get_team_by_organization(organization)
-    standup = Teams.get_standup_by_team(team)
+    standup = team.standup
     current_team_member = Teams.get_team_member_by_organization_member(team, current_organization_member)
     vacations = Teams.get_vacations_by_team(team)
 
@@ -66,6 +66,7 @@ defmodule LemonadeWeb.TeamLive do
         <%= live_modal @socket, LemonadeWeb.TeamSettingsFormComponent,
         id: "team-settings",
         current_team_member: @current_team_member,
+        team: @team,
         return_to: Routes.team_path(@socket, :index) %>
       <% end %>
     <% end %>
@@ -82,6 +83,10 @@ defmodule LemonadeWeb.TeamLive do
   end
 
   @impl true
+  def handle_info({:team_updated, team}, socket) do
+    {:noreply, update(socket, :team, fn _ -> team end)}
+  end
+
   def handle_info({:standup_updated, standup}, socket) do
     {:noreply, update(socket, :standup, fn _ -> standup end)}
   end

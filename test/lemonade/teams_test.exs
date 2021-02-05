@@ -43,4 +43,11 @@ defmodule Lemonade.TeamsTest do
 
     assert team.id == found_team.id
   end
+
+  test "update a team", %{team: team} do
+    attrs = %{standup: %{id: team.standup.id, starts_at: "10:00"}}
+    {:ok, team} = Teams.update_team(team, attrs)
+
+    assert team.standup.starts_at == ~T[10:00:00]
+  end
 end

@@ -7,6 +7,7 @@ defmodule Lemonade.Teams do
   def get_team_by_organization(%{id: id}) do
     Team
     |> Repo.get_by(organization_id: id)
+    |> Repo.preload([standup: :standup_members])
   end
 
   def create_team(organization, attrs) do
@@ -26,12 +27,50 @@ defmodule Lemonade.Teams do
     |> Repo.insert()
   end
 
+  def edit_team_changeset(team) do
+    team
+    |> Repo.preload(:standup)
+    |> change_team()
+  end
+
+  def update_team(team, attrs \\ %{}) do
+    changeset =
+      team
+      |> Repo.preload(:standup)
+      |> change_team(attrs)
+
+    changeset
+    |> Repo.update()
+    |> case do
+      {:ok, team} ->
+        case changeset do
+          %{changes: %{standup: _standup}} ->
+            broadcast({:ok, team.standup |> Repo.reload() |> Repo.preload(:standup_members)}, :standup_updated)
+
+          %{changes: %{name: _name}} ->
+            broadcast({:ok, team |> Repo.reload()}, :team_updated)
+
+          _ ->
+            {:ok, team}
+        end
+
+      error ->
+        error
+    end
+  end
+
+  def change_team(team, attrs \\ %{}) do
+    team
+    |> Team.changeset(attrs)
+  end
+
   alias Lemonade.Teams.Standups
 
   defdelegate get_standup_by_team(team), to: Standups
   defdelegate join_standup(standup, team_member), to: Standups
   defdelegate leave_standup(standup, team_member), to: Standups
   defdelegate shuffle_standup(standup), to: Standups
+  defdelegate get_all_standups(), to: Standups
 
   alias Lemonade.Teams.Vacations
 
@@ -52,6 +91,11 @@ defmodule Lemonade.Teams do
   def broadcast({:error, _reason} = error, _event), do: error
 
   def broadcast({:ok, %{team_id: team_id} = entity}, event) do
+    Phoenix.PubSub.broadcast(PubSub, "team:#{team_id}", {event, entity})
+    {:ok, entity}
+  end
+
+  def broadcast({:ok, %{id: team_id} = entity}, event) do
     Phoenix.PubSub.broadcast(PubSub, "team:#{team_id}", {event, entity})
     {:ok, entity}
   end
