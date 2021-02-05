@@ -2,14 +2,13 @@ defmodule LemonadeWeb.TeamLive do
   use LemonadeWeb, :live_view
 
   alias LemonadeWeb.{LayoutComponent, VacationComponent, StandupComponent}
-  alias Lemonade.{Accounts, Organizations, Teams}
+  alias Lemonade.{Teams}
   alias Lemonade.Teams.TeamPresence
 
   @impl true
   def mount(_, %{"user_token" => user_token}, socket) do
-    current_user = Accounts.get_user_by_session_token(user_token)
-    current_organization_member = Organizations.get_organization_member_by_user(current_user)
-    organization = Organizations.get_organization_by_organization_member(current_organization_member)
+    current_organization_member = Lemonade.Tenancy.get_organization_member_from_user_token(user_token)
+    organization = current_organization_member.organization
     team = Teams.get_team_by_organization(organization)
     standup = team.standup
     current_team_member = Teams.get_team_member_by_organization_member(team, current_organization_member)
