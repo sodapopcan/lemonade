@@ -62,6 +62,14 @@ defmodule Lemonade.Teams.Standups do
     |> Repo.insert()
   end
 
+  @doc """
+  CAUTION: Fetches ALL standups.
+  Used by StandupWorker to populate its db.
+  """
+  def get_all_standups() do
+    Repo.all(Standup)
+  end
+
   defp broadcast(standup) do
     {:ok, reload_standup(standup)}
     |> Teams.broadcast(:standup_updated)

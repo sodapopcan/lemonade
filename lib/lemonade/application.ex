@@ -16,9 +16,9 @@ defmodule Lemonade.Application do
       # Start the Presence Server
       Lemonade.Teams.TeamPresence,
       # Start the Endpoint (http/https)
-      LemonadeWeb.Endpoint
+      LemonadeWeb.Endpoint,
       # Start a worker by calling: Lemonade.Worker.start_link(arg)
-      # {Lemonade.Worker, arg}
+      {Lemonade.Teams.Standups.StandupWorker, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
