@@ -91,14 +91,14 @@ defmodule Lemonade.Teams.Standups do
       m in StandupMember,
       left_join: v in subquery(vacation_subquery()),
       on: v.team_member_id == m.team_member_id,
-      order_by: [desc: v.starts_at, asc: m.position],
-      group_by: [m.id, v.starts_at],
+      group_by: [m.id, v.on_vacation],
+      order_by: [desc: v.on_vacation, asc: m.position],
       select: %StandupMember{
         id: m.id,
         position: m.position,
         team_member_id: m.team_member_id,
         name: m.name,
-        on_vacation: not is_nil(v.starts_at)
+        on_vacation: v.on_vacation
       }
     )
   end
@@ -108,8 +108,8 @@ defmodule Lemonade.Teams.Standups do
       v in Lemonade.Teams.Vacations.Vacation,
       where: ^DateTime.to_date(Timex.now()) >= fragment("?::date", v.starts_at),
       where: ^DateTime.to_date(Timex.now()) <= fragment("?::date", v.ends_at),
-      order_by: [desc: :starts_at],
-      limit: 1
+      order_by: :starts_at,
+      select: %{on_vacation: true, team_member_id: v.team_member_id, id: v.id}
     )
   end
 end
