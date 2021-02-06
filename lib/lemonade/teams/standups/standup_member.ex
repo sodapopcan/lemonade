@@ -7,6 +7,7 @@ defmodule Lemonade.Teams.Standups.StandupMember do
   schema "standup_members" do
     field :name, :string
     field :position, :integer, default: 0
+    field :on_vacation, :boolean, virtual: true
     belongs_to :standup, Standups.Standup
     belongs_to :team_member, TeamMember
 

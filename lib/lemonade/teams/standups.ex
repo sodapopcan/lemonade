@@ -83,6 +83,33 @@ defmodule Lemonade.Teams.Standups do
 
   defp preload_standup_members(standup) do
     standup
-    |> Repo.preload(standup_members: from(StandupMember, order_by: :position))
+    |> Repo.preload([standup_members: standup_members_subquery()])
+  end
+
+  defp standup_members_subquery do
+    from(
+      m in StandupMember,
+      left_join: v in subquery(vacation_subquery()),
+      on: v.team_member_id == m.team_member_id,
+      order_by: [desc: v.starts_at, asc: m.position],
+      group_by: [m.id, v.starts_at],
+      select: %StandupMember{
+        id: m.id,
+        position: m.position,
+        team_member_id: m.team_member_id,
+        name: m.name,
+        on_vacation: not is_nil(v.starts_at)
+      }
+    )
+  end
+
+  defp vacation_subquery do
+    from(
+      v in Lemonade.Teams.Vacations.Vacation,
+      where: ^DateTime.to_date(Timex.now()) >= fragment("?::date", v.starts_at),
+      where: ^DateTime.to_date(Timex.now()) <= fragment("?::date", v.ends_at),
+      order_by: [desc: :starts_at],
+      limit: 1
+    )
   end
 end

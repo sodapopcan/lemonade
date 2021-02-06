@@ -10,7 +10,7 @@ defmodule LemonadeWeb.TeamLive do
     current_organization_member = Tenancy.get_organization_member_from_user_token(user_token)
     organization = current_organization_member.organization
     team = Teams.get_team_by_organization(organization)
-    standup = team.standup
+    standup = Teams.get_standup_by_team(team)
 
     current_team_member =
       Teams.get_team_member_by_organization_member(team, current_organization_member)
@@ -94,7 +94,10 @@ defmodule LemonadeWeb.TeamLive do
   end
 
   def handle_info({:vacation_updated, _vacation}, socket) do
-    {:noreply, assign(socket, vacations: Teams.get_vacations_by_team(socket.assigns.team))}
+    {:noreply,
+      socket
+      |> assign(:vacations, Teams.get_vacations_by_team(socket.assigns.team))
+      |> assign(:standup, Teams.get_standup_by_team(socket.assigns.team))}
   end
 
   def handle_info(%{event: "presence_diff"}, socket) do
