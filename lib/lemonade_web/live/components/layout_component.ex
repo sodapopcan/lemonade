@@ -28,7 +28,7 @@ defmodule LemonadeWeb.LayoutComponent do
         <div class="relative">
           <a href="#" @click="userMenuOpen = true" class="bg-yellow-400 w-6 h-6 rounded-full p-0 ml-2 text-xs centered"><%= initials(@current_organization_member.name) %></a>
           <ul class="absolute right-0 rounded border border-yellow-500 bg-yellow-400 p-2" x-show="userMenuOpen" @click.away="userMenuOpen = false">
-            <li class="text-right"><%= link "settings", to: Routes.user_settings_path(@socket, :edit) %></li>
+            <li class="text-right"><%= live_patch "settings", to: Routes.user_settings_path(@socket, :index) %></li>
             <li class="text-right"><%= link "logout", to: Routes.user_session_path(@socket, :delete), method: :delete %></li>
           </ul>
         </div>

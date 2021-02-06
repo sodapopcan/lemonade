@@ -27,6 +27,8 @@ defmodule LemonadeWeb.Router do
     live "/team/vacations", TeamLive, :vacations
     live "/team/vacations/:modal_id", TeamLive, :vacations
     live "/team/settings", TeamLive, :settings
+
+    live "/user-settings", UserSettingsLive, :index
   end
 
   # Enables LiveDashboard only for development
@@ -63,8 +65,8 @@ defmodule LemonadeWeb.Router do
   scope "/", LemonadeWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/user-settings", UserSettingsController, :edit
-    put "/user-settings", UserSettingsController, :update
+    get "/user/settings", UserSettingsController, :edit
+    put "/user/settings", UserSettingsController, :update
     get "/user-settings/confirm_email/:token", UserSettingsController, :confirm_email
   end
 
