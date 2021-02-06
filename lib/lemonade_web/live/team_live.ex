@@ -27,7 +27,6 @@ defmodule LemonadeWeb.TeamLive do
     {:ok,
      assign(
        socket,
-       organization: organization,
        current_organization_member: current_organization_member,
        current_team_member: current_team_member,
        present_team_member_ids: present_team_member_ids,
@@ -43,7 +42,6 @@ defmodule LemonadeWeb.TeamLive do
     ~L"""
     <%= live_component @socket, LayoutComponent,
       id: "logged-in-layout",
-      organization: @organization,
       current_organization_member: @current_organization_member,
       team: @team do %>
 

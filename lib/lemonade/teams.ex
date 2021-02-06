@@ -7,7 +7,7 @@ defmodule Lemonade.Teams do
   def get_team_by_organization(%{id: id}) do
     Team
     |> Repo.get_by(organization_id: id)
-    |> Repo.preload([standup: :standup_members])
+    |> Repo.preload([:organization, standup: :standup_members])
   end
 
   def create_team(organization, attrs) do
