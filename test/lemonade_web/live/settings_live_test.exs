@@ -1,4 +1,4 @@
-defmodule LemonadeWeb.UserSettingsLiveTest do
+defmodule LemonadeWeb.SettingsLiveTest do
   use LemonadeWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
@@ -13,9 +13,9 @@ defmodule LemonadeWeb.UserSettingsLiveTest do
     bootstrapped_organization_fixture(user)
   end
 
-  @path "/user-settings"
+  @path "/settings/account"
 
-  describe "GET /users/settings" do
+  describe "GET settings/account" do
     test "renders settings page", %{conn: conn} do
       {:ok, view, _html} = live(conn, @path)
 
@@ -75,7 +75,7 @@ defmodule LemonadeWeb.UserSettingsLiveTest do
           }
         })
 
-      assert redirected_to(new_password_conn) == Routes.user_settings_path(conn, :index)
+      assert redirected_to(new_password_conn) == Routes.settings_path(conn, :account)
       assert get_session(new_password_conn, :user_token) != get_session(conn, :user_token)
       assert get_flash(new_password_conn, :info) =~ "Password updated successfully"
       assert Accounts.get_user_by_email_and_password(user.email, "new valid password")
@@ -92,8 +92,8 @@ defmodule LemonadeWeb.UserSettingsLiveTest do
           }
         })
 
-      assert redirected_to(old_password_conn) == Routes.user_settings_path(conn, :index)
-      conn = get(recycle(old_password_conn), Routes.user_settings_path(conn, :index))
+      assert redirected_to(old_password_conn) == Routes.settings_path(conn, :account)
+      conn = get(recycle(old_password_conn), Routes.settings_path(conn, :account))
       response = html_response(conn, 200)
       assert response =~ "<form action=\"/user/settings\""
       assert response =~ "Something went wrong"

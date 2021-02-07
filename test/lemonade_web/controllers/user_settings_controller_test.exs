@@ -1,4 +1,5 @@
 defmodule LemonadeWeb.UserSettingsControllerTest do
+
   use LemonadeWeb.ConnCase, async: true
 
   alias Lemonade.Accounts
