@@ -6,7 +6,7 @@ defmodule LemonadeWeb.TeamLive do
   alias Lemonade.Teams.TeamPresence
 
   @impl true
-  def mount(_, %{"user_token" => user_token} = params, socket) do
+  def mount(_, %{"user_token" => user_token}, socket) do
     current_organization_member = Tenancy.get_organization_member_from_user_token(user_token)
     organization = current_organization_member.organization
     team = Teams.get_team_by_organization(organization)
