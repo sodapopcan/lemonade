@@ -8,6 +8,7 @@ defmodule Lemonade.Organizations.OrganizationMember do
   schema "organization_members" do
     field :email, :string
     field :name, :string
+    field :avatar_urls, {:array, :string}, default: []
     belongs_to :organization, Organization
     belongs_to :user, User
 
