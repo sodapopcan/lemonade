@@ -21,7 +21,7 @@ defmodule LemonadeWeb.UserSettingsController do
         |> put_session(:user_return_to, Routes.settings_path(conn, :account))
         |> UserAuth.log_in_user(user)
 
-      {:error, changeset} ->
+      {:error, _changeset} ->
         conn
         |> put_flash(:error, "Something went wrong")
         |> redirect(to: Routes.settings_path(conn, :account))
