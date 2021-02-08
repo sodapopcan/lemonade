@@ -9,7 +9,7 @@
           <%= if Enum.any?(@uploads.avatar.entries) do %>
             <%= live_img_preview(List.first(@uploads.avatar.entries), class: "rounded-full h-20") %>
           <% else %>
-            <%= initials(@current_organization_member.name) %>
+            <%= avatar(@current_organization_member) %>
           <% end %>
         </div>
         <div><%= @current_organization_member.name %></div>

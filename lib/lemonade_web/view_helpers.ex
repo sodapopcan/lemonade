@@ -31,4 +31,14 @@ defmodule LemonadeWeb.ViewHelpers do
     </label>
     """
   end
+
+  def avatar(organization_member) do
+    if Enum.any?(organization_member.avatar_urls) do
+      ~e"""
+      <img src="<%= List.first(organization_member.avatar_urls) %>" class="w-20 h-20 rounded-full" />
+      """
+    else
+      initials(organization_member.name)
+    end
+  end
 end
