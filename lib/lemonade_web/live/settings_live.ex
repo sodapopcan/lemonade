@@ -46,28 +46,6 @@ defmodule LemonadeWeb.SettingsLive do
      |> assign(current_organization_member: organization_member)}
   end
 
-  defp get_avatar_urls(socket, %OrganizationMember{} = organization_member) do
-    {completed, []} = uploaded_entries(socket, :avatar)
-
-    for entry <- completed do
-      Routes.static_path(socket, "/uploads/#{organization_member.id}.#{ext(entry)}")
-    end
-  end
-
-  defp ext(entry) do
-    [ext | _] = MIME.extensions(entry.client_type)
-    ext
-  end
-
-  def consume_avatars(socket, %OrganizationMember{} = organization_member) do
-    consume_uploaded_entries(socket, :avatar, fn meta, entry ->
-      dest = Path.join("priv/static/uploads", "#{organization_member.id}.#{ext(entry)}")
-      File.cp!(meta.path, dest)
-    end)
-
-    {:ok, organization_member}
-  end
-
   def handle_event("update-email", params, socket) do
     %{"current_password" => password, "user" => user_params} = params
     user = socket.assigns.current_user
@@ -92,5 +70,27 @@ defmodule LemonadeWeb.SettingsLive do
          socket
          |> assign(:email_changeset, changeset)}
     end
+  end
+
+  defp get_avatar_urls(socket, %OrganizationMember{} = organization_member) do
+    {completed, []} = uploaded_entries(socket, :avatar)
+
+    for entry <- completed do
+      Routes.static_path(socket, "/uploads/#{organization_member.id}.#{ext(entry)}")
+    end
+  end
+
+  defp ext(entry) do
+    [ext | _] = MIME.extensions(entry.client_type)
+    ext
+  end
+
+  def consume_avatars(socket, %OrganizationMember{} = organization_member) do
+    consume_uploaded_entries(socket, :avatar, fn meta, entry ->
+      dest = Path.join("priv/static/uploads", "#{organization_member.id}.#{ext(entry)}")
+      File.cp!(meta.path, dest)
+    end)
+
+    {:ok, organization_member}
   end
 end
