@@ -8,7 +8,11 @@ defmodule LemonadeWeb.LayoutComponent do
       <div class="flex items-center bg-yellow-500 py-2 px-3 text-sm">
         <div class="flex-1">
           <%= if @team do %>
-            <h1 class="text-base"><%= @team.organization.name %></h1>
+            <div class="flex">
+              <h1 class="text-base font-semibold"><%= @team.organization.name %></h1>
+              <div class="mx-2">|</div>
+              <h2 class="text-base"><%= link @team.name, to: Routes.team_path(@socket, :index) %></h2>
+            </div>
           <% else %>
             <h1 class="text-base" x-html="mainTitle">Lemonade</h1>
           <% end %>
