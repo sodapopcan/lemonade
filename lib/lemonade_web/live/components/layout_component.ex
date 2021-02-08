@@ -11,7 +11,7 @@ defmodule LemonadeWeb.LayoutComponent do
             <div class="flex">
               <h1 class="text-base font-semibold"><%= @team.organization.name %></h1>
               <div class="mx-2">|</div>
-              <h2 class="text-base"><%= link @team.name, to: Routes.team_path(@socket, :index) %></h2>
+              <h2 class="text-base"><%= live_patch @team.name, to: Routes.team_path(@socket, :index) %></h2>
             </div>
           <% else %>
             <h1 class="text-base" x-html="mainTitle">Lemonade</h1>
