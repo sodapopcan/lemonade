@@ -14,7 +14,7 @@
         </div>
         <div><%= @current_organization_member.name %></div>
         <div class="mt-4">
-          <%= f = form_for @organization_member_changeset, "#", phx_change: "validate", phx_submit: "update-organization-member", multipart: true %>
+          <%= form_for @organization_member_changeset, "#", phx_change: "validate", phx_submit: "update-organization-member", multipart: true %>
             <%= live_file_input @uploads.avatar %>
             <%= submit "Upload" %>
           </form>
