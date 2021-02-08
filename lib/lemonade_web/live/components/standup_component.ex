@@ -18,7 +18,7 @@ defmodule LemonadeWeb.StandupComponent do
       </header>
       <div class="flex items-center h-20">
         <%= for standup_member <- @standup.standup_members do %>
-          <div class="<%= if standup_member.team_member_id in @present_team_member_ids, do: "border border-green-400" %> <%= if standup_member.on_vacation, do: "opacity-50" %> w-20 h-20 bg-yellow-300 rounded-full centered text-2xl mr-2 shadow-md">
+          <div class="<%= if standup_member.team_member_id in @present_team_member_ids, do: "border border-green-400" %> <%= if standup_member.on_vacation, do: "opacity-25" %> w-20 h-20 bg-yellow-300 rounded-full centered text-2xl mr-2 shadow-md">
             <%= avatar(standup_member) %>
           </div>
         <% end %>
