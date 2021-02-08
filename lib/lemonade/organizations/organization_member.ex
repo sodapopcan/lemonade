@@ -18,7 +18,7 @@ defmodule Lemonade.Organizations.OrganizationMember do
   @doc false
   def changeset(organization_member, attrs) do
     organization_member
-    |> cast(attrs, [:name, :email])
+    |> cast(attrs, [:name, :email, :avatar_urls])
     |> validate_required([:name, :email])
   end
 end

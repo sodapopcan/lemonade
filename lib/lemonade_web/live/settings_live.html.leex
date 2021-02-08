@@ -6,9 +6,19 @@
     <div class="my-8">
       <div class="w-96 mx-auto mb-8 flex items-center flex-col">
         <div class="w-20 h-20 bg-yellow-300 rounded-full centered text-2xl mr-2 shadow-md mb-4">
-          <%= initials(@current_organization_member.name) %>
+          <%= if Enum.any?(@uploads.avatar.entries) do %>
+            <%= live_img_preview(List.first(@uploads.avatar.entries), class: "rounded-full h-20") %>
+          <% else %>
+            <%= initials(@current_organization_member.name) %>
+          <% end %>
         </div>
         <div><%= @current_organization_member.name %></div>
+        <div class="mt-4">
+          <%= f = form_for @organization_member_changeset, "#", phx_change: "validate", phx_submit: "update-organization-member", multipart: true %>
+            <%= live_file_input @uploads.avatar %>
+            <%= submit "Upload" %>
+          </form>
+        </div>
       </div>
 
       <div class="w-96 mx-auto">

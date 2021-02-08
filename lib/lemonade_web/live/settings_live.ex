@@ -2,7 +2,8 @@ defmodule LemonadeWeb.SettingsLive do
   use LemonadeWeb, :live_view
 
   alias LemonadeWeb.{LayoutComponent}
-  alias Lemonade.{Accounts, Teams, Tenancy}
+  alias Lemonade.{Accounts, Teams, Organizations, Tenancy}
+  alias Lemonade.Organizations.OrganizationMember
 
   @impl true
   def mount(_, %{"user_token" => user_token}, socket) do
@@ -13,14 +14,62 @@ defmodule LemonadeWeb.SettingsLive do
 
     {:ok,
      socket
+     |> allow_upload(:avatar, accept: ~w(.png .jpeg .jpg))
      |> assign(:team, team)
      |> assign(:current_user, current_user)
      |> assign(:current_organization_member, current_organization_member)
      |> assign(:email_changeset, Accounts.change_user_email(current_user))
-     |> assign(:password_changeset, Accounts.change_user_password(current_user))}
+     |> assign(:password_changeset, Accounts.change_user_password(current_user))
+     |> assign(
+       :organization_member_changeset,
+       Organizations.change_organization_member(current_organization_member)
+     )}
   end
 
   @impl true
+  def handle_event("validate", _, socket) do
+    {:noreply, socket}
+  end
+
+  def handle_event("update-organization-member", _params, socket) do
+    # organization_member = put_avatar_urls(socket, socket.assigns.current_organization_member)
+
+    urls = get_avatar_urls(socket, socket.assigns.current_organization_member)
+
+    {:ok, organization_member} =
+      Organizations.update_organization_member(
+        socket.assigns.current_organization_member,
+        %{avatar_urls: urls},
+        &consume_avatars(socket, &1)
+      )
+
+    {:noreply,
+     socket
+     |> assign(current_organization_member: organization_member)}
+  end
+
+  defp get_avatar_urls(socket, %OrganizationMember{} = organization_member) do
+    {completed, []} = uploaded_entries(socket, :avatar)
+
+    for entry <- completed do
+      Routes.static_path(socket, "/uploads/#{entry.uuid}.#{ext(entry)}")
+    end
+  end
+
+  defp ext(entry) do
+    [ext | _] = MIME.extensions(entry.client_type)
+    ext
+  end
+
+  def consume_avatars(socket, %OrganizationMember{} = organization_member) do
+    consume_uploaded_entries(socket, :avatar, fn meta, entry ->
+      dest = Path.join("priv/static/uploads", "#{entry.uuid}.#{ext(entry)}")
+      File.cp!(meta.path, dest)
+    end)
+
+    {:ok, organization_member}
+  end
+
   def handle_event("update-email", params, socket) do
     %{"current_password" => password, "user" => user_params} = params
     user = socket.assigns.current_user
