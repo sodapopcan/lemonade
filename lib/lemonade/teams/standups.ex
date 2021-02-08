@@ -3,7 +3,9 @@ defmodule Lemonade.Teams.Standups do
   alias Lemonade.Repo
 
   alias Lemonade.Teams
-  alias Teams.Standups.{Standup, StandupMember}
+  alias Lemonade.Teams.TeamMember
+  alias Lemonade.Teams.Standups.{Standup, StandupMember}
+  alias Lemonade.Organizations.OrganizationMember
 
   def get_standup_by_team(team) do
     Standup
@@ -89,16 +91,18 @@ defmodule Lemonade.Teams.Standups do
   defp standup_members_subquery do
     from(
       m in StandupMember,
-      left_join: v in subquery(vacation_subquery()),
-      on: v.team_member_id == m.team_member_id,
-      group_by: [m.id, v.on_vacation],
+      left_join: v in subquery(vacation_subquery()), on: v.team_member_id == m.team_member_id,
+      join: tm in TeamMember, on: tm.id == m.team_member_id,
+      join: om in OrganizationMember, on: om.id == tm.organization_member_id,
+      group_by: [m.id, v.on_vacation, om.avatar_urls],
       order_by: [desc: v.on_vacation, asc: m.position],
       select: %StandupMember{
         id: m.id,
         position: m.position,
         team_member_id: m.team_member_id,
         name: m.name,
-        on_vacation: v.on_vacation
+        on_vacation: v.on_vacation,
+        avatar_urls: om.avatar_urls
       }
     )
   end
