@@ -59,7 +59,7 @@ config :lemonade, LemonadeWeb.Endpoint,
 config :lemonade, LemonadeWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r"priv/static/[^uploads].*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/static/(?!uploads).*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/lemonade_web/(live|views)/.*(ex)$",
       ~r"lib/lemonade_web/templates/.*(eex)$"
