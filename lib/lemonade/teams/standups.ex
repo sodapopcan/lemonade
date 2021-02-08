@@ -94,7 +94,7 @@ defmodule Lemonade.Teams.Standups do
       left_join: v in subquery(vacation_subquery()), on: v.team_member_id == m.team_member_id,
       join: tm in TeamMember, on: tm.id == m.team_member_id,
       join: om in OrganizationMember, on: om.id == tm.organization_member_id,
-      group_by: [m.id, v.on_vacation, om.avatar_urls],
+      group_by: [m.id, v.on_vacation, om.avatar_url],
       order_by: [desc: v.on_vacation, asc: m.position],
       select: %StandupMember{
         id: m.id,
@@ -102,7 +102,7 @@ defmodule Lemonade.Teams.Standups do
         team_member_id: m.team_member_id,
         name: m.name,
         on_vacation: v.on_vacation,
-        avatar_urls: om.avatar_urls
+        avatar_url: om.avatar_url
       }
     )
   end

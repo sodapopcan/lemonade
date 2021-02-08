@@ -8,7 +8,7 @@ defmodule Lemonade.Organizations.OrganizationMember do
   schema "organization_members" do
     field :email, :string
     field :name, :string
-    field :avatar_urls, {:array, :string}, default: []
+    field :avatar_url, :string
     belongs_to :organization, Organization
     belongs_to :user, User
 
@@ -18,7 +18,7 @@ defmodule Lemonade.Organizations.OrganizationMember do
   @doc false
   def changeset(organization_member, attrs) do
     organization_member
-    |> cast(attrs, [:name, :email, :avatar_urls])
+    |> cast(attrs, [:name, :email, :avatar_url])
     |> validate_required([:name, :email])
   end
 end

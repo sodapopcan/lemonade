@@ -32,14 +32,12 @@ defmodule LemonadeWeb.SettingsLive do
   end
 
   def handle_event("update-organization-member", _params, socket) do
-    # organization_member = put_avatar_urls(socket, socket.assigns.current_organization_member)
-
-    urls = get_avatar_urls(socket, socket.assigns.current_organization_member)
+    [url | _] = get_avatar_urls(socket, socket.assigns.current_organization_member)
 
     {:ok, organization_member} =
       Organizations.update_organization_member(
         socket.assigns.current_organization_member,
-        %{avatar_urls: urls},
+        %{avatar_url: url},
         &consume_avatars(socket, &1)
       )
 
@@ -52,7 +50,7 @@ defmodule LemonadeWeb.SettingsLive do
     {completed, []} = uploaded_entries(socket, :avatar)
 
     for entry <- completed do
-      Routes.static_path(socket, "/uploads/#{entry.uuid}.#{ext(entry)}")
+      Routes.static_path(socket, "/uploads/#{organization_member.id}.#{ext(entry)}")
     end
   end
 
@@ -63,7 +61,7 @@ defmodule LemonadeWeb.SettingsLive do
 
   def consume_avatars(socket, %OrganizationMember{} = organization_member) do
     consume_uploaded_entries(socket, :avatar, fn meta, entry ->
-      dest = Path.join("priv/static/uploads", "#{entry.uuid}.#{ext(entry)}")
+      dest = Path.join("priv/static/uploads", "#{organization_member.id}.#{ext(entry)}")
       File.cp!(meta.path, dest)
     end)
 
