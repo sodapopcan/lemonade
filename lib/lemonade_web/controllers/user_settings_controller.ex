@@ -18,13 +18,13 @@ defmodule LemonadeWeb.UserSettingsController do
       {:ok, user} ->
         conn
         |> put_flash(:info, "Password updated successfully.")
-        |> put_session(:user_return_to, Routes.settings_path(conn, :account))
+        |> put_session(:user_return_to, Routes.settings_path(conn, :user))
         |> UserAuth.log_in_user(user)
 
       {:error, _changeset} ->
         conn
         |> put_flash(:error, "Something went wrong")
-        |> redirect(to: Routes.settings_path(conn, :account))
+        |> redirect(to: Routes.settings_path(conn, :user))
     end
   end
 

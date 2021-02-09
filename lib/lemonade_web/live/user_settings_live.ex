@@ -1,4 +1,4 @@
-defmodule LemonadeWeb.SettingsLive do
+defmodule LemonadeWeb.UserSettingsLive do
   use LemonadeWeb, :live_view
 
   alias LemonadeWeb.{LayoutComponent}
