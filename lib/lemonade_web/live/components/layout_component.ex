@@ -18,21 +18,15 @@ defmodule LemonadeWeb.LayoutComponent do
           <% end %>
         </div>
         <div>
-          <a href="#" class="inline-block flex items-center" @click="teamMenuOpen = true">
-            <%= if @team do %>
-              <span class="mr-1"><%= @team.name %></span>
-            <% end %>
-            <%= icon("chevron-down") %>
-          </a>
           <ul class="absolute right-0 rounded border border-yellow-500 bg-yellow-400 p-2" x-show="teamMenuOpen" @click.away="teamMenuOpen = false">
-            <li class="text-right" @click="teamMenuOpen = false"><%= live_patch "settings", to: Routes.team_path(@socket, :settings) %></li>
           </ul>
         </div>
 
-        <div class="relative">
-          <a href="#" @click="userMenuOpen = true" class="bg-yellow-400 w-6 h-6 rounded-full p-0 ml-2 text-xs centered"><%= initials(@current_organization_member.name) %></a>
-          <ul class="absolute right-0 rounded border border-yellow-500 bg-yellow-400 p-2" x-show="userMenuOpen" @click.away="userMenuOpen = false">
+        <div class="relative flex">
+          <a href="#" @click="userMenuOpen = true"><%= avatar(@current_organization_member, :small) %></a>
+          <ul class="absolute right-0 w-32 rounded border border-yellow-500 bg-yellow-400 p-2" x-show="userMenuOpen" @click.away="userMenuOpen = false">
             <li class="text-right"><%= live_patch "settings", to: Routes.settings_path(@socket, :user) %></li>
+            <li class="text-right"><%= live_patch "team settings", to: Routes.team_path(@socket, :settings) %></li>
             <li class="text-right"><%= link "logout", to: Routes.user_session_path(@socket, :delete), method: :delete %></li>
           </ul>
         </div>

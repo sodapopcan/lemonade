@@ -32,13 +32,36 @@ defmodule LemonadeWeb.ViewHelpers do
     """
   end
 
-  def avatar(organization_member) do
+  def avatar(organization_member, size \\ :normal, online \\ false) do
+    dims =
+      case size do
+        :normal -> "w-20 h-20"
+        :small -> "w-6 h-6"
+      end
+
+    text =
+      case size do
+        :normal -> "text-2xl"
+        :small -> "text-xs"
+      end
+
+    online =
+      if online do
+        "border border-green-400"
+      else
+        ""
+      end
+
     if organization_member.avatar_url do
       ~e"""
-      <img src="<%= organization_member.avatar_url %>" class="w-20 h-20 rounded-full" />
+      <img src="<%= organization_member.avatar_url %>" class="<%= dims %> <%= online %> bg-yellow-300 rounded-full centered text-2xl shadow-md" />
       """
     else
-      initials(organization_member.name)
+      ~e"""
+      <div class="<%= dims %> <%= text %> <%= online %> bg-yellow-300 rounded-full centered shadow-md">
+        <%= initials(organization_member.name) %>
+      </div>
+      """
     end
   end
 end
