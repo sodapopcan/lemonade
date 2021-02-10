@@ -16,9 +16,9 @@
       </div>
 
       <div class="list-reset flex justify-center mb-8">
-        <div><a href="#" class="inline-flex py-2 px-4 border-b border-gray-600 hover:border-gray-400">User</a></div>
-        <div><a href="#" class="inline-flex py-2 px-4 border-b hover:border-gray-400">Profile</a></div>
-        <div><a href="#" class="inline-flex py-2 px-4 border-b hover:border-gray-400">Team</a></div>
+        <%= menu_item(@socket, @live_action, "User", :user) %>
+        <%= menu_item(@socket, @live_action, "Profile", :profile) %>
+        <%= menu_item(@socket, @live_action, "Team", :profile) %>
       </div>
 
       <div class="w-96 mx-auto">
