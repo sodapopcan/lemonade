@@ -6,16 +6,16 @@
   <%= live_component @socket, LemonadeWeb.SettingsLayoutComponent, current_organization_member: @current_organization_member, live_action: @live_action do %>
     <section class="mb-8">
       <h1 class="text-lg font-semibold mb-4">Change email</h1>
-      <%= f = form_for @email_changeset, "#", id: "user-settings-form", phx_submit: "update-email" %>
-      <%= hidden_input f, :action, name: "action", value: "update_email" %>
+        <%= f = form_for @email_changeset, "#", id: "user-settings-form", phx_submit: "update-email" %>
+        <%= hidden_input f, :action, name: "action", value: "update_email" %>
 
-      <%= email_input f, :email, required: true, placeholder: @current_organization_member.email %>
-      <%= error_tag f, :email %>
+        <%= email_input f, :email, required: true, placeholder: @current_organization_member.email %>
+        <%= error_tag f, :email %>
 
-      <%= password_input f, :current_password, required: true, name: "current_password", placeholder: "current password", id: "current_password_for_email" %>
-      <%= error_tag f, :current_password %>
+        <%= password_input f, :current_password, required: true, name: "current_password", placeholder: "current password", id: "current_password_for_email" %>
+        <%= error_tag f, :current_password %>
 
-      <input type="submit" value="Change email" class="button-primary" />
+        <input type="submit" value="Change email" class="button-primary" />
       </form>
     </section>
 
