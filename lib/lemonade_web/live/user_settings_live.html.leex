@@ -4,23 +4,7 @@
   team: @team do %>
 
     <div class="my-8">
-      <div class="w-96 mx-auto mb-8 flex items-center flex-col">
-          <%= avatar(@current_organization_member) %>
-        <div class="mt-4"><%= @current_organization_member.name %></div>
-        <div class="mt-4 hidden">
-          <%= form_for @organization_member_changeset, "#", phx_change: "validate", phx_submit: "update-organization-member", multipart: true %>
-            <%= live_file_input @uploads.avatar %>
-            <%= submit "Upload" %>
-          </form>
-        </div>
-      </div>
-
-      <div class="list-reset flex justify-center mb-8">
-        <%= menu_item(@socket, @live_action, "User", :user) %>
-        <%= menu_item(@socket, @live_action, "Profile", :profile) %>
-        <%= menu_item(@socket, @live_action, "Team", :profile) %>
-      </div>
-
+      <%= live_component @socket, LemonadeWeb.SettingsNavComponent, current_organization_member: @current_organization_member, live_action: @live_action %>
       <div class="w-96 mx-auto">
         <section class="mb-8">
           <h1 class="text-lg font-semibold mb-4">Change email</h1>

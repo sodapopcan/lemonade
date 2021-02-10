@@ -93,15 +93,4 @@ defmodule LemonadeWeb.UserSettingsLive do
 
     {:ok, organization_member}
   end
-
-  defp menu_item(socket, live_action, name, route) do
-    border_color = if live_action == route, do: "border-gray-600", else: ""
-    class = "py-2 px-4 border-b #{border_color} hover:border-gray-400" 
-
-    ~e"""
-    <div>
-      <%= live_patch name, to: Routes.settings_path(socket, route), class: class %>
-    </div>
-    """
-  end
 end
