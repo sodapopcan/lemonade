@@ -2,21 +2,20 @@ defmodule LemonadeWeb.SetupLive do
   use LemonadeWeb, :live_view
   use Phoenix.HTML
 
-  alias Lemonade.{Accounts, Organizations}
+  alias Lemonade.Organizations
 
   @impl true
-  def mount(_, %{"user_token" => user_token}, socket) do
-    current_user = Accounts.get_user_by_session_token(user_token)
-    current_organization_member = Organizations.get_organization_member_by_user(current_user)
+  def mount(_, params, socket) do
+    socket = assign_defaults(params, socket)
 
-    if current_organization_member do
+    if socket.assigns.current_organization_member do
       {:ok, redirect(socket, to: "/team")}
     else
       changeset = Organizations.bootstrap_organization_changeset(%{teams: [%{}]})
 
       {:ok,
        assign(socket,
-         current_user: current_user,
+         current_user: socket.assigns.current_user,
          changeset: changeset,
          errors: []
        )}

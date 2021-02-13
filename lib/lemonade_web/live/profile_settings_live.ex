@@ -37,7 +37,7 @@ defmodule LemonadeWeb.ProfileSettingsLive do
         </form>
       <% end %>
 
-      <%= if @live_action == :avatar do %>
+      <%= if @modal_id == :avatar do %>
         <%= live_modal @socket, LemonadeWeb.AvatarFormComponent, return_to: Routes.settings_path(@socket, :profile) %>
       <% end %>
     <% end %>

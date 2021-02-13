@@ -34,15 +34,16 @@ defmodule LemonadeWeb.UserSettingsLiveTest do
     test "updates the user email", %{conn: conn, user: user} do
       {:ok, view, _html} = live(conn, @path)
 
-      html =
+      {:ok, view, _html} =
         view
         |> form("#user-settings-form", %{
           user: %{email: "newemail@planetexpress.com"},
           current_password: valid_user_password()
         })
         |> render_submit()
+        |> follow_redirect(conn)
 
-      assert html =~ "A link to confirm your email"
+      assert render(view) =~ "A link to confirm your email"
       assert Lemonade.Accounts.get_user_by_email(user.email)
     end
 
@@ -102,7 +103,6 @@ defmodule LemonadeWeb.UserSettingsLiveTest do
       # assert response =~ "is not valid"
 
       assert get_session(old_password_conn, :user_token) == get_session(conn, :user_token)
-  end
     end
-
+  end
 end

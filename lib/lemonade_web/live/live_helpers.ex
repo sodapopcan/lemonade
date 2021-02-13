@@ -1,5 +1,16 @@
 defmodule LemonadeWeb.LiveHelpers do
+  import Phoenix.LiveView
   import Phoenix.LiveView.Helpers
+
+  def assign_defaults(%{"user_token" => user_token}, socket) do
+    current_user = Lemonade.Accounts.get_user_by_session_token(user_token)
+    current_organization_member = Lemonade.Tenancy.get_organization_member_from_user_token(user_token)
+
+    socket
+    |> assign(:current_user, current_user)
+    |> assign(:current_organization_member, current_organization_member)
+    |> assign(:modal_id, nil)
+  end
 
   @doc """
   Renders a component inside the `LemonadeWeb.ModalComponent` component.
