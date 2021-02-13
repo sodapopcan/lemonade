@@ -17,9 +17,8 @@ defmodule LemonadeWeb.ProfileSettingsComponent do
   def render(assigns) do
     ~L"""
     <div>
-      <div class="mb-4">
-        <%= live_patch "change avatar", to: Routes.settings_path(@socket, :profile, "avatar") %>
-      </div>
+      <%= f = form_for @changeset, "#", phx_submit: "update-organization-member" %>
+      </form>
 
       <%= f = form_for @changeset, "#", phx_submit: "update-organization-member" %>
         <%= text_input f, :name %>
@@ -27,10 +26,6 @@ defmodule LemonadeWeb.ProfileSettingsComponent do
         <%= live_file_input @uploads.avatar %>
         <%= submit "Update" %>
       </form>
-
-      <%= if @modal_id == "avatar" do %>
-        <%= live_modal @socket, LemonadeWeb.AvatarFormComponent, return_to: Routes.settings_path(@socket, :profile) %>
-      <% end %>
     </div>
     """
   end
