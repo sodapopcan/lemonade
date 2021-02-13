@@ -45,9 +45,6 @@ defmodule LemonadeWeb.ProfileSettingsLive do
   end
 
   @impl true
-  def handle_params(_, _, socket), do: {:noreply, socket}
-
-  @impl true
   def handle_event("update-organization-member", %{"organization_member" => attrs}, socket) do
     {:ok, organization_member} =
       Lemonade.Organizations.update_organization_member(socket.assigns.current_organization_member, attrs)
