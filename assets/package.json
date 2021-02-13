@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "alpinejs": "^2.8.0",
+    "croppie": "^2.6.5",
     "litepicker": "^1.5.7",
     "nprogress": "^0.2.0",
     "phoenix": "file:../deps/phoenix",
