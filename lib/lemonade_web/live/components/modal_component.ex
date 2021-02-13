@@ -11,7 +11,7 @@ defmodule LemonadeWeb.ModalComponent do
       phx-target="#<%= @id %>"
       phx-page-loading>
 
-      <div>
+      <div class="p-4 w-96 rounded bg-yellow-400 shadow-md">
         <%= live_patch icon("x"), to: @return_to, class: "float-right p-2" %>
         <%= live_component @socket, @component, @opts %>
       </div>

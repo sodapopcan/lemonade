@@ -31,11 +31,11 @@ defmodule LemonadeWeb.VacationFormComponent do
   @impl true
   def render(assigns) do
     ~L"""
-    <div id="vacation-form" class="p-4 w-96 rounded bg-yellow-400 shadow-md" phx-hook="DateRangePicker">
+    <div id="vacation-form" phx-hook="DateRangePicker">
       <%= f = form_for @changeset, "#", phx_submit: submit_action(@changeset), phx_target: @myself %>
         <h1>Vacation</h1>
 
-        <div id="date-rage-picker-wrapper" phx-update="ignore" class="centered p-4">
+        <div id="date-rage-picker-wrapper" phx-update="ignore" class="block text-center p-4">
           <input type="hidden" id="date-range-picker" />
           <%= hidden_input f, :starts_at, id: "vacation-starts-at" %>
           <%= hidden_input f, :ends_at, id: "vacation-ends-at" %>

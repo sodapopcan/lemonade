@@ -14,7 +14,6 @@ defmodule LemonadeWeb.UserSettingsLive do
 
     {:ok,
      socket
-     |> allow_upload(:avatar, accept: ~w(.png .jpeg .jpg))
      |> assign(:team, team)
      |> assign(:current_user, current_user)
      |> assign(:current_organization_member, current_organization_member)

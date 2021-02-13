@@ -29,7 +29,8 @@ defmodule LemonadeWeb.Router do
     live "/team/settings", TeamLive, :settings
 
     live "/settings/user", UserSettingsLive, :user, as: :settings
-    # live "/settings/profile", ProfileSettingsLive, :profile, as: :settings
+    live "/settings/profile", ProfileSettingsLive, :profile, as: :settings
+    live "/settings/profile/avatar", ProfileSettingsLive, :avatar, as: :settings
   end
 
   # Enables LiveDashboard only for development
