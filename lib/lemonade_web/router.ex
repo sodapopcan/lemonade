@@ -67,7 +67,6 @@ defmodule LemonadeWeb.Router do
   scope "/", LemonadeWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/user/settings", UserSettingsController, :edit
     put "/user/settings", UserSettingsController, :update
     get "/user/settings/confirm_email/:token", UserSettingsController, :confirm_email
   end

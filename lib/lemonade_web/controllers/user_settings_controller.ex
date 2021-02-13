@@ -6,10 +6,6 @@ defmodule LemonadeWeb.UserSettingsController do
 
   plug :assign_email_and_password_changesets
 
-  def edit(conn, _params) do
-    render(conn, "edit.html")
-  end
-
   def update(conn, %{"action" => "update_password"} = params) do
     %{"current_password" => password, "user" => user_params} = params
     user = conn.assigns.current_user
@@ -33,12 +29,12 @@ defmodule LemonadeWeb.UserSettingsController do
       :ok ->
         conn
         |> put_flash(:info, "Email changed successfully.")
-        |> redirect(to: Routes.user_settings_path(conn, :edit))
+        |> redirect(to: Routes.settings_path(conn, :user))
 
       :error ->
         conn
         |> put_flash(:error, "Email change link is invalid or it has expired.")
-        |> redirect(to: Routes.user_settings_path(conn, :edit))
+        |> redirect(to: Routes.settings_path(conn, :user))
     end
   end
 
