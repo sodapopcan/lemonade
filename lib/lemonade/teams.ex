@@ -2,7 +2,7 @@ defmodule Lemonade.Teams do
   import Ecto.Query, warn: false
   alias Lemonade.Repo
 
-  alias Lemonade.Teams.{Team, TeamMember}
+  alias Lemonade.Teams.{Team, TeamMember, Stickies}
 
   def get_team_by_organization(%{id: id}) do
     Team
@@ -83,6 +83,10 @@ defmodule Lemonade.Teams do
   defdelegate get_vacations_by_team_member(team_member), to: Vacations
   defdelegate get_vacation!(id), to: Vacations
   defdelegate change_vacation(vacation, attrs), to: Vacations
+
+  alias Lemonade.Teams.Stickies
+  defdelegate list_sticky_lanes(team), to: Stickies
+  defdelegate create_sticky_lane(team), to: Stickies
 
   alias Lemonade.PubSub
 

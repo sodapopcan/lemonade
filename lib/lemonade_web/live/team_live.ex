@@ -1,7 +1,7 @@
 defmodule LemonadeWeb.TeamLive do
   use LemonadeWeb, :live_view
 
-  alias LemonadeWeb.{LayoutComponent, VacationComponent, StandupComponent}
+  alias LemonadeWeb.{LayoutComponent, VacationComponent, StandupComponent, StickiesComponent}
   alias Lemonade.{Teams, Tenancy}
   alias Lemonade.Teams.TeamPresence
 
@@ -11,6 +11,7 @@ defmodule LemonadeWeb.TeamLive do
     organization = current_organization_member.organization
     team = Teams.get_team_by_organization(organization)
     standup = Teams.get_standup_by_team(team)
+    sticky_lanes = Teams.list_sticky_lanes(team)
 
     current_team_member =
       Teams.get_team_member_by_organization_member(team, current_organization_member)
@@ -33,6 +34,7 @@ defmodule LemonadeWeb.TeamLive do
        team: team,
        standup: standup,
        vacations: vacations,
+       sticky_lanes: sticky_lanes,
        modal_id: nil
      )}
   end
@@ -60,6 +62,14 @@ defmodule LemonadeWeb.TeamLive do
           current_team_member: @current_team_member,
           present_team_member_ids: @present_team_member_ids,
           standup: @standup %>
+      </div>
+
+      <div class="px-4 pt-2">
+        <%= live_component @socket, StickiesComponent,
+          id: "stick-lanes",
+          current_team_member: @current_team_member,
+          team: @team,
+          sticky_lanes: @sticky_lanes %>
       </div>
 
       <%= if @live_action == :settings do %>
@@ -97,6 +107,14 @@ defmodule LemonadeWeb.TeamLive do
       |> assign(:vacations, Teams.get_vacations_by_team(socket.assigns.team))
       |> assign(:standup, Teams.get_standup_by_team(socket.assigns.team))}
   end
+
+  def handle_info({:sticky_lanes_updated, _sticky_lane}, socket) do
+    {:noreply,
+      socket
+      |> assign(:sticky_lanes, Teams.list_sticky_lanes(socket.assigns.team))}
+  end
+
+  # Presence
 
   def handle_info(%{event: "presence_diff"}, socket) do
     present_team_member_ids = TeamPresence.list_team_member_ids(socket.assigns.current_team_member)

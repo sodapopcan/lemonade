@@ -6,6 +6,7 @@ defmodule Lemonade.Teams.Stickies.StickyLane do
     field :name, :string
     field :position, :integer
     belongs_to :team, Lemonade.Teams.Team
+    has_many :stickies, Lemonade.Teams.Stickies.Sticky
 
     timestamps()
   end

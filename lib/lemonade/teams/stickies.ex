@@ -4,18 +4,43 @@ defmodule Lemonade.Teams.Stickies do
   """
 
   import Ecto.Query, warn: false
+  alias Ecto.Multi
   alias Lemonade.Repo
 
   alias Lemonade.Teams.Stickies.StickyLane
 
-  def list_sticky_lanes do
-    Repo.all(StickyLane)
+  def list_sticky_lanes(team) do
+    Repo.all(
+      from l in StickyLane,
+        where: l.team_id == ^team.id,
+        order_by: l.position,
+        preload: :stickies
+    )
   end
 
-  def create_sticky_lane(attrs \\ %{}) do
-    %StickyLane{}
-    |> StickyLane.changeset(attrs)
-    |> Repo.insert()
+  def create_sticky_lane(team) do
+    {:ok, %{sticky_lane: sticky_lane}} =
+      Multi.new()
+      |> Multi.run(:position, fn _, _ -> {:ok, get_max_position(team)} end)
+      |> Multi.run(:sticky_lane, fn _, %{position: position} ->
+        %StickyLane{team: team, name: "New Lane", position: position}
+        |> Repo.insert()
+      end)
+      |> Repo.transaction()
+
+    {:ok, sticky_lane}
+    |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
+  end
+
+  defp get_max_position(team) do
+    position =
+      Repo.one(
+        from l in StickyLane,
+          select: max(l.position),
+          where: l.team_id == ^team.id
+      ) || 0
+
+    position + 1
   end
 
   def update_sticky_lane(%StickyLane{} = sticky_lane, attrs) do
