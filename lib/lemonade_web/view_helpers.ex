@@ -36,7 +36,7 @@ defmodule LemonadeWeb.ViewHelpers do
     dims =
       case size do
         :normal -> "w-20 h-20"
-        :small -> "w-6 h-6"
+        :small -> "w-8 h-8"
       end
 
     text =

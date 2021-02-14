@@ -5,8 +5,8 @@ defmodule LemonadeWeb.LayoutComponent do
   def render(assigns) do
     ~L"""
     <div class="w-screen" x-data="{mainTitle: 'Lemonade', teamMenuOpen: false, userMenuOpen: false}">
-      <div class="flex items-center bg-yellow-500 py-2 px-3 text-sm">
-        <div class="flex-1">
+      <div class="flex items-center bg-yellow-500 text-sm">
+        <div class="flex-1 px-1">
           <%= if @team do %>
             <div class="flex">
               <h1 class="text-base font-semibold"><%= @team.organization.name %></h1>
@@ -23,8 +23,8 @@ defmodule LemonadeWeb.LayoutComponent do
         </div>
 
         <div class="relative flex">
-          <a href="#" @click="userMenuOpen = true"><%= avatar(@current_organization_member, :small) %></a>
-          <ul class="absolute right-0 w-32 rounded border border-yellow-500 bg-yellow-400 p-2" x-show="userMenuOpen" @click.away="userMenuOpen = false">
+          <a href="#" @click="userMenuOpen = true" class="p-1"><%= avatar(@current_organization_member, :small) %></a>
+          <ul class="absolute top-10 right-0 w-32 rounded-bl bg-yellow-400 p-2 shadow-md" x-show="userMenuOpen" @click.away="userMenuOpen = false">
             <li class="text-right"><%= live_patch "settings", to: Routes.settings_path(@socket, :user) %></li>
             <li class="text-right"><%= live_patch "team settings", to: Routes.team_path(@socket, :settings) %></li>
             <li class="text-right"><%= link "logout", to: Routes.user_session_path(@socket, :delete), method: :delete %></li>
