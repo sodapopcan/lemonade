@@ -18,7 +18,7 @@ defmodule LemonadeWeb.ProfileSettingsComponent do
   def render(assigns) do
     ~L"""
     <div>
-      <%= f = form_for @changeset, "#", phx_submit: "update-organization-member", phx_target: @myself %>
+      <%= f = form_for @changeset, "#", phx_change: "validate", phx_submit: "update-organization-member", phx_target: @myself %>
         <%= label f, :name %>
         <%= text_input f, :name %>
 
@@ -37,18 +37,47 @@ defmodule LemonadeWeb.ProfileSettingsComponent do
 
   @impl true
   def handle_event("update-organization-member", %{"organization_member" => attrs}, socket) do
+    avatar_url = put_avatar_url(socket, socket.assigns.current_organization_member)
+    attrs = Map.put(attrs, "avatar_url", avatar_url)
+
     case Lemonade.Organizations.update_organization_member(
       socket.assigns.current_organization_member,
-      attrs
+      attrs,
+      &consume_avatar(socket, &1)
     ) do
-      {:ok, organization_member} ->
+      {:ok, _organization_member} ->
         {:noreply,
           socket
-          |> put_flash(:info, "Updated organization member")
           |> push_redirect(to: Routes.settings_path(socket, :profile))}
 
       {:error, _error} ->
         {:noreply, socket}
     end
+  end
+
+  def handle_event("validate", _, socket), do: {:noreply, socket}
+
+  defp put_avatar_url(socket, organization_member) do
+    {completed, []} = uploaded_entries(socket, :avatar)
+
+    [url | _] =
+      for entry <- completed do
+        Routes.static_path(socket, "/uploads/#{organization_member.id}.#{ext(entry)}")
+      end
+
+    url
+  end
+
+  def consume_avatar(socket, %Lemonade.Organizations.OrganizationMember{} = organization_member) do
+    consume_uploaded_entries(socket, :avatar, fn meta, entry ->
+      dest = Path.join("priv/static/uploads", "#{organization_member.id}.#{ext(entry)}")
+      File.cp!(meta.path, dest)
+    end)
+    {:ok, organization_member}
+  end
+
+  defp ext(entry) do
+    [ext | _] = MIME.extensions(entry.client_type)
+    ext
   end
 end
