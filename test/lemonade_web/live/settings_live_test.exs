@@ -105,4 +105,18 @@ defmodule LemonadeWeb.UserSettingsLiveTest do
       assert get_session(old_password_conn, :user_token) == get_session(conn, :user_token)
     end
   end
+
+  describe "profile settings" do
+    test "it updates the organization member's name", %{conn: conn} do
+      {:ok, view, _html} = live(conn, Routes.settings_path(conn, :profile))
+
+      html =
+        view
+        |> form("form")
+        |> fill_in("")
+        |> render_submit()
+
+      assert html =~
+    end
+  end
 end

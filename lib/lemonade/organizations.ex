@@ -21,6 +21,7 @@ defmodule Lemonade.Organizations do
     organization_member
     |> OrganizationMember.changeset(attrs)
     |> Repo.update()
+    |> broadcast(:organization_member_updated)
     |> after_save(after_save)
   end
 
@@ -37,4 +38,16 @@ defmodule Lemonade.Organizations do
   defdelegate bootstrap_organization(user, attrs), to: Lemonade.Organizations.Bootstrapper
   defdelegate join_organization(organization, user), to: Lemonade.Organizations.Bootstrapper
   defdelegate bootstrap_organization_changeset(attrs), to: Lemonade.Organizations.Bootstrapper
+
+  def broadcast({:error, _reason} = error, _event), do: error
+
+  def broadcast({:ok, %{organization_id: organization_id} = entity}, event) do
+    Phoenix.PubSub.broadcast(Lemonade.PubSub, "organization:#{organization_id}", {event, entity})
+    {:ok, entity}
+  end
+
+  def broadcast({:ok, %{id: organization_id} = entity}, event) do
+    Phoenix.PubSub.broadcast(Lemonade.PubSub, "organzation:#{organization_id}", {event, entity})
+    {:ok, entity}
+  end
 end
