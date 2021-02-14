@@ -54,7 +54,7 @@ defmodule LemonadeWeb.ViewHelpers do
 
     if organization_member && Map.has_key?(organization_member, :avatar_url) && organization_member.avatar_url do
       ~e"""
-      <img src="<%= organization_member.avatar_url %>" class="<%= dims %> <%= online %> bg-yellow-300 rounded-full centered text-2xl shadow-md" />
+      <img src="<%= organization_member.avatar_url %>?v=<%= DateTime.utc_now |> DateTime.to_unix() %>" class="<%= dims %> <%= online %> bg-yellow-300 rounded-full centered text-2xl shadow-md" />
       """
     else
       ~e"""

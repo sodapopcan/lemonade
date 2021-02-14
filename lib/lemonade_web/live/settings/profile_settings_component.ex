@@ -60,17 +60,20 @@ defmodule LemonadeWeb.ProfileSettingsComponent do
   defp put_avatar_url(socket, organization_member) do
     {completed, []} = uploaded_entries(socket, :avatar)
 
-    [url | _] =
-      for entry <- completed do
-        Routes.static_path(socket, "/uploads/#{organization_member.id}.#{ext(entry)}")
-      end
-
-    url
+    Routes.static_path(socket, "/uploads/#{organization_member.id}.jpg")
   end
 
   def consume_avatar(socket, %Lemonade.Organizations.OrganizationMember{} = organization_member) do
+    import Mogrify
+
     consume_uploaded_entries(socket, :avatar, fn meta, entry ->
-      dest = Path.join("priv/static/uploads", "#{organization_member.id}.#{ext(entry)}")
+      open(meta.path)
+      |> format("jpg")
+      |> resize_to_fill("300x300")
+      |> gravity("Center")
+      |> save(in_place: true)
+
+      dest = Path.join("priv/static/uploads", "#{organization_member.id}.jpg")
       File.cp!(meta.path, dest)
     end)
     {:ok, organization_member}
