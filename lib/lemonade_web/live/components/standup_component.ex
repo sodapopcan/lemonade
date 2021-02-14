@@ -19,7 +19,7 @@ defmodule LemonadeWeb.StandupComponent do
       <div class="flex items-center h-20">
         <%= for standup_member <- @standup.standup_members do %>
           <div class="<%= if standup_member.on_vacation, do: "opacity-25" %> mr-2">
-            <%= avatar(standup_member, :normal, standup_member.team_member_id in @present_team_member_ids) %>
+            <%= avatar(standup_member, :normal, online: standup_member.team_member_id in @present_team_member_ids) %>
           </div>
         <% end %>
         <%= if !attending_standup?(@current_team_member, @standup) do %>

@@ -32,36 +32,25 @@ defmodule LemonadeWeb.ViewHelpers do
     """
   end
 
-  def avatar(organization_member, size \\ :normal, online \\ false) do
-    dims =
-      case size do
-        :normal -> "w-20 h-20"
-        :small -> "w-8 h-8"
-      end
-
-    text =
-      case size do
-        :normal -> "text-2xl"
-        :small -> "text-xs"
-      end
-
-    online =
-      if online do
-        "border border-green-400"
-      else
-        ""
-      end
+  def avatar(organization_member, size \\ :normal, opts \\ []) do
+    class = Keyword.get(opts, :class, "")
+    online? = Keyword.get(opts, :online, false)
+    online = if online?, do: "border-2 border-green-400", else: ""
 
     if organization_member && Map.has_key?(organization_member, :avatar_url) && organization_member.avatar_url do
       ~e"""
-      <img src="<%= organization_member.avatar_url %>?v=<%= DateTime.utc_now |> DateTime.to_unix() %>" class="<%= dims %> <%= online %> bg-yellow-300 rounded-full centered text-2xl shadow-md" />
+      <img src="<%= organization_member.avatar_url %>?v=<%= DateTime.utc_now |> DateTime.to_unix() %>" class="<%= avatar_size(size) %> <%= class %> <%= online %> bg-yellow-300 rounded-full centered shadow-md" />
       """
     else
       ~e"""
-      <div class="<%= dims %> <%= text %> <%= online %> bg-yellow-300 rounded-full centered shadow-md">
+      <div class="<%= avatar_size(size) %> <%= online %> bg-yellow-300 rounded-full centered shadow-md">
         <%= initials(organization_member.name) %>
       </div>
       """
     end
   end
+
+  defp avatar_size(:normal), do: "w-20 h-20 text-2xl"
+  defp avatar_size(:small), do: "w-8 h-8 text-xs"
+  defp avatar_size(:x_small), do: "w-4 h-4 text-xs"
 end
