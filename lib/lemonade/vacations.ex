@@ -52,12 +52,12 @@ defmodule Lemonade.Teams.Vacations do
       from v in Vacation,
         where: v.team_id == ^id,
         order_by: :starts_at,
-        preload: :team_member
+        preload: [team_member: :organization_member]
     )
   end
 
   def get_vacations_by_team_member(%TeamMember{id: id}) do
-    from(v in Vacation, where: v.team_member_id == ^id, preload: :team_member)
+    from(v in Vacation, where: v.team_member_id == ^id, preload: [team_member: :organization_member])
     |> Repo.all()
   end
 

@@ -12,11 +12,11 @@ defmodule LemonadeWeb.VacationComponent do
       <div id="vacations" class="flex">
         <%= for vacation <- @vacations do %>
           <div id="<%= vacation.id %>" class="group flex items-center text-xs mx-1 bg-gray-50 rounded-full shadow">
-            <div class="centered py-1 px-2 bg-gray-100 rounded-full">
-              <%= initials(vacation.team_member.name) %>
+            <div class="centered bg-gray-100 rounded-full">
+              <%= avatar(vacation.team_member.organization_member, :x_small) %>
             </div>
             <div class="py-1 px-2 mr-1 rounded-r-full flex items-center">
-              <%= if @current_team_member == vacation.team_member do %>
+              <%= if @current_team_member.id == vacation.team_member.id do %>
                 <%= live_patch format_date_range(vacation.starts_at, vacation.ends_at),
                   to: Routes.team_path(@socket, :vacations, vacation.id), class: "a mr-2" %>
 

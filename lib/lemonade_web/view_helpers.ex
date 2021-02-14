@@ -39,11 +39,11 @@ defmodule LemonadeWeb.ViewHelpers do
 
     if organization_member && Map.has_key?(organization_member, :avatar_url) && organization_member.avatar_url do
       ~e"""
-      <img src="<%= organization_member.avatar_url %>?v=<%= DateTime.utc_now |> DateTime.to_unix() %>" class="<%= avatar_size(size) %> <%= class %> <%= online %> bg-yellow-300 rounded-full centered shadow-md" />
+      <img src="<%= organization_member.avatar_url %>?v=<%= DateTime.utc_now |> DateTime.to_unix() %>" class="<%= avatar_size(size) %> <%= class %> <%= online %> bg-yellow-300 rounded-full centered" />
       """
     else
       ~e"""
-      <div class="<%= avatar_size(size) %> <%= online %> bg-yellow-300 rounded-full centered shadow-md">
+      <div class="<%= avatar_size(size) %> <%= online %> bg-yellow-300 rounded-full centered">
         <%= initials(organization_member.name) %>
       </div>
       """
@@ -52,5 +52,5 @@ defmodule LemonadeWeb.ViewHelpers do
 
   defp avatar_size(:normal), do: "w-20 h-20 text-2xl"
   defp avatar_size(:small), do: "w-8 h-8 text-xs"
-  defp avatar_size(:x_small), do: "w-4 h-4 text-xs"
+  defp avatar_size(:x_small), do: "w-6 h-6 text-xs"
 end
