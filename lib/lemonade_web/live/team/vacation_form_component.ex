@@ -5,7 +5,7 @@ defmodule LemonadeWeb.VacationFormComponent do
   alias Lemonade.Teams.Vacations.Vacation
 
   @impl true
-  def update(%{id: :new, current_team_member: current_team_member}, socket) do
+  def update(%{id: :new, current_team_member: current_team_member, return_to: return_to}, socket) do
     changeset = Teams.change_vacation(%Vacation{}, %{type: "all day"})
     vacations = get_other_vacation_days(current_team_member)
 
@@ -13,10 +13,11 @@ defmodule LemonadeWeb.VacationFormComponent do
       socket
       |> assign(changeset: changeset)
       |> assign(current_team_member: current_team_member)
+      |> assign(return_to: return_to)
       |> push_event("vacations", %{vacations: vacations})}
   end
 
-  def update(%{id: id, current_team_member: current_team_member}, socket) do
+  def update(%{id: id, current_team_member: current_team_member, return_to: return_to}, socket) do
     vacation = Teams.get_vacation!(id)
     vacations = get_other_vacation_days(current_team_member, vacation)
     changeset = Teams.change_vacation(vacation, %{})
@@ -25,6 +26,7 @@ defmodule LemonadeWeb.VacationFormComponent do
       socket
       |> assign(changeset: changeset)
       |> assign(vacation: vacation)
+      |> assign(return_to: return_to)
       |> push_event("vacations", %{vacations: vacations})}
   end
 
@@ -49,7 +51,7 @@ defmodule LemonadeWeb.VacationFormComponent do
 
         <div class="text-right">
           <%= live_patch "Cancel", to: Routes.team_path(@socket, :index), class: "button" %>
-          <button type="submit" class="button-primary bg-yellow-200" phx-click="close" phx-target="#modal">OK</button>
+          <%= submit "OK", class: "button-primary bg-yellow-200" %>
         </div>
       </form>
     </div>
@@ -60,13 +62,17 @@ defmodule LemonadeWeb.VacationFormComponent do
   def handle_event("book-vacation", %{"vacation" => attrs}, socket) do
     socket.assigns.current_team_member |> Teams.book_vacation(attrs)
 
-    {:noreply, socket}
+    {:noreply,
+      socket
+      |> push_redirect(to: socket.assigns.return_to)}
   end
 
   def handle_event("update-vacation", %{"vacation" => attrs}, socket) do
     socket.assigns.vacation |> Teams.update_vacation(attrs)
 
-    {:noreply, socket}
+    {:noreply,
+      socket
+      |> push_redirect(to: socket.assigns.return_to)}
   end
 
   defp submit_action(%{data: %{id: nil}}), do: "book-vacation"
