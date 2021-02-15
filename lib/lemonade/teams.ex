@@ -87,6 +87,7 @@ defmodule Lemonade.Teams do
   alias Lemonade.Teams.Stickies
   defdelegate list_sticky_lanes(team), to: Stickies
   defdelegate create_sticky_lane(team), to: Stickies
+  defdelegate delete_sticky_lane(arg), to: Stickies
 
   alias Lemonade.PubSub
 

@@ -9,6 +9,8 @@ defmodule Lemonade.Teams.Stickies do
 
   alias Lemonade.Teams.Stickies.StickyLane
 
+  def get_sticky_lane!(id), do: Repo.get!(StickyLane, id)
+
   def list_sticky_lanes(team) do
     Repo.all(
       from l in StickyLane,
@@ -47,6 +49,13 @@ defmodule Lemonade.Teams.Stickies do
     sticky_lane
     |> StickyLane.changeset(attrs)
     |> Repo.update()
+  end
+
+  def delete_sticky_lane(id) when is_binary(id) do
+    get_sticky_lane!(id)
+    |> Repo.preload(:team)
+    |> delete_sticky_lane()
+    |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
   end
 
   def delete_sticky_lane(%StickyLane{} = sticky_lane) do
