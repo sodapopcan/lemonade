@@ -46,6 +46,21 @@ Hooks.ContentEditable = {
   },
 }
 
+Hooks.FocusNewSticky = {
+  mounted() {
+    listen(this.el, "mouseup", () => {
+      const laneId = this.el.dataset.laneId
+      const loop = setInterval(() => {
+        const el = $(`new-sticky-lane-${laneId}`)
+        if (el.style.display === "block") {
+          el.focus()
+          clearInterval(loop)
+        }
+      }, 1)
+    })
+  },
+}
+
 Hooks.DateRangePicker = {
   mounted() {
     this.handleEvent("vacations", ({ vacations }) => {

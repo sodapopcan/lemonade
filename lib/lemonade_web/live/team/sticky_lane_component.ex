@@ -15,15 +15,15 @@ defmodule LemonadeWeb.StickyLaneComponent do
     ~L"""
     <section>
       <header class="flex items-center">
-      <h1
-        class="mr-2"
-        id="<%= @sticky_lane.id %>"
-        data-event="update-name"
-        data-phx-target="<%= @myself %>"
-        phx-hook="ContentEditable"
-      >
-        <%= @sticky_lane.name %>
-      </h1>
+        <h1
+          class="mr-2"
+          id="<%= @sticky_lane.id %>"
+          data-event="update-name"
+          data-phx-target="<%= @myself %>"
+          phx-hook="ContentEditable"
+        >
+          <%= @sticky_lane.name %>
+        </h1>
 
         <%= live_patch icon("edit"), to: "#",
           class: "a-muted mr-2",
@@ -36,7 +36,11 @@ defmodule LemonadeWeb.StickyLaneComponent do
           phx_click: "delete",
           phx_value_id: @sticky_lane.id,
           phx_target: @myself %>
-      <header>
+      </header>
+
+      <div class="flex">
+        <%= live_component @socket, LemonadeWeb.NewStickyComponent, id: @sticky_lane.id %>
+      </div>
     </section>
     """
   end

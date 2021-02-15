@@ -53,4 +53,8 @@ defmodule LemonadeWeb.ViewHelpers do
   defp avatar_size(:normal), do: "w-20 h-20 text-2xl"
   defp avatar_size(:small), do: "w-8 h-8 text-xs"
   defp avatar_size(:x_small), do: "w-6 h-6 text-xs"
+
+  def display(condition) do
+    "display: " <> (if condition, do: "block", else: "none")
+  end
 end
