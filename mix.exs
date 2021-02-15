@@ -48,10 +48,11 @@ defmodule Lemonade.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:phx_gen_auth, "~> 0.6", only: [:dev], runtime: false},
-      {:wallaby, "~> 0.26.2", [runtime: false, only: :test]},
       {:timex, "~> 3.6"},
-      {:mogrify, "~> 0.8.0"}
+      {:mogrify, "~> 0.8.0"},
+      {:phx_gen_auth, "~> 0.6", only: [:dev], runtime: false},
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
+      {:wallaby, "~> 0.26.2", [runtime: false, only: :test]}
     ]
   end
 
