@@ -67,7 +67,6 @@ defmodule Lemonade.Teams do
   end
 
   alias Lemonade.Teams.Standups
-
   defdelegate get_standup_by_team(team), to: Standups
   defdelegate join_standup(standup, team_member), to: Standups
   defdelegate leave_standup(standup, team_member), to: Standups
@@ -75,7 +74,6 @@ defmodule Lemonade.Teams do
   defdelegate get_all_standups(), to: Standups
 
   alias Lemonade.Teams.Vacations
-
   defdelegate book_vacation(team_member, attrs), to: Vacations
   defdelegate update_vacation(vacation, attrs), to: Vacations
   defdelegate cancel_vacation(vacation), to: Vacations
@@ -86,8 +84,13 @@ defmodule Lemonade.Teams do
 
   alias Lemonade.Teams.Stickies
   defdelegate list_sticky_lanes(team), to: Stickies
+  defdelegate get_sticky_lane!(id), to: Stickies
   defdelegate create_sticky_lane(team), to: Stickies
+  defdelegate update_sticky_lane(sticky_lane, attrs), to: Stickies
   defdelegate delete_sticky_lane(arg), to: Stickies
+  defdelegate change_sticky_lane(sticky_lane, args \\ %{}), to: Stickies
+  defdelegate get_sticky!(id), to: Stickies
+  defdelegate get_update_sticky(changeset), to: Stickies
 
   alias Lemonade.PubSub
 

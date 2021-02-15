@@ -49,6 +49,7 @@ defmodule Lemonade.Teams.Stickies do
     sticky_lane
     |> StickyLane.changeset(attrs)
     |> Repo.update()
+    |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
   end
 
   def delete_sticky_lane(id) when is_binary(id) do
@@ -71,6 +72,8 @@ defmodule Lemonade.Teams.Stickies do
   def list_stickies do
     Repo.all(Sticky)
   end
+
+  def get_sticky!(id), do: Repo.get!(Sticky, id)
 
   def create_sticky(attrs \\ %{}) do
     %Sticky{}
