@@ -3,6 +3,7 @@ const Hooks = {}
 const $ = (id) => document.getElementById(id)
 const map = (iter, fn) => [].map.call(iter, fn)
 const forEach = (iter, fn) => [].forEach.call(iter, fn)
+const set = (el, attr, val) => el.setAttribute(attr, val)
 const listen = (el, ev, fn) => el.addEventListener(ev, fn)
 const ignore = (el, ev, fn) => element.removeEventListener(ev, fn)
 const selectChildren = (el) => window.getSelection().selectAllChildren(el)
@@ -16,7 +17,7 @@ Hooks.Focus = {
 Hooks.ContentEditable = {
   mounted() {
     listen(this.el, "dblclick", ({ target }) => {
-      this.el.setAttribute("contenteditable", true)
+      set(this.el, "contenteditable", true)
       return selectChildren(target)
     })
 
@@ -28,7 +29,7 @@ Hooks.ContentEditable = {
           dataset: { id, event, phxTarget },
         } = target
         this.pushEventTo(phxTarget, event, { id, content })
-        this.el.setAttribute("contenteditable", false)
+        set(this.el, "contenteditable", false)
         target.blur()
       }
     })
@@ -39,7 +40,7 @@ Hooks.ContentEditable = {
     })
 
     listen(this.el, "blur", ({ target }) => {
-      this.el.setAttribute("contenteditable", false)
+      set(this.el, "contenteditable", false)
       if (!this.saving) target.innerText = this.originalContent
       this.saving = false
     })
