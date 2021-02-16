@@ -15,7 +15,9 @@ defmodule LemonadeWeb.NewStickyComponent do
         style="<%= display @show_new_note %>"
         id="new-sticky-lane-<%= @id %>"
         class="note-content"
-        data-event="new-note"
+        data-event="create"
+        data-id="<%= @id %>"
+        data-phx-target="<%= @myself %>"
         contenteditable
         phx-hook="ContentEditable"
         phx-blur="cancel"
@@ -45,5 +47,11 @@ defmodule LemonadeWeb.NewStickyComponent do
 
   def handle_event("cancel", _, socket) do
     {:noreply, assign(socket, :show_new_note, false)}
+  end
+
+  def handle_event("create", %{"id" => lane_id, "content" => content}, socket) do
+    {:ok, sticky} = Lemonade.Teams.get_sticky_lane!(lane_id)
+    |> Lemonade.Teams.create_sticky(%{content: content})
+    {:noreply, socket}
   end
 end

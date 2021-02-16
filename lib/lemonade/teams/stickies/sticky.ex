@@ -3,7 +3,7 @@ defmodule Lemonade.Teams.Stickies.Sticky do
   import Ecto.Changeset
 
   schema "stickies" do
-    field :color, :string
+    field :color, :string, default: "yellow"
     field :completed, :boolean, default: false
     field :content, :string
     field :position, :integer

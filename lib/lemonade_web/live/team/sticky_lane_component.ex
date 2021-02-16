@@ -19,6 +19,7 @@ defmodule LemonadeWeb.StickyLaneComponent do
           class="mr-2"
           id="<%= @sticky_lane.id %>"
           data-event="update-name"
+          data-id="<%= @sticky_lane.id %>"
           data-phx-target="<%= @myself %>"
           phx-hook="ContentEditable"
         >
@@ -46,7 +47,7 @@ defmodule LemonadeWeb.StickyLaneComponent do
   end
 
   @impl true
-  def handle_event("update-name", %{"id" => id, "content" => name} = attrs, socket) do
+  def handle_event("update-name", %{"id" => id, "content" => name}, socket) do
     {:ok, _sticky_lane} = Lemonade.Teams.get_sticky_lane!(id)
     |> Lemonade.Teams.update_sticky_lane(%{"name" => name})
 

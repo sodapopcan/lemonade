@@ -23,7 +23,7 @@ defmodule Lemonade.Teams.Stickies do
   def create_sticky_lane(team) do
     {:ok, %{sticky_lane: sticky_lane}} =
       Multi.new()
-      |> Multi.run(:position, fn _, _ -> {:ok, get_max_position(team)} end)
+      |> Multi.run(:position, fn _, _ -> {:ok, get_lane_position(team)} end)
       |> Multi.run(:sticky_lane, fn _, %{position: position} ->
         %StickyLane{team: team, name: "New Lane", position: position}
         |> Repo.insert()
@@ -34,7 +34,7 @@ defmodule Lemonade.Teams.Stickies do
     |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
   end
 
-  defp get_max_position(team) do
+  defp get_lane_position(%Lemonade.Teams.Team{} = team) do
     position =
       Repo.one(
         from l in StickyLane,
@@ -75,10 +75,34 @@ defmodule Lemonade.Teams.Stickies do
 
   def get_sticky!(id), do: Repo.get!(Sticky, id)
 
-  def create_sticky(attrs \\ %{}) do
-    %Sticky{}
-    |> Sticky.changeset(attrs)
-    |> Repo.insert()
+  def create_sticky(sticky_lane, attrs \\ %{}) do
+    Multi.new()
+    |> Multi.run(:position, fn _, _ -> {:ok, get_sticky_position(sticky_lane)} end)
+    |> Multi.run(:sticky, fn _, %{position: position} ->
+      %Sticky{sticky_lane: sticky_lane, position: position}
+      |> change_sticky(attrs)
+      |> Repo.insert()
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{sticky: sticky}} ->
+        {:ok, sticky}
+        |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
+
+      error ->
+        error
+    end
+  end
+
+  defp get_sticky_position(%StickyLane{} = sticky_lane) do
+    position =
+      Repo.one(
+        from l in Sticky,
+          select: max(l.position),
+          where: l.sticky_lane_id == ^sticky_lane.id
+      ) || 0
+
+    position + 1
   end
 
   def update_sticky(%Sticky{} = sticky, attrs) do

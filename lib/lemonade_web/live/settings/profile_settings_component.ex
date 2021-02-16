@@ -37,7 +37,7 @@ defmodule LemonadeWeb.ProfileSettingsComponent do
 
   @impl true
   def handle_event("update-organization-member", %{"organization_member" => attrs}, socket) do
-    avatar_url = put_avatar_url(socket, socket.assigns.current_organization_member)
+    avatar_url = avatar_url(socket, socket.assigns.current_organization_member)
     attrs = Map.put(attrs, "avatar_url", avatar_url)
 
     case Lemonade.Organizations.update_organization_member(
@@ -57,16 +57,14 @@ defmodule LemonadeWeb.ProfileSettingsComponent do
 
   def handle_event("validate", _, socket), do: {:noreply, socket}
 
-  defp put_avatar_url(socket, organization_member) do
-    {completed, []} = uploaded_entries(socket, :avatar)
-
+  defp avatar_url(socket, organization_member) do
     Routes.static_path(socket, "/uploads/#{organization_member.id}.jpg")
   end
 
   def consume_avatar(socket, %Lemonade.Organizations.OrganizationMember{} = organization_member) do
     import Mogrify
 
-    consume_uploaded_entries(socket, :avatar, fn meta, entry ->
+    consume_uploaded_entries(socket, :avatar, fn meta, _entry ->
       open(meta.path)
       |> format("jpg")
       |> resize_to_fill("300x300")
@@ -77,10 +75,5 @@ defmodule LemonadeWeb.ProfileSettingsComponent do
       File.cp!(meta.path, dest)
     end)
     {:ok, organization_member}
-  end
-
-  defp ext(entry) do
-    [ext | _] = MIME.extensions(entry.client_type)
-    ext
   end
 end

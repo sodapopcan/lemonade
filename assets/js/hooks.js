@@ -25,9 +25,9 @@ Hooks.ContentEditable = {
         this.saving = true
         const {
           innerText: content,
-          dataset: { event, phxTarget },
+          dataset: { id, event, phxTarget },
         } = target
-        this.pushEventTo(phxTarget, event, { id: this.el.id, content })
+        this.pushEventTo(phxTarget, event, { id, content })
         this.el.setAttribute("contenteditable", false)
         target.blur()
       }
