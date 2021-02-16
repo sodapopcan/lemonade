@@ -40,7 +40,12 @@ defmodule LemonadeWeb.StickyLaneComponent do
       </header>
 
       <div class="flex">
-        <%= live_component @socket, LemonadeWeb.NewStickyComponent, id: @sticky_lane.id %>
+        <div class="flex flex-wrap">
+          <%= for sticky <- @sticky_lane.stickies do %>
+            <%= live_component @socket, LemonadeWeb.StickyComponent, id: sticky.id, sticky: sticky %>
+          <% end %>
+          <%= live_component @socket, LemonadeWeb.NewStickyComponent, id: @sticky_lane.id %>
+        </div>
       </div>
     </section>
     """

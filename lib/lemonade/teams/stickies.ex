@@ -7,7 +7,8 @@ defmodule Lemonade.Teams.Stickies do
   alias Ecto.Multi
   alias Lemonade.Repo
 
-  alias Lemonade.Teams.Stickies.StickyLane
+  alias Lemonade.Teams.Stickies.{StickyLane, Sticky}
+
 
   def get_sticky_lane!(id), do: Repo.get!(StickyLane, id)
 
@@ -16,7 +17,7 @@ defmodule Lemonade.Teams.Stickies do
       from l in StickyLane,
         where: l.team_id == ^team.id,
         order_by: l.position,
-        preload: :stickies
+        preload: [stickies: ^from(s in Sticky, order_by: s.position)]
     )
   end
 
@@ -67,8 +68,6 @@ defmodule Lemonade.Teams.Stickies do
     StickyLane.changeset(sticky_lane, attrs)
   end
 
-  alias Lemonade.Teams.Stickies.Sticky
-
   def list_stickies do
     Repo.all(Sticky)
   end
@@ -86,7 +85,8 @@ defmodule Lemonade.Teams.Stickies do
     |> Repo.transaction()
     |> case do
       {:ok, %{sticky: sticky}} ->
-        {:ok, sticky}
+        sticky = Repo.preload(sticky, :sticky_lane)
+        {:ok, sticky.sticky_lane}
         |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
 
       error ->
