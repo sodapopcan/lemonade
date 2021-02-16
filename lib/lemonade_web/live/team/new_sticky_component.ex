@@ -49,7 +49,7 @@ defmodule LemonadeWeb.NewStickyComponent do
   end
 
   def handle_event("create", %{"id" => lane_id, "content" => content}, socket) do
-    {:ok, sticky} = Lemonade.Teams.get_sticky_lane!(lane_id)
+    {:ok, _sticky} = Lemonade.Teams.get_sticky_lane!(lane_id)
     |> Lemonade.Teams.create_sticky(%{content: content})
     {:noreply, socket}
   end

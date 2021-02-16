@@ -12,11 +12,10 @@ defmodule LemonadeWeb.TeamLive do
     team = Teams.get_team_by_organization(organization)
     standup = Teams.get_standup_by_team(team)
     sticky_lanes = Teams.list_sticky_lanes(team)
+    vacations = Teams.get_vacations_by_team(team)
 
     current_team_member =
       Teams.get_team_member_by_organization_member(team, current_organization_member)
-
-    vacations = Teams.get_vacations_by_team(team)
 
     if connected?(socket) do
       TeamPresence.start_tracking(self(), current_team_member)

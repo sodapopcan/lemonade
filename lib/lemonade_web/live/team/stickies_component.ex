@@ -21,7 +21,7 @@ defmodule LemonadeWeb.StickiesComponent do
 
   @impl true
   def handle_event("create-sticky-lane", _, socket) do
-    {:ok, lane} = Lemonade.Teams.create_sticky_lane(socket.assigns.team)
+    {:ok, _lane} = Lemonade.Teams.create_sticky_lane(socket.assigns.team)
 
     {:noreply, socket}
   end
