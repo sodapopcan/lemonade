@@ -7,8 +7,13 @@ defmodule LemonadeWeb.StickyComponent do
     <div
       class="bg-<%= @sticky.color %>-200 group flex flex-col w-36 h-36 p-1 text-sm shadow-md mr-3 mb-3"
       style="cursor: grab"
+      id="sticky-wrapper-<%= @id %>"
     >
       <div class="flex justify-end invisible group-hover:visible">
+        <a href="#" class="a-muted mr-1" phx-click="toggle-completed" phx-value-id="<%= @id %>" phx-target="<%= @myself %>">
+          <%= if @sticky.completed, do: icon("check-square"), else: icon("square") %>
+        </a>
+
         <a href="#" class="a-muted" phx-click="delete" phx-value-id="<%= @id %>" phx-target="<%= @myself %>">
           <%= icon("x") %>
         </a>
@@ -45,6 +50,12 @@ defmodule LemonadeWeb.StickyComponent do
   def handle_event("update", %{"id" => id} = attrs, socket) do
     Lemonade.Teams.get_sticky!(id)
     |> Lemonade.Teams.update_sticky(attrs)
+    {:noreply, socket}
+  end
+
+  def handle_event("toggle-completed", %{"id" => id}, socket) do
+    Lemonade.Teams.get_sticky!(id)
+    |> Lemonade.Teams.toggle_completed_sticky()
     {:noreply, socket}
   end
 end

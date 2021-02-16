@@ -18,4 +18,9 @@ defmodule Lemonade.Teams.Stickies.Sticky do
     |> cast(attrs, [:content, :position, :color, :completed])
     |> validate_required([:content, :position, :color, :completed])
   end
+
+  def toggle_completed_changeset(sticky) do
+    sticky
+    |> change(%{completed: !sticky.completed})
+  end
 end
