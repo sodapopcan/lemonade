@@ -106,17 +106,15 @@ defmodule LemonadeWeb.UserSettingsLiveTest do
     end
   end
 
-  describe "profile settings" do
-    test "it updates the organization member's name", %{conn: conn} do
-      {:ok, view, _html} = live(conn, Routes.settings_path(conn, :profile))
+  # describe "profile settings" do
+  #   test "it updates the organization member's name", %{conn: conn} do
+  #     {:ok, view, _html} = live(conn, Routes.settings_path(conn, :profile))
 
-      html =
-        view
-        |> form("form")
-        |> fill_in("")
-        |> render_submit()
-
-      assert html =~
-    end
-  end
+  #     html =
+  #       view
+  #       |> form("form")
+  #       |> fill_in("")
+  #       |> render_submit()
+  #   end
+  # end
 end
