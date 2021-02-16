@@ -112,7 +112,16 @@ defmodule Lemonade.Teams.Stickies do
   end
 
   def delete_sticky(%Sticky{} = sticky) do
-    Repo.delete(sticky)
+    sticky
+    |> Repo.delete()
+    |> case do
+      {:ok, sticky} ->
+        {:ok, get_sticky_lane!(sticky.sticky_lane_id)}
+        |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
+
+      error ->
+        error
+    end
   end
 
   def change_sticky(%Sticky{} = sticky, attrs \\ %{}) do

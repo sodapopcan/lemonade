@@ -14,7 +14,6 @@ defmodule LemonadeWeb.NewStickyComponent do
         class="w-36 h-36 bg-white p-4 text-sm centered text-center outline-none shadow-md"
         style="<%= display @show_new_note %>"
         id="new-sticky-lane-<%= @id %>"
-        class="note-content"
         data-event="create"
         data-id="<%= @id %>"
         data-phx-target="<%= @myself %>"
