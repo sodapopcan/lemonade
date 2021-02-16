@@ -22,7 +22,6 @@ defmodule LemonadeWeb.StickyComponent do
       <div
         id="<%= @id %>"
         class="flex-1 centered text-center p-2 outline-none"
-        contenteditable
         data-id="<%= @id %>"
         data-event="update"
         data-phx-target="<%= @myself %>"
