@@ -109,7 +109,14 @@ defmodule Lemonade.Teams.Stickies do
     sticky
     |> Sticky.changeset(attrs)
     |> Repo.update()
-    |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
+    |> case do
+      {:ok, sticky} ->
+        {:ok, get_sticky_lane!(sticky.sticky_lane_id)}
+        |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
+
+      error ->
+        error
+    end
   end
 
   def toggle_completed_sticky(%Sticky{} = sticky) do
