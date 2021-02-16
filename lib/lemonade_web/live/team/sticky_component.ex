@@ -18,6 +18,9 @@ defmodule LemonadeWeb.StickyComponent do
         id="<%= @id %>"
         class="flex-1 centered text-center p-2 outline-none"
         contenteditable
+        data-id="<%= @id %>"
+        data-event="update"
+        data-phx-target="<%= @myself %>"
         phx-hook="ContentEditable"
         ><%= @sticky.content %></div>
 
@@ -36,6 +39,12 @@ defmodule LemonadeWeb.StickyComponent do
   def handle_event("delete", %{"id" => id}, socket) do
     Lemonade.Teams.get_sticky!(id)
     |> Lemonade.Teams.delete_sticky()
+    {:noreply, socket}
+  end
+
+  def handle_event("update", %{"id" => id} = attrs, socket) do
+    Lemonade.Teams.get_sticky!(id)
+    |> Lemonade.Teams.update_sticky(attrs)
     {:noreply, socket}
   end
 end
