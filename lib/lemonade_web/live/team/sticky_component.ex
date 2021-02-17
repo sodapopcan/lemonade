@@ -5,7 +5,7 @@ defmodule LemonadeWeb.StickyComponent do
   def render(assigns) do
     ~L"""
     <div
-      class="bg-<%= @sticky.color %>-200 group flex flex-col w-36 h-36 p-1 text-sm shadow-md mr-3 mb-3"
+      class="sticky-<%= @sticky.color %> group flex flex-col w-36 h-36 p-1 text-sm shadow-md mr-3 mb-3"
       style="cursor: grab"
       id="sticky-wrapper-<%= @id %>"
     >
@@ -29,11 +29,11 @@ defmodule LemonadeWeb.StickyComponent do
         ><%= @sticky.content %></div>
 
       <div class="flex invisible group-hover:visible">
-        <div class="w-3 h-3 mr-1 rounded-full bg-yellow-100"></div>
-        <div class="w-3 h-3 mr-1 rounded-full bg-green-200"></div>
-        <div class="w-3 h-3 mr-1 rounded-full bg-blue-200"></div>
-        <div class="w-3 h-3 mr-1 rounded-full bg-yellow-600"></div>
-        <div class="w-3 h-3 mr-1 rounded-full bg-green-800"></div>
+        <a href="#" phx-click="change-color" phx-value-id="<%= @id %>" phx-value-color="yellow" phx-target="<%= @myself %>"><div class="w-3 h-3 mr-1 rounded-full sticky-yellow"></div></a>
+        <a href="#" phx-click="change-color" phx-value-id="<%= @id %>" phx-value-color="green" phx-target="<%= @myself %>"><div class="w-3 h-3 mr-1 rounded-full sticky-green"></div></a>
+        <a href="#" phx-click="change-color" phx-value-id="<%= @id %>" phx-value-color="blue" phx-target="<%= @myself %>"><div class="w-3 h-3 mr-1 rounded-full sticky-blue"></div></a>
+        <a href="#" phx-click="change-color" phx-value-id="<%= @id %>" phx-value-color="pink" phx-target="<%= @myself %>"><div class="w-3 h-3 mr-1 rounded-full sticky-pink"></div></a>
+        <a href="#" phx-click="change-color" phx-value-id="<%= @id %>" phx-value-color="orange" phx-target="<%= @myself %>"><div class="w-3 h-3 mr-1 rounded-full sticky-orange"></div></a>
       </div>
     </div>
     """
@@ -55,6 +55,12 @@ defmodule LemonadeWeb.StickyComponent do
   def handle_event("toggle-completed", %{"id" => id}, socket) do
     Lemonade.Teams.get_sticky!(id)
     |> Lemonade.Teams.toggle_completed_sticky()
+    {:noreply, socket}
+  end
+
+  def handle_event("change-color", %{"id" => id, "color" => color}, socket) do
+    Lemonade.Teams.get_sticky!(id)
+    |> Lemonade.Teams.update_sticky(%{color: color})
     {:noreply, socket}
   end
 end

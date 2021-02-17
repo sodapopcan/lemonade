@@ -20,6 +20,22 @@
   .button-primary {
     @apply px-4 py-2 rounded bg-yellow-200;
   }
+
+  .sticky-yellow {
+    @apply bg-yellow-200;
+  }
+  .sticky-green {
+    @apply bg-green-300;
+  }
+  .sticky-blue {
+    @apply bg-blue-300;
+  }
+  .sticky-pink {
+    @apply bg-red-300;
+  }
+  .sticky-orange {
+    @apply bg-yellow-500;
+  }
 }
 
 @import "./roboto.scss";
