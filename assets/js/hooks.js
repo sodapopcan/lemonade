@@ -1,3 +1,5 @@
+import Sortable from "sortablejs"
+
 const Hooks = {}
 
 const $ = (id) => document.getElementById(id)
@@ -7,6 +9,8 @@ const set = (el, attr, val) => el.setAttribute(attr, val)
 const listen = (el, ev, fn) => el.addEventListener(ev, fn)
 const ignore = (el, ev, fn) => element.removeEventListener(ev, fn)
 const selectChildren = (el) => window.getSelection().selectAllChildren(el)
+const isOverflowing = (el) =>
+  el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth
 
 Hooks.Focus = {
   mounted() {
@@ -85,6 +89,35 @@ Hooks.DateRangePicker = {
           vacationEndsAt.value = endsAt.toISOString()
         },
       })
+    })
+  },
+}
+
+/**
+ *  Hiding the dragged element is done in app.scss:
+ *
+ *  .sortable-ghost {
+ *    opacity: 0;
+ *  }
+ */
+Hooks.Sortable = {
+  mounted() {
+    Sortable.create(this.el, {
+      draggable: ".sticky",
+      animation: 500,
+      emptyInsertThreshold: 10,
+      group: "sticky-lanes",
+      forceFallback: true,
+      invertSwap: true,
+      onEnd: (e) => {
+        const { id, phxTarget } = e.item.dataset
+        this.pushEventTo(phxTarget, "move", {
+          sticky_id: id,
+          from_lane_id: e.from.dataset.id,
+          to_lane_id: e.to.dataset.id,
+          new_position: e.newIndex,
+        })
+      },
     })
   },
 }

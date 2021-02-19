@@ -17,7 +17,7 @@ defmodule LemonadeWeb.StickyLaneComponent do
       <header class="flex items-center">
         <h1
           class="mr-2"
-          id="<%= @sticky_lane.id %>"
+          id="sticky-lane-header<%= @sticky_lane.id %>"
           data-event="update-name"
           data-id="<%= @sticky_lane.id %>"
           data-phx-target="<%= @myself %>"
@@ -39,13 +39,13 @@ defmodule LemonadeWeb.StickyLaneComponent do
           phx_target: @myself %>
       </header>
 
-      <div class="flex">
-        <div class="flex flex-wrap">
+      <div class="flex flex-wrap">
+        <div class="flex flex-wrap" id="lane-<%= @sticky_lane.id %>" data-id="<%= @sticky_lane.id %>" data-phx-target="<%= @myself %>" phx-hook="Sortable">
           <%= for sticky <- @sticky_lane.stickies do %>
             <%= live_component @socket, LemonadeWeb.StickyComponent, id: sticky.id, sticky: sticky %>
           <% end %>
-          <%= live_component @socket, LemonadeWeb.NewStickyComponent, id: @sticky_lane.id %>
         </div>
+        <%= live_component @socket, LemonadeWeb.NewStickyComponent, id: @sticky_lane.id %>
       </div>
     </section>
     """

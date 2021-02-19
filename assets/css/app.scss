@@ -42,6 +42,10 @@
 @import "./feather-icons.css";
 @import "./forms.scss";
 
+.sortable-ghost {
+  opacity: 0;
+}
+
 body {
   font-family: Roboto, Helvetica;
   font-weight: 300;

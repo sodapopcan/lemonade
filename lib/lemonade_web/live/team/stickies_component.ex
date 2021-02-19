@@ -4,7 +4,7 @@ defmodule LemonadeWeb.StickiesComponent do
   @impl true
   def render(assigns) do
     ~L"""
-    <div>
+    <div class="stickies">
       <%= for sticky_lane <- @sticky_lanes do %>
         <%= live_component @socket, LemonadeWeb.StickyLaneComponent,
           id: sticky_lane.id,
