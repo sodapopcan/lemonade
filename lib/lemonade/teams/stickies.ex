@@ -9,7 +9,6 @@ defmodule Lemonade.Teams.Stickies do
 
   alias Lemonade.Teams.Stickies.{StickyLane, Sticky}
 
-
   def get_sticky_lane!(id), do: Repo.get!(StickyLane, id)
 
   def list_sticky_lanes(team) do
