@@ -9,15 +9,13 @@ defmodule Lemonade.Teams.Stickies do
 
   alias Lemonade.Teams.Stickies.{StickyLane, Sticky}
 
-  def get_sticky_lane!(id), do: Repo.get!(StickyLane, id)
+  def get_sticky_lane!(id) do
+    Repo.get!(StickyLane, id)
+  end
 
   def list_sticky_lanes(team) do
-    Repo.all(
-      from l in StickyLane,
-        where: l.team_id == ^team.id,
-        order_by: l.position,
-        preload: [stickies: ^from(s in Sticky, order_by: s.position)]
-    )
+    StickyLane.for_team_with_stickies(team)
+    |> Repo.all()
   end
 
   def create_sticky_lane(team) do
@@ -67,41 +65,29 @@ defmodule Lemonade.Teams.Stickies do
     StickyLane.changeset(sticky_lane, attrs)
   end
 
-  def list_stickies do
-    Repo.all(Sticky)
-  end
-
   def get_sticky!(id), do: Repo.get!(Sticky, id)
 
   def create_sticky(sticky_lane, attrs \\ %{}) do
-    Multi.new()
-    |> Multi.run(:position, fn _, _ -> {:ok, get_sticky_position(sticky_lane)} end)
-    |> Multi.run(:sticky, fn _, %{position: position} ->
-      %Sticky{sticky_lane: sticky_lane, position: position}
-      |> change_sticky(attrs)
-      |> Repo.insert()
-    end)
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{sticky: sticky}} ->
-        sticky = Repo.preload(sticky, :sticky_lane)
-        {:ok, sticky.sticky_lane}
-        |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
+    position = Repo.one(Sticky.next_position(sticky_lane))
 
-      error ->
-        error
-    end
+    %Sticky{sticky_lane: sticky_lane, position: position}
+    |> change_sticky(attrs)
+    |> Repo.insert!()
+    |> get_sticky_lane_from_sticky()
+    |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
   end
 
-  defp get_sticky_position(%StickyLane{} = sticky_lane) do
-    position =
-      Repo.one(
-        from l in Sticky,
-          select: max(l.position),
-          where: l.sticky_lane_id == ^sticky_lane.id
-      ) || 0
+  defp preload_stickies(query) do
+    Repo.preload(query, stickies: Sticky.ordered)
+  end
 
-    position + 1
+  defp get_sticky_lane_from_sticky(sticky) do
+    sticky_lane =
+      sticky.sticky_lane_id
+      |> get_sticky_lane!()
+      |> preload_stickies()
+
+    {:ok, sticky_lane}
   end
 
   def update_sticky(%Sticky{} = sticky, attrs) do
@@ -140,6 +126,11 @@ defmodule Lemonade.Teams.Stickies do
       error ->
         error
     end
+  end
+
+  def move_sticky(sticky, sticky_lane, sticky_lane, new_position) do
+    sticky_lane
+    |> preload_stickies()
   end
 
   def change_sticky(%Sticky{} = sticky, attrs \\ %{}) do

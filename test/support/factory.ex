@@ -5,6 +5,7 @@ defmodule Lemonade.Factory do
   alias Lemonade.Teams.{Team, TeamMember}
   alias Lemonade.Teams.Standups.{Standup, StandupMember}
   alias Lemonade.Teams.Vacations.Vacation
+  alias Lemonade.Teams.Stickies.{Sticky, StickyLane}
 
   def build(:user) do
     {name, email} = unique_user("User", "example.com")
@@ -72,6 +73,24 @@ defmodule Lemonade.Factory do
       starts_at: naive_now(),
       ends_at: naive_now(),
       type: "all day"
+    }
+  end
+
+  def build(:sticky_lane) do
+    %StickyLane{
+      team: build(:team),
+      name: unique("Sticky Lane"),
+      position: 1
+    }
+  end
+
+  def build(:sticky) do
+    %Sticky{
+      sticky_lane: build(:sticky_lane),
+      content: "Some note",
+      position: 1,
+      completed: false,
+      color: "yellow"
     }
   end
 

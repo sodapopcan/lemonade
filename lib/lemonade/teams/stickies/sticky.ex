@@ -1,6 +1,8 @@
 defmodule Lemonade.Teams.Stickies.Sticky do
+  @moduledoc false
+
   use Lemonade.Schema
-  import Ecto.Changeset
+  import Ecto.{Changeset, Query}
 
   schema "stickies" do
     field :color, :string, default: "yellow"
@@ -12,7 +14,6 @@ defmodule Lemonade.Teams.Stickies.Sticky do
     timestamps()
   end
 
-  @doc false
   def changeset(sticky, attrs) do
     sticky
     |> cast(attrs, [:content, :position, :color, :completed])
@@ -22,5 +23,16 @@ defmodule Lemonade.Teams.Stickies.Sticky do
   def toggle_completed_changeset(sticky) do
     sticky
     |> change(%{completed: !sticky.completed})
+  end
+
+  def ordered do
+    from s in __MODULE__,
+      order_by: s.position
+  end
+
+  def next_position(sticky_lane) do
+    from s in __MODULE__,
+      select: coalesce(max(s.position), 0) + 1,
+      where: s.sticky_lane_id == ^sticky_lane.id
   end
 end
