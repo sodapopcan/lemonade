@@ -19,28 +19,11 @@ defmodule Lemonade.Teams.Stickies do
   end
 
   def create_sticky_lane(team) do
-    {:ok, %{sticky_lane: sticky_lane}} =
-      Multi.new()
-      |> Multi.run(:position, fn _, _ -> {:ok, get_lane_position(team)} end)
-      |> Multi.run(:sticky_lane, fn _, %{position: position} ->
-        %StickyLane{team: team, name: "New Lane", position: position}
-        |> Repo.insert()
-      end)
-      |> Repo.transaction()
+    position = Repo.one(StickyLane.next_position(team))
 
-    {:ok, sticky_lane}
+    %StickyLane{team: team, name: "New Lane", position: position}
+    |> Repo.insert()
     |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
-  end
-
-  defp get_lane_position(%Lemonade.Teams.Team{} = team) do
-    position =
-      Repo.one(
-        from l in StickyLane,
-          select: max(l.position),
-          where: l.team_id == ^team.id
-      ) || 0
-
-    position + 1
   end
 
   def update_sticky_lane(%StickyLane{} = sticky_lane, attrs) do
