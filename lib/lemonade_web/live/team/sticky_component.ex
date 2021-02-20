@@ -1,6 +1,8 @@
 defmodule LemonadeWeb.StickyComponent do
   use LemonadeWeb, :live_component
 
+  alias Lemonade.Teams
+
   @impl true
   def render(assigns) do
     ~L"""
@@ -43,29 +45,29 @@ defmodule LemonadeWeb.StickyComponent do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    Lemonade.Teams.get_sticky!(id)
-    |> Lemonade.Teams.delete_sticky()
+    Teams.get_sticky!(id)
+    |> Teams.delete_sticky()
 
     {:noreply, socket}
   end
 
   def handle_event("update", %{"id" => id} = attrs, socket) do
-    Lemonade.Teams.get_sticky!(id)
-    |> Lemonade.Teams.update_sticky(attrs)
+    Teams.get_sticky!(id)
+    |> Teams.update_sticky(attrs)
 
     {:noreply, socket}
   end
 
   def handle_event("toggle-completed", %{"id" => id}, socket) do
-    Lemonade.Teams.get_sticky!(id)
-    |> Lemonade.Teams.toggle_completed_sticky()
+    Teams.get_sticky!(id)
+    |> Teams.toggle_completed_sticky()
 
     {:noreply, socket}
   end
 
   def handle_event("change-color", %{"id" => id, "color" => color}, socket) do
-    Lemonade.Teams.get_sticky!(id)
-    |> Lemonade.Teams.update_sticky(%{color: color})
+    Teams.get_sticky!(id)
+    |> Teams.update_sticky(%{color: color})
 
     {:noreply, socket}
   end
@@ -80,11 +82,11 @@ defmodule LemonadeWeb.StickyComponent do
         },
         socket
       ) do
-    sticky = Lemonade.Teams.get_sticky!(sticky_id)
-    from_lane = Lemonade.Teams.get_sticky_lane!(from_lane_id)
-    to_lane = Lemonade.Teams.get_sticky_lane!(to_lane_id)
+    sticky = Teams.get_sticky!(sticky_id)
+    from_lane = Teams.get_sticky_lane!(from_lane_id)
+    to_lane = Teams.get_sticky_lane!(to_lane_id)
 
-    Lemonade.Teams.move_sticky(sticky, from_lane, to_lane, new_position)
+    Teams.move_sticky(sticky, from_lane, to_lane, new_position)
 
     {:noreply, socket}
   end
