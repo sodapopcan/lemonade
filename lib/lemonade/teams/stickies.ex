@@ -4,6 +4,8 @@ defmodule Lemonade.Teams.Stickies do
   """
 
   import Ecto.Query, warn: false
+  import Lemonade.Teams, only: [broadcast: 2]
+
   alias Ecto.Multi
   alias Lemonade.Repo
 
@@ -23,21 +25,21 @@ defmodule Lemonade.Teams.Stickies do
 
     %StickyLane{team: team, name: "New Lane", position: position}
     |> Repo.insert()
-    |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
+    |> broadcast(:sticky_lanes_updated)
   end
 
   def update_sticky_lane(%StickyLane{} = sticky_lane, attrs) do
     sticky_lane
     |> StickyLane.changeset(attrs)
     |> Repo.update()
-    |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
+    |> broadcast(:sticky_lanes_updated)
   end
 
   def delete_sticky_lane(id) when is_binary(id) do
     get_sticky_lane!(id)
     |> Repo.preload(:team)
     |> delete_sticky_lane()
-    |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
+    |> broadcast(:sticky_lanes_updated)
   end
 
   def delete_sticky_lane(%StickyLane{} = sticky_lane) do
@@ -57,7 +59,7 @@ defmodule Lemonade.Teams.Stickies do
     |> change_sticky(attrs)
     |> Repo.insert!()
     |> get_sticky_lane_from_sticky()
-    |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
+    |> broadcast(:sticky_lanes_updated)
   end
 
   defp preload_stickies(query) do
@@ -80,7 +82,7 @@ defmodule Lemonade.Teams.Stickies do
     |> case do
       {:ok, sticky} ->
         {:ok, get_sticky_lane!(sticky.sticky_lane_id)}
-        |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
+        |> broadcast(:sticky_lanes_updated)
 
       error ->
         error
@@ -94,7 +96,7 @@ defmodule Lemonade.Teams.Stickies do
     |> case do
       {:ok, sticky} ->
         {:ok, get_sticky_lane!(sticky.sticky_lane_id)}
-        |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
+        |> broadcast(:sticky_lanes_updated)
     end
   end
 
@@ -104,7 +106,7 @@ defmodule Lemonade.Teams.Stickies do
     |> case do
       {:ok, sticky} ->
         {:ok, get_sticky_lane!(sticky.sticky_lane_id)}
-        |> Lemonade.Teams.broadcast(:sticky_lanes_updated)
+        |> broadcast(:sticky_lanes_updated)
 
       error ->
         error
