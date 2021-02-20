@@ -25,6 +25,12 @@ defmodule Lemonade.Teams.Stickies.Sticky do
     |> change(%{completed: !sticky.completed})
   end
 
+  def for_lane(sticky_lane) do
+    from s in __MODULE__,
+      where: s.sticky_lane_id == ^sticky_lane.id,
+      order_by: s.position
+  end
+
   def ordered do
     from s in __MODULE__,
       order_by: s.position

@@ -6,7 +6,6 @@ defmodule Lemonade.Teams.Stickies do
   import Ecto.Query, warn: false
   import Lemonade.Teams, only: [broadcast: 2]
 
-  alias Ecto.Multi
   alias Lemonade.Repo
 
   alias Lemonade.Teams.Stickies.{StickyLane, Sticky}
@@ -63,7 +62,7 @@ defmodule Lemonade.Teams.Stickies do
   end
 
   defp preload_stickies(query) do
-    Repo.preload(query, stickies: Sticky.ordered)
+    Repo.preload(query, stickies: Sticky.ordered())
   end
 
   defp get_sticky_lane_from_sticky(sticky) do
@@ -114,8 +113,37 @@ defmodule Lemonade.Teams.Stickies do
   end
 
   def move_sticky(sticky, sticky_lane, sticky_lane, new_position) do
-    sticky_lane
-    |> preload_stickies()
+    Sticky.for_lane(sticky_lane)
+    |> Repo.all()
+    |> move_sticky(sticky, new_position)
+    |> update_stickies!()
+
+    {:ok,
+      %{
+        team_id: sticky_lane.team_id,
+        sticky_lanes: [preload_stickies(sticky_lane)]
+      }
+    }
+    |> broadcast(:sticky_lanes_updated)
+  end
+
+  defp move_sticky(stickies, %Sticky{} = sticky, new_position)
+      when is_list(stickies) and is_integer(new_position) do
+    stickies
+    |> Enum.reject(&(sticky.id == &1.id))
+    |> List.insert_at(new_position - 1, sticky)
+  end
+
+  defp update_stickies!(stickies) do
+    Repo.transaction(fn ->
+      stickies
+      |> Enum.with_index()
+      |> Enum.each(fn {sticky, index} ->
+        sticky
+        |> change_sticky(%{position: index + 1})
+        |> Repo.update!()
+      end)
+    end)
   end
 
   def change_sticky(%Sticky{} = sticky, attrs \\ %{}) do

@@ -115,7 +115,7 @@ Hooks.Sortable = {
           sticky_id: id,
           from_lane_id: e.from.dataset.id,
           to_lane_id: e.to.dataset.id,
-          new_position: e.newIndex,
+          new_position: e.newIndex + 1,
         })
       },
     })
