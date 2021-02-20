@@ -54,7 +54,7 @@ defmodule Lemonade.Teams.Stickies do
   def create_sticky(sticky_lane, attrs \\ %{}) do
     position = Repo.one(Sticky.next_position(sticky_lane))
 
-    %Sticky{sticky_lane: sticky_lane, position: position}
+    %Sticky{sticky_lane: sticky_lane, team_id: sticky_lane.team_id, position: position}
     |> change_sticky(attrs)
     |> Repo.insert!()
     |> get_sticky_lane_from_sticky()
@@ -102,14 +102,7 @@ defmodule Lemonade.Teams.Stickies do
   def delete_sticky(%Sticky{} = sticky) do
     sticky
     |> Repo.delete()
-    |> case do
-      {:ok, sticky} ->
-        {:ok, get_sticky_lane!(sticky.sticky_lane_id)}
-        |> broadcast(:sticky_lanes_updated)
-
-      error ->
-        error
-    end
+    |> broadcast(:sticky_lanes_updated)
   end
 
   def move_sticky(sticky, sticky_lane, sticky_lane, new_position) do

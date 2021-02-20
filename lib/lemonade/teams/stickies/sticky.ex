@@ -10,6 +10,7 @@ defmodule Lemonade.Teams.Stickies.Sticky do
     field :content, :string
     field :position, :integer
     belongs_to :sticky_lane, Lemonade.Teams.Stickies.StickyLane, on_replace: :update
+    belongs_to :team, Lemonade.Teams.Team
 
     timestamps()
   end
