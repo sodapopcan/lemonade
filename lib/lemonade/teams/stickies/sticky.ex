@@ -9,7 +9,7 @@ defmodule Lemonade.Teams.Stickies.Sticky do
     field :completed, :boolean, default: false
     field :content, :string
     field :position, :integer
-    belongs_to :sticky_lane, Lemonade.Teams.Stickies.StickyLane
+    belongs_to :sticky_lane, Lemonade.Teams.Stickies.StickyLane, on_replace: :update
 
     timestamps()
   end
@@ -23,6 +23,12 @@ defmodule Lemonade.Teams.Stickies.Sticky do
   def toggle_completed_changeset(sticky) do
     sticky
     |> change(%{completed: !sticky.completed})
+  end
+
+  def change_lane_changeset(sticky, sticky_lane) do
+    sticky
+    |> changeset(%{})
+    |> put_change(:sticky_lane_id, sticky_lane.id)
   end
 
   def for_lane(sticky_lane) do

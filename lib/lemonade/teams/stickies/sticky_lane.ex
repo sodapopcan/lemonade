@@ -29,6 +29,12 @@ defmodule Lemonade.Teams.Stickies.StickyLane do
   end
 
   @doc false
+  def ordered do
+    from l in __MODULE__,
+      order_by: l.position
+  end
+
+  @doc false
   def next_position(team) do
     from s in __MODULE__,
       select: coalesce(max(s.position), 0) + 1,

@@ -127,6 +127,31 @@ defmodule Lemonade.Teams.Stickies do
     |> broadcast(:sticky_lanes_updated)
   end
 
+  def move_sticky(sticky, from_lane, to_lane, new_position) do
+    Repo.transaction(fn ->
+      sticky
+      |> Sticky.change_lane_changeset(to_lane)
+      |> Repo.update!()
+
+      Sticky.for_lane(to_lane)
+      |> Repo.all()
+      |> move_sticky(sticky, new_position)
+      |> update_stickies!()
+
+      sticky_lanes = from(
+        l in StickyLane.ordered(),
+        where: l.id in [^from_lane.id, ^to_lane.id],
+        preload: [stickies: ^Sticky.ordered()]
+      ) |> Repo.all()
+
+      %{
+        team_id: from_lane.team_id,
+        sticky_lanes: sticky_lanes
+      }
+    end)
+    |> broadcast(:sticky_lanes_updated)
+  end
+
   defp move_sticky(stickies, %Sticky{} = sticky, new_position)
       when is_list(stickies) and is_integer(new_position) do
     stickies
