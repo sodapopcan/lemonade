@@ -87,17 +87,16 @@ defmodule Lemonade.Teams.Stickies do
   end
 
   def move_sticky(sticky, sticky_lane, sticky_lane, new_position) do
-    Sticky.for_lane(sticky_lane)
-    |> Repo.all()
+    sticky_lane
+    |> preload_stickies()
     |> move_sticky(sticky, new_position)
     |> update_stickies!()
 
     {:ok,
-      %{
-        team_id: sticky_lane.team_id,
-        sticky_lanes: [preload_stickies(sticky_lane)]
-      }
-    }
+     %{
+       team_id: sticky_lane.team_id,
+       sticky_lanes: [preload_stickies(sticky_lane)]
+     }}
     |> broadcast(:sticky_lanes_updated)
   end
 
@@ -107,16 +106,18 @@ defmodule Lemonade.Teams.Stickies do
       |> Sticky.change_lane_changeset(to_lane)
       |> Repo.update!()
 
-      Sticky.for_lane(to_lane)
-      |> Repo.all()
+      to_lane
+      |> preload_stickies()
       |> move_sticky(sticky, new_position)
       |> update_stickies!()
 
-      sticky_lanes = from(
-        l in StickyLane.ordered(),
-        where: l.id in [^from_lane.id, ^to_lane.id],
-        preload: [stickies: ^Sticky.ordered()]
-      ) |> Repo.all()
+      sticky_lanes =
+        from(
+          l in StickyLane.ordered(),
+          where: l.id in [^from_lane.id, ^to_lane.id],
+          preload: [stickies: ^Sticky.ordered()]
+        )
+        |> Repo.all()
 
       %{
         team_id: from_lane.team_id,
@@ -126,9 +127,9 @@ defmodule Lemonade.Teams.Stickies do
     |> broadcast(:sticky_lanes_updated)
   end
 
-  defp move_sticky(stickies, %Sticky{} = sticky, new_position)
-      when is_list(stickies) and is_integer(new_position) do
-    stickies
+  defp move_sticky(%StickyLane{} = sticky_lane, %Sticky{} = sticky, new_position)
+       when is_integer(new_position) do
+    sticky_lane.stickies
     |> Enum.reject(&(sticky.id == &1.id))
     |> List.insert_at(new_position - 1, sticky)
   end

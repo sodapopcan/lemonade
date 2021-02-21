@@ -109,7 +109,7 @@ defmodule Lemonade.Teams do
     {:ok, entity}
   end
 
-  def broadcast({:ok, %{id: team_id} = entity}, event) do
+  def broadcast({:ok, %Team{id: team_id} = entity}, event) do
     Phoenix.PubSub.broadcast(PubSub, "team:#{team_id}", {event, entity})
     {:ok, entity}
   end
