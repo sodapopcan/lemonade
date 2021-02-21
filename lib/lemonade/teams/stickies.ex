@@ -8,7 +8,7 @@ defmodule Lemonade.Teams.Stickies do
 
   alias Lemonade.Repo
 
-  alias Lemonade.Teams.Stickies.{StickyLane, Sticky}
+  alias Lemonade.Teams.Stickies.StickyLane
 
   def get_sticky_lane!(id) do
     Repo.get!(StickyLane, id)
@@ -49,6 +49,8 @@ defmodule Lemonade.Teams.Stickies do
     StickyLane.changeset(sticky_lane, attrs)
   end
 
+  alias Lemonade.Teams.Stickies.Sticky
+
   def get_sticky!(id), do: Repo.get!(Sticky, id)
 
   def create_sticky(sticky_lane, attrs \\ %{}) do
@@ -56,8 +58,7 @@ defmodule Lemonade.Teams.Stickies do
 
     %Sticky{sticky_lane: sticky_lane, team_id: sticky_lane.team_id, position: position}
     |> change_sticky(attrs)
-    |> Repo.insert!()
-    |> get_sticky_lane_from_sticky()
+    |> Repo.insert()
     |> broadcast(:sticky_lanes_updated)
   end
 
@@ -65,38 +66,18 @@ defmodule Lemonade.Teams.Stickies do
     Repo.preload(query, stickies: Sticky.ordered())
   end
 
-  defp get_sticky_lane_from_sticky(sticky) do
-    sticky_lane =
-      sticky.sticky_lane_id
-      |> get_sticky_lane!()
-      |> preload_stickies()
-
-    {:ok, sticky_lane}
-  end
-
   def update_sticky(%Sticky{} = sticky, attrs) do
     sticky
     |> Sticky.changeset(attrs)
     |> Repo.update()
-    |> case do
-      {:ok, sticky} ->
-        {:ok, get_sticky_lane!(sticky.sticky_lane_id)}
-        |> broadcast(:sticky_lanes_updated)
-
-      error ->
-        error
-    end
+    |> broadcast(:sticky_lanes_updated)
   end
 
   def toggle_completed_sticky(%Sticky{} = sticky) do
     sticky
     |> Sticky.toggle_completed_changeset()
     |> Repo.update()
-    |> case do
-      {:ok, sticky} ->
-        {:ok, get_sticky_lane!(sticky.sticky_lane_id)}
-        |> broadcast(:sticky_lanes_updated)
-    end
+    |> broadcast(:sticky_lanes_updated)
   end
 
   def delete_sticky(%Sticky{} = sticky) do
