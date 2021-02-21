@@ -17,9 +17,9 @@ defmodule Lemonade.Teams.StickiesTest do
     test "creates a sticky" do
       sticky_lane = create(:sticky_lane)
 
-      {:ok, sticky_lane} = Lemonade.Teams.Stickies.create_sticky(sticky_lane, %{content: "Test note"})
+      {:ok, sticky} = Lemonade.Teams.Stickies.create_sticky(sticky_lane, %{content: "Test note"})
 
-      assert [%{content: "Test note", position: 1}] = sticky_lane.stickies
+      assert %{content: "Test note", position: 1} = sticky
     end
   end
 

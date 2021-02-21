@@ -85,8 +85,11 @@ defmodule Lemonade.Factory do
   end
 
   def build(:sticky) do
+    sticky_lane = create(:sticky_lane)
+
     %Sticky{
-      sticky_lane: build(:sticky_lane),
+      sticky_lane: sticky_lane,
+      team_id: sticky_lane.team_id,
       content: "Some note",
       position: 1,
       completed: false,
