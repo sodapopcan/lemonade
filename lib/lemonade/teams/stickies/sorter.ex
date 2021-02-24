@@ -9,7 +9,7 @@ defmodule Lemonade.Teams.Stickies.Sorter do
     sticky_lane
     |> preload_stickies()
     |> move_sticky(sticky, new_position)
-    |> update_stickies!()
+    |> update_sticky_positions()
 
     {:ok,
      %{
@@ -28,7 +28,7 @@ defmodule Lemonade.Teams.Stickies.Sorter do
       to_lane
       |> preload_stickies()
       |> move_sticky(sticky, new_position)
-      |> update_stickies!()
+      |> update_sticky_positions()
 
       sticky_lanes =
         from(
@@ -53,7 +53,7 @@ defmodule Lemonade.Teams.Stickies.Sorter do
     |> List.insert_at(new_position - 1, sticky)
   end
 
-  defp update_stickies!(stickies) do
+  def update_sticky_positions(stickies) do
     Repo.transaction(fn ->
       stickies
       |> Enum.with_index()

@@ -94,7 +94,6 @@ defmodule Lemonade.Teams do
   defdelegate update_sticky(sticky, attrs), to: Stickies
   defdelegate toggle_completed_sticky(sticky), to: Stickies
   defdelegate delete_sticky(sticky), to: Stickies
-
   defdelegate move_sticky(sticky, from_lane, to_lane, new_position), to: Stickies.Sorter
 
   alias Lemonade.PubSub
