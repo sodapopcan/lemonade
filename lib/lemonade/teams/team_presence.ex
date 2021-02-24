@@ -1,12 +1,15 @@
 defmodule Lemonade.Teams.TeamPresence do
-  use Phoenix.Presence,
-    otp_app: :lemonade,
-    pubsub_server: Lemonade.PubSub
+  @moduledoc """
+  Who's online?
+  """
+
+  use Phoenix.Presence, otp_app: :lemonade, pubsub_server: Lemonade.PubSub
 
   @topic_prefix "team_presence"
 
   def start_tracking(pid, team_member) do
     Phoenix.PubSub.subscribe(Lemonade.PubSub, topic(team_member))
+
     {:ok, _} = track(pid, topic(team_member), team_member.id, %{})
   end
 
