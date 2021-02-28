@@ -52,7 +52,8 @@ defmodule Lemonade.MixProject do
       {:mogrify, "~> 0.8.0"},
       {:phx_gen_auth, "~> 0.6", only: [:dev], runtime: false},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
-      {:wallaby, "~> 0.26.2", [runtime: false, only: :test]}
+      {:wallaby, "~> 0.26.2", [runtime: false, only: :test]},
+      {:surface, "~> 0.3.0"}
     ]
   end
 
