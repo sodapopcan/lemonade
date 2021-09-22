@@ -1,7 +1,7 @@
 defmodule LemonadeWeb.TeamLive do
   use LemonadeWeb, :live_view
 
-  alias LemonadeWeb.{LayoutComponent, VacationComponent, StandupComponent, StickiesComponent}
+  alias LemonadeWeb.{LayoutComponent, StandupComponent, StickiesComponent, VacationComponent}
   alias Lemonade.{Teams, Tenancy}
   alias Lemonade.Teams.TeamPresence
 
