@@ -17,7 +17,7 @@ defmodule LemonadeWeb.SettingsLive do
   @impl true
   def render(assigns) do
     ~L"""
-    <%= live_component @socket, LayoutComponent,
+    <%= live_component LayoutComponent,
       id: "logged-in-layout",
       current_organization_member: @current_organization_member,
       team: @team do %>

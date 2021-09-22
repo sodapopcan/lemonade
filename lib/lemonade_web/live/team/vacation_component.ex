@@ -30,7 +30,7 @@ defmodule LemonadeWeb.VacationComponent do
       </div>
 
       <%= if @live_action == :vacations do %>
-        <%= live_modal @socket, LemonadeWeb.VacationFormComponent,
+        <%= live_modal LemonadeWeb.VacationFormComponent,
         id: @vacation_id || :new,
         current_team_member: @current_team_member,
         return_to: Routes.team_path(@socket, :index) %>

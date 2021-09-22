@@ -40,14 +40,14 @@ defmodule LemonadeWeb.TeamLive do
 
   @impl true
   def render(assigns) do
-    ~L"""
-    <%= live_component @socket, LayoutComponent,
+    ~H"""
+    <%= live_component LayoutComponent,
       id: "logged-in-layout",
       current_organization_member: @current_organization_member,
       team: @team do %>
 
       <div class="px-4 pt-2">
-        <%= live_component @socket, VacationComponent,
+        <%= live_component VacationComponent,
           id: "vacation-component",
           current_team_member: @current_team_member,
           vacations: @vacations,
@@ -56,7 +56,7 @@ defmodule LemonadeWeb.TeamLive do
       </div>
 
       <div class="px-4 pt-2">
-        <%= live_component @socket, StandupComponent,
+        <%= live_component StandupComponent,
           id: "standup",
           current_team_member: @current_team_member,
           present_team_member_ids: @present_team_member_ids,
@@ -64,7 +64,7 @@ defmodule LemonadeWeb.TeamLive do
       </div>
 
       <div class="px-4 pt-2">
-        <%= live_component @socket, StickiesComponent,
+        <%= live_component StickiesComponent,
           id: "stick-lanes",
           current_team_member: @current_team_member,
           team: @team,
@@ -72,7 +72,7 @@ defmodule LemonadeWeb.TeamLive do
       </div>
 
       <%= if @live_action == :settings do %>
-        <%= live_modal @socket, LemonadeWeb.TeamSettingsFormComponent,
+        <%= live_modal LemonadeWeb.TeamSettingsFormComponent,
         id: "team-settings",
         current_team_member: @current_team_member,
         team: @team,

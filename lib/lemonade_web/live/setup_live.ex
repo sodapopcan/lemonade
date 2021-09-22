@@ -25,7 +25,7 @@ defmodule LemonadeWeb.SetupLive do
   @impl true
   def render(assigns) do
     ~L"""
-    <%= live_component @socket, LemonadeWeb.LayoutComponent, id: "logged-in-layout", team: nil, organization: nil, current_organization_member: @current_user do %>
+    <%= live_component LemonadeWeb.LayoutComponent, id: "logged-in-layout", team: nil, organization: nil, current_organization_member: @current_user do %>
       <div class="w-screen h-screen flex justify-center items-center">
         <div class="relative w-1/4">
           <div class="mb-4">
