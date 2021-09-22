@@ -2,8 +2,8 @@ defmodule Lemonade.Organizations do
   import Ecto.Query, warn: false
   alias Lemonade.Repo
 
-  alias Lemonade.Organizations.{Organization, OrganizationMember}
   alias Lemonade.Accounts
+  alias Lemonade.Organizations.{Organization, OrganizationMember}
 
   def get_organization_by_organization_member(%OrganizationMember{} = organization_member) do
     Repo.one(from Organization, where: [id: ^organization_member.organization_id])
@@ -35,9 +35,10 @@ defmodule Lemonade.Organizations do
     OrganizationMember.changeset(organization_member, %{})
   end
 
-  defdelegate bootstrap_organization(user, attrs), to: Lemonade.Organizations.Bootstrapper
-  defdelegate join_organization(organization, user), to: Lemonade.Organizations.Bootstrapper
-  defdelegate bootstrap_organization_changeset(attrs), to: Lemonade.Organizations.Bootstrapper
+  alias Lemonade.Organizations.Bootstrapper
+  defdelegate bootstrap_organization(user, attrs), to: Bootstrapper
+  defdelegate join_organization(organization, user), to: Bootstrapper
+  defdelegate bootstrap_organization_changeset(attrs), to: Bootstrapper
 
   def broadcast({:error, _reason} = error, _event), do: error
 
