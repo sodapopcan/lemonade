@@ -22,11 +22,18 @@ config :lemonade, LemonadeWeb.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: [
+    # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
     node: [
-      "node_modules/webpack/bin/webpack.js",
-      "--mode",
-      "development",
-      "--watch-stdin",
+      "esbuild.js",
+      cd: Path.expand("../assets", __DIR__),
+      env: %{"ESBUILD_LOG_LEVEL" => "silent", "ESBUILD_WATCH" => "1"}
+    ],
+    npx: [
+      "tailwindcss",
+      "--input=css/app.scss",
+      "--output=../priv/static/assets/app.css",
+      "--postcss",
+      "--watch",
       cd: Path.expand("../assets", __DIR__)
     ]
   ]
