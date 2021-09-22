@@ -1,4 +1,5 @@
 defmodule Mix.Tasks.Planex do
+  @moduledoc false
   use Mix.Task
 
   @shortdoc "Info about these tasks"
@@ -7,6 +8,7 @@ defmodule Mix.Tasks.Planex do
   end
 
   defmodule Seed do
+    @moduledoc false
     use Mix.Task
 
     @shortdoc "Seeds development data with the Planet Express organization"
